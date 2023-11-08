@@ -3,7 +3,7 @@ import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateRoomDto {
   @IsNotEmpty()
-  name: string;
+  title: string;
 
   @IsNotEmpty()
   description: string;
