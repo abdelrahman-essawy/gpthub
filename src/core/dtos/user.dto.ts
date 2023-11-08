@@ -1,8 +1,7 @@
 import { IsEmail, IsNotEmpty, IsStrongPassword } from 'class-validator';
-import { User } from '../entities/user.entity';
 import { PartialType } from '@nestjs/mapped-types';
 
-export class CreateUserDto extends User {
+export class CreateUserDto {
   @IsNotEmpty()
   username: string;
 
