@@ -3,7 +3,7 @@ import { Message } from './message.entity';
 import { User } from './user.entity';
 
 export class Room extends Entity {
-  name: string;
+  title: string;
   description: string;
   members: User[];
   messages: Message[];
