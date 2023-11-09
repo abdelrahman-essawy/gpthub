@@ -3,15 +3,21 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './model/user.model';
 import { IDatabaseService } from 'src/core/abstracts/data-service.abstract';
 import { MongoDatabaseService } from './mongo-data-services.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRootAsync({
-      useFactory: () => ({
-        uri: 'mongodb://localhost:27017/',
-        user: 'admin',
-        pass: 'pass',
-        dbName: 'test',
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('MONGODB_URI'),
+        user: configService.get('MONGODB_USER'),
+        pass: configService.get('MONGODB_PASS'),
+        dbName: configService.get('MONGODB_DB'),
       }),
     }),
     MongooseModule.forFeature([
