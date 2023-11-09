@@ -1,4 +1,5 @@
-import { Model, Document, Types, FilterQuery } from 'mongoose';
+import { NotAcceptableException } from '@nestjs/common';
+import { Model, Document, Types } from 'mongoose';
 import { IRepository } from 'src/core/abstracts/repository.abstract';
 
 /**
@@ -6,8 +7,8 @@ import { IRepository } from 'src/core/abstracts/repository.abstract';
  * @template T - The entity type.
  */
 export class IMongoRepository<T extends Document> implements IRepository<T> {
-  private _repository: Model<T>;
-  private _populateOnFind: string[];
+  readonly repository: Model<T>;
+  readonly populateOnFind: string[];
 
   /**
    * Constructs an instance of IMongoRepository.
@@ -15,16 +16,16 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @param populateOnFind - An array of fields to populate when finding entities.
    */
   constructor(repository: Model<T>, populateOnFind: string[] = []) {
-    this._repository = repository;
-    this._populateOnFind = populateOnFind;
+    this.repository = repository;
+    this.populateOnFind = populateOnFind;
   }
 
   /**
    * Retrieves all entities of type T with optional population of fields.
    * @returns A promise that resolves to an array of entities of type T.
    */
-  async getAll(): Promise<T[]> {
-    return this._repository.find().populate(this._populateOnFind).exec();
+  async find(): Promise<T[]> {
+    return this.repository.find().populate(this.populateOnFind).exec();
   }
 
   /**
@@ -32,8 +33,11 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @param id - The unique identifier of the entity to be retrieved.
    * @returns A promise that resolves to the entity of type T if found, or null if not found.
    */
-  async getOne(id: string): Promise<T | null> {
-    return this._repository.findById(id).exec();
+  async findOneById(id: string): Promise<T | null> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotAcceptableException({ message: 'Invalid ID' });
+    }
+    return await this.repository.findById(id).exec();
   }
 
   // /**
@@ -51,7 +55,7 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @returns A promise that resolves to the created entity of type T.
    */
   async create(item: Partial<T>): Promise<T> {
-    return this._repository.create(item);
+    return this.repository.create(item);
   }
 
   /**
@@ -61,7 +65,10 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @returns A promise that resolves to the updated entity of type T.
    */
   async update(id: string, item: Partial<T>): Promise<T | null> {
-    return this._repository.findByIdAndUpdate(id, item, { new: true });
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotAcceptableException({ message: 'Invalid ID' });
+    }
+    return this.repository.findByIdAndUpdate(id, item, { new: true });
   }
 
   /**
@@ -70,12 +77,15 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @returns A promise that resolves to the deleted entity of type T.
    */
   async delete(id: string): Promise<T | null> {
-    return this._repository.findByIdAndDelete(id);
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotAcceptableException({ message: 'Invalid ID' });
+    }
+    return this.repository.findByIdAndDelete(id);
   }
 
   // delete all
   async deleteAll(): Promise<any> {
-    return this._repository.deleteMany({});
+    return this.repository.deleteMany({});
   }
 
   /**
@@ -84,9 +94,9 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @returns A promise that resolves to an array of entities of type T.
    */
   async findByIds(ids: Types.ObjectId[]): Promise<T[]> {
-    return this._repository
+    return this.repository
       .find({ _id: { $in: ids } })
-      .populate(this._populateOnFind)
+      .populate(this.populateOnFind)
       .exec();
   }
 
@@ -96,7 +106,7 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @returns A promise that resolves to the total count of entities.
    */
   async count(): Promise<number> {
-    return this._repository.estimatedDocumentCount().exec();
+    return this.repository.estimatedDocumentCount().exec();
   }
 
   /**
@@ -105,7 +115,7 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @returns A promise that resolves to an array of entities of type T matching the search query.
    */
   async search(query: string): Promise<T[]> {
-    return this._repository
+    return this.repository
       .find({
         $or: [
           { title: { $regex: query, $options: 'i' } }, // Case-insensitive regex search on title
@@ -113,7 +123,7 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
           // Add more fields for search as needed
         ],
       })
-      .populate(this._populateOnFind)
+      .populate(this.populateOnFind)
       .exec();
   }
 }

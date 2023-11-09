@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiParam,
@@ -6,20 +14,26 @@ import {
   ApiTags,
   ApiOperation,
 } from '@nestjs/swagger';
-import { CreateUserDto } from 'src/core/dtos/user.dto';
-import { User } from 'src/core/entities/user.entity';
+import { CreateUserDto, UpdateUserDto } from 'src/core/dtos/user.dto';
 import { UserUseCases } from 'src/use-cases/user/user.use-case';
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userUseCases: UserUseCases) { }
+  constructor(private readonly userUseCases: UserUseCases) {}
 
   @Get()
   @ApiOperation({ summary: 'Retrieve all users' })
   @ApiResponse({ status: 200, description: 'Retrieves all users' })
-  async getAll(): Promise<any> {
+  async getAll(): Promise<any[]> {
     return await this.userUseCases.getAllUsers();
+  }
+
+  @Get('count')
+  @ApiOperation({ summary: 'Count the total number of users' })
+  @ApiResponse({ status: 200, description: 'Counts the total number of users' })
+  async count(): Promise<number> {
+    return await this.userUseCases.count();
   }
 
   @Get(':id')
@@ -30,29 +44,30 @@ export class UserController {
     return await this.userUseCases.getUserById(id);
   }
 
-  @Get('count')
-  @ApiOperation({ summary: 'Count the total number of users' })
-  @ApiResponse({ status: 200, description: 'Counts the total number of users' })
-  async count(): Promise<number> {
-    return await this.userUseCases.count();
-  }
-
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({
     type: CreateUserDto,
-    examples: {
-      example1: {
-        value: {
-          username: 'Essawy',
-        },
-        summary: 'Example of creating a user',
-      },
-    },
+    description: 'User data to create a new user',
   })
   @ApiResponse({ status: 201, description: 'Creates a new user' })
   async create(@Body() data: CreateUserDto): Promise<any> {
     return await this.userUseCases.createUser(data);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update a user by ID' })
+  @ApiParam({ name: 'id', description: 'User ID' })
+  @ApiBody({
+    type: UpdateUserDto,
+    description: 'User data for the update',
+  })
+  @ApiResponse({ status: 200, description: 'Updates a user by ID' })
+  async update(
+    @Param('id') id: string,
+    @Body() data: UpdateUserDto,
+  ): Promise<any> {
+    return await this.userUseCases.updateUser(id, data);
   }
 
   @Delete(':id')
@@ -61,12 +76,5 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Deletes a user by ID' })
   async delete(@Param('id') id: string): Promise<any> {
     return await this.userUseCases.deleteUser(id);
-  }
-
-  @Delete()
-  @ApiOperation({ summary: 'Delete all users' })
-  @ApiResponse({ status: 200, description: 'Deletes all users' })
-  async deleteAll(): Promise<any> {
-    return await this.userUseCases.deleteAllUsers();
   }
 }
