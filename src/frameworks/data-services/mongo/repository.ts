@@ -25,7 +25,13 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @returns A promise that resolves to an array of entities of type T.
    */
   async find(): Promise<T[]> {
-    return this.repository.find().populate(this.populateOnFind).exec();
+    return (
+      this.repository
+        .find()
+        .populate(this.populateOnFind)
+        // .select(['-__v', 'password'])
+        .exec()
+    );
   }
 
   /**
