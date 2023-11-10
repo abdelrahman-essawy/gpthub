@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { DatabaseServicesModule } from 'src/services/data-services/data-services.module';
+import { DatabaseServicesModule } from 'src/services/database/data-services.module';
 import { UserUseCases } from './user.use-case';
-import { UserFactoryService } from './user-factory.service';
 
 @Module({
   imports: [DatabaseServicesModule],
-  providers: [UserUseCases, UserFactoryService],
+  providers: [UserUseCases],
   exports: [UserUseCases],
 })
 export class UserUseCasesModule {}

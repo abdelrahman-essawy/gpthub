@@ -3,7 +3,7 @@ import {
   NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
-import { IDatabaseService } from 'src/core/abstracts/data-service.abstract';
+import { IDatabaseService } from 'src/core/abstracts/services/data-service.abstract';
 import { CreateUserDto, UpdateUserDto } from 'src/core/dtos/user.dto';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { NotAcceptableException } from '@nestjs/common';
 import { Model, Document, Types } from 'mongoose';
-import { IRepository } from 'src/core/abstracts/repository.abstract';
+import { IRepository } from 'src/core/abstracts/repositories/repository.abstract';
 
 /**
  * MongoDB repository for handling CRUD operations on a specific entity.

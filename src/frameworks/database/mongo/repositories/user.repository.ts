@@ -1,7 +1,7 @@
-import { IUserRepository } from 'src/core/abstracts/user-repository.abstract';
 import { UserDocument } from '../model/user.model';
 import { Model } from 'mongoose';
 import { IMongoRepository } from '../repository';
+import { IUserRepository } from 'src/core/abstracts/repositories/user-repository.abstract';
 
 /**
  * MongoDB repository for User.

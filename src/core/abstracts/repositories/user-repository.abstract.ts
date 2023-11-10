@@ -1,4 +1,4 @@
-import { UserDocument } from 'src/frameworks/data-services/mongo/model/user.model';
+import { UserDocument } from 'src/frameworks/database/mongo/model/user.model';
 import { IRepository } from './repository.abstract';
 
 export interface IUserRepository extends IRepository<UserDocument> {

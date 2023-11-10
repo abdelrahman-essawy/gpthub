@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MongoDatabaseServiceModule } from 'src/frameworks/data-services/mongo/mongo.module';
+import { MongoDatabaseServiceModule } from 'src/frameworks/database/mongo/mongo.module';
 
 @Module({
   imports: [MongoDatabaseServiceModule],
