@@ -1,4 +1,4 @@
-export abstract class Hashing {
-  abstract hash(data: string): string;
-  abstract compare(data: string, hash: string): boolean;
+export abstract class IHashingService {
+  abstract hash(data: string): Promise<string>;
+  abstract compare(data: string, hash: string): Promise<boolean>;
 }
