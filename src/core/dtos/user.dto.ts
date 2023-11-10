@@ -1,4 +1,5 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import {
   IsEmail,
   IsNotEmpty,
@@ -32,6 +33,7 @@ export class CreateUserDto {
         'Password must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, and 1 number',
     },
   )
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @ApiProperty({
@@ -69,6 +71,14 @@ export class CreateUserDto {
   avatar: string;
 }
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {
-  // You can add additional properties specific to the update if needed
+export class UpdateUserDto extends PartialType(CreateUserDto) { }
+
+export class AuthenticateUserDto extends PickType(CreateUserDto, ['password']) {
+  @ApiProperty({
+    example: 'john_doe',
+    description: 'The username or email address of the user',
+  })
+  @IsNotEmpty()
+  @IsString()
+  usernameOrEmail: string;
 }

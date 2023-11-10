@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import {
   ApiBody,
   ApiParam,
@@ -14,13 +6,13 @@ import {
   ApiTags,
   ApiOperation,
 } from '@nestjs/swagger';
-import { CreateUserDto, UpdateUserDto } from 'src/core/dtos/user.dto';
+import { UpdateUserDto } from 'src/core/dtos/user.dto';
 import { UserUseCases } from 'src/use-cases/user/user.use-case';
 
-@ApiTags('user')
-@Controller('user')
+@ApiTags('Users')
+@Controller('users')
 export class UserController {
-  constructor(private readonly userUseCases: UserUseCases) {}
+  constructor(private readonly userUseCases: UserUseCases) { }
 
   @Get()
   @ApiOperation({ summary: 'Retrieve all users' })
@@ -42,17 +34,6 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Retrieves a user by ID' })
   async getOne(@Param('id') id: string): Promise<any> {
     return await this.userUseCases.getUserById(id);
-  }
-
-  @Post()
-  @ApiOperation({ summary: 'Create a new user' })
-  @ApiBody({
-    type: CreateUserDto,
-    description: 'User data to create a new user',
-  })
-  @ApiResponse({ status: 201, description: 'Creates a new user' })
-  async create(@Body() data: CreateUserDto): Promise<any> {
-    return await this.userUseCases.createUser(data);
   }
 
   @Patch(':id')

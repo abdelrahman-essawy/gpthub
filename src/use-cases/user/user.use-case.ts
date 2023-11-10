@@ -7,7 +7,11 @@ import {
 } from '@nestjs/common';
 import { IDatabaseService } from 'src/core/abstracts/services/database-service.abstract';
 import { IHashingService } from 'src/core/abstracts/services/hashing.abstract';
-import { CreateUserDto, UpdateUserDto } from 'src/core/dtos/user.dto';
+import {
+  AuthenticateUserDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from 'src/core/dtos/user.dto';
 
 @Injectable()
 export class UserUseCases {
@@ -65,10 +69,37 @@ export class UserUseCases {
    * @returns A Promise resolving to the created user.
    * @throws NotAcceptableException if the email or username already exists.
    */
-  async createUser(createUserDto: CreateUserDto): Promise<any> {
+  async register(createUserDto: CreateUserDto): Promise<any> {
     return this.databaseService.users.create(
       await this.commonValidation(createUserDto),
     );
+  }
+
+  /**
+   * Authenticates a user.
+   * @param createUserDto - User data to authenticate a user.
+   * @returns A Promise resolving to the authenticated user.
+   * @throws NotAcceptableException if the email or username already exists.
+   */
+  async authenticate(credentials: AuthenticateUserDto): Promise<any> {
+    const user = await this.databaseService.users.findByUsernameOrEmail(
+      credentials.usernameOrEmail,
+    );
+
+    if (!user) {
+      throw new BadRequestException({ message: 'Invalid credentials' });
+    }
+
+    const isPasswordMatched = await this.hashingService.compare(
+      credentials.password,
+      user.password,
+    );
+
+    if (!isPasswordMatched) {
+      throw new BadRequestException({ message: 'Invalid credentials' });
+    }
+
+    return user;
   }
 
   /**
