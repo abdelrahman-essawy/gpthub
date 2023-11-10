@@ -1,14 +1,41 @@
 import {
+  BadRequestException,
+  ConflictException,
   Injectable,
   NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
 import { IDatabaseService } from 'src/core/abstracts/services/database-service.abstract';
+import { IHashingService } from 'src/core/abstracts/services/hashing.abstract';
 import { CreateUserDto, UpdateUserDto } from 'src/core/dtos/user.dto';
 
 @Injectable()
 export class UserUseCases {
-  constructor(private readonly databaseService: IDatabaseService) { }
+  async commonValidation(userDto: CreateUserDto | UpdateUserDto) {
+    try {
+      if (await this.databaseService.users.isUsernameExists(userDto.username)) {
+        throw new ConflictException({
+          message: 'Username already exists',
+        });
+      }
+
+      if (await this.databaseService.users.isEmailExists(userDto.email)) {
+        throw new ConflictException({ message: 'Email already exists' });
+      }
+
+      if (userDto.password) {
+        userDto.password = await this.hashingService.hash(userDto.password);
+      }
+
+      return userDto;
+    } catch (error) {
+      throw new BadRequestException({ message: error.message });
+    }
+  }
+  constructor(
+    private readonly databaseService: IDatabaseService,
+    private readonly hashingService: IHashingService,
+  ) { }
 
   /**
    * Retrieves all users.
@@ -39,15 +66,9 @@ export class UserUseCases {
    * @throws NotAcceptableException if the email or username already exists.
    */
   async createUser(createUserDto: CreateUserDto): Promise<any> {
-    if (await this.databaseService.users.isEmailExists(createUserDto.email)) {
-      throw new NotAcceptableException({ message: 'Email already exists' });
-    }
-    if (
-      await this.databaseService.users.isUsernameExists(createUserDto.username)
-    ) {
-      throw new NotAcceptableException({ message: 'Username already exists' });
-    }
-    return this.databaseService.users.create(createUserDto);
+    return this.databaseService.users.create(
+      await this.commonValidation(createUserDto),
+    );
   }
 
   /**
@@ -58,23 +79,10 @@ export class UserUseCases {
    * @throws NotAcceptableException if the email or username already exists.
    */
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<any> {
-    try {
-      if (await this.databaseService.users.isEmailExists(updateUserDto.email)) {
-        throw new NotAcceptableException({ message: 'Email already exists' });
-      }
-      if (
-        await this.databaseService.users.isUsernameExists(
-          updateUserDto.username,
-        )
-      ) {
-        throw new NotAcceptableException({
-          message: 'Username already exists',
-        });
-      }
-      return this.databaseService.users.update(id, updateUserDto);
-    } catch (error) {
-      throw new NotAcceptableException({ message: 'User not found' });
-    }
+    return this.databaseService.users.update(
+      id,
+      await this.commonValidation(updateUserDto),
+    );
   }
 
   /**
