@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './model/user.model';
 import { MongoDatabaseService } from './mongo-database.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { IDatabaseService } from 'src/core/abstracts/services/database-services.abstract';
+import { IDatabaseService } from 'src/core/abstracts/services/database-service.abstract';
 
 @Module({
   imports: [
@@ -40,4 +40,4 @@ import { IDatabaseService } from 'src/core/abstracts/services/database-services.
     },
   ],
 })
-export class MongoDatabaseServiceModule {}
+export class MongoDatabaseServiceModule { }
