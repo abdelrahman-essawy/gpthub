@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DatabaseServicesModule } from 'src/services/database/data-services.module';
+import { DatabaseServicesModule } from 'src/services/database/database-services.module';
 import { UserUseCases } from './user.use-case';
 
 @Module({

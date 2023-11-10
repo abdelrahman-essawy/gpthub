@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { IDatabaseService } from 'src/core/abstracts/services/data-service.abstract';
+import { IDatabaseService } from 'src/core/abstracts/services/database-services.abstract';
 import { User, UserDocument } from './model/user.model';
 import { Model } from 'mongoose';
 import { MongoUserRepository } from './repositories/user.repository';
