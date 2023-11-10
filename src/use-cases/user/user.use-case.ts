@@ -3,12 +3,12 @@ import {
   NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
-import { IDatabaseService } from 'src/core/abstracts/services/database-services.abstract';
+import { IDatabaseService } from 'src/core/abstracts/services/database-service.abstract';
 import { CreateUserDto, UpdateUserDto } from 'src/core/dtos/user.dto';
 
 @Injectable()
 export class UserUseCases {
-  constructor(private readonly databaseService: IDatabaseService) {}
+  constructor(private readonly databaseService: IDatabaseService) { }
 
   /**
    * Retrieves all users.
