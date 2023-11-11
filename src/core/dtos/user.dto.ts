@@ -9,6 +9,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { User } from '../entities/user.entity';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'john_doe', description: 'The username of the user' })
@@ -69,6 +70,10 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   avatar: string;
+
+  constructor(partial: Partial<User>) {
+    Object.assign(this, partial);
+  }
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) { }

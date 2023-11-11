@@ -2,7 +2,6 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
-  NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
 import { IDatabaseService } from 'src/core/abstracts/services/database-service.abstract';
@@ -12,6 +11,7 @@ import {
   CreateUserDto,
   UpdateUserDto,
 } from 'src/core/dtos/user.dto';
+import { UserDocument } from 'src/frameworks/databases/mongo/model/user.model';
 
 @Injectable()
 export class UserUseCases {
@@ -46,7 +46,9 @@ export class UserUseCases {
    * @returns A Promise resolving to all user data.
    */
   async getAllUsers(): Promise<any[]> {
-    return this.databaseService.users.find();
+    return await this.databaseService.users.find({
+      hideKeysFromReturn: ['password', '__v'],
+    });
   }
 
   /**
@@ -55,8 +57,10 @@ export class UserUseCases {
    * @returns A Promise resolving to the user data.
    * @throws NotAcceptableException if the user is not found.
    */
-  async getUserById(id: string): Promise<any> {
-    const user = this.databaseService.users.findOneById(id);
+  async getUserById(id: string): Promise<UserDocument | null> {
+    const user = this.databaseService.users.findOneById(id, {
+      hideKeysFromReturn: ['password', '__v'],
+    });
     if (!user) {
       throw new NotFoundException({ message: 'User not found' });
     }
@@ -70,9 +74,16 @@ export class UserUseCases {
    * @throws NotAcceptableException if the email or username already exists.
    */
   async register(createUserDto: CreateUserDto): Promise<any> {
-    return this.databaseService.users.create(
+    const user = this.databaseService.users.create(
       await this.commonValidation(createUserDto),
     );
+    if (!user) {
+      throw new BadRequestException({ message: 'User not created' });
+    }
+    return {
+      message: 'User created successfully',
+      token: 'token',
+    };
   }
 
   /**
@@ -99,7 +110,7 @@ export class UserUseCases {
       throw new BadRequestException({ message: 'Invalid credentials' });
     }
 
-    return user;
+    return ['token'];
   }
 
   /**
@@ -113,6 +124,7 @@ export class UserUseCases {
     return this.databaseService.users.update(
       id,
       await this.commonValidation(updateUserDto),
+      { hideKeysFromReturn: ['password', '__v'] },
     );
   }
 
@@ -122,7 +134,17 @@ export class UserUseCases {
    * @returns A Promise indicating successful deletion.
    */
   async deleteUser(id: string): Promise<any> {
-    return this.databaseService.users.delete(id);
+    if (!(await this.databaseService.users.findOneById(id, {}))) {
+      throw new NotFoundException({ message: 'User not found' });
+    }
+    try {
+      await this.databaseService.users.delete(id);
+    } catch (error) {
+      throw new BadRequestException({ message: error.message });
+    }
+    return {
+      message: 'User deleted successfully',
+    };
   }
 
   /**

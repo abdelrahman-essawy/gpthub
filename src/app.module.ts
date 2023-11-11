@@ -9,10 +9,10 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
   imports: [DatabaseServicesModule, UserUseCasesModule],
   controllers: [AuthController, UserController],
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ClassSerializerInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: ClassSerializerInterceptor,
+    // },
   ],
 })
-export class AppModule { }
+export class AppModule {}

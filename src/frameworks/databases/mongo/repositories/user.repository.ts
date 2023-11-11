@@ -1,7 +1,11 @@
+// MongoUserRepository
 import { User, UserDocument } from '../model/user.model';
-import { Model } from 'mongoose';
+import { Model, Document } from 'mongoose';
 import { IMongoRepository } from '../repository';
-import { IUserRepository } from 'src/core/abstracts/repositories/user-repository.abstract';
+import {
+  IUserRepository,
+  OptionsForFind,
+} from 'src/core/abstracts/repositories/user-repository.abstract';
 
 /**
  * MongoDB repository for User.
@@ -13,12 +17,52 @@ export class MongoUserRepository
     super(_repository);
   }
 
-  async findByUsername(username: string): Promise<UserDocument | null> {
-    return this.repository.findOne({ username }).exec();
+  async find(options: OptionsForFind = {}): Promise<UserDocument[]> {
+    const { hideKeysFromReturn } = options;
+
+    const projection: Record<string, 0 | 1> = {};
+    if (hideKeysFromReturn) {
+      hideKeysFromReturn.forEach((key) => {
+        projection[key] = 0; // 0 means exclude the field
+      });
+    }
+
+    return this.repository
+      .find({}, projection, { lean: true })
+      .select('-password')
+      .exec();
   }
 
-  async findByEmail(email: string): Promise<UserDocument | null> {
-    return this.repository.findOne({ email }).exec();
+  async findByUsername(
+    username: string,
+    options: OptionsForFind = {},
+  ): Promise<UserDocument | null> {
+    const { hideKeysFromReturn } = options;
+
+    const projection: Record<string, 0 | 1> = {};
+    if (hideKeysFromReturn) {
+      hideKeysFromReturn.forEach((key) => {
+        projection[key] = 0; // 0 means exclude the field
+      });
+    }
+
+    return this.repository.findOne({ username }, projection).exec();
+  }
+
+  async findByEmail(
+    email: string,
+    options: OptionsForFind = {},
+  ): Promise<UserDocument | null> {
+    const { hideKeysFromReturn } = options;
+
+    const projection: Record<string, 0 | 1> = {};
+    if (hideKeysFromReturn) {
+      hideKeysFromReturn.forEach((key) => {
+        projection[key] = 0; // 0 means exclude the field
+      });
+    }
+
+    return this.repository.findOne({ email }, projection).exec();
   }
 
   async isEmailExists(email: string): Promise<boolean> {
@@ -31,12 +75,17 @@ export class MongoUserRepository
     return user !== null;
   }
 
-  findByUsernameOrEmail(usernameOrEmail: string): Promise<UserDocument> {
+  findByUsernameOrEmail(
+    usernameOrEmail: string,
+    options: OptionsForFind = {},
+  ): Promise<UserDocument> {
+    const { hideKeysFromReturn } = options;
+
     const isEmail = usernameOrEmail.includes('@');
     if (isEmail) {
-      return this.findByEmail(usernameOrEmail);
+      return this.findByEmail(usernameOrEmail, { hideKeysFromReturn });
     } else {
-      return this.findByUsername(usernameOrEmail);
+      return this.findByUsername(usernameOrEmail, { hideKeysFromReturn });
     }
   }
 
