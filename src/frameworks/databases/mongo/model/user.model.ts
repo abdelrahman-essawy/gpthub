@@ -26,7 +26,7 @@ export class User {
   @Prop()
   avatar: string;
 
-  @Prop({ type: [{ type: String, ref: 'Room' }] })
+  @Prop({ type: [{ type: String, ref: 'Room' }], default: [] })
   rooms: string[];
 }
 

@@ -1,21 +1,54 @@
 import {
+  BadRequestException,
+  ConflictException,
   Injectable,
-  NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
 import { IDatabaseService } from 'src/core/abstracts/services/database-service.abstract';
-import { CreateUserDto, UpdateUserDto } from 'src/core/dtos/user.dto';
+import { IHashingService } from 'src/core/abstracts/services/hashing.abstract';
+import {
+  AuthenticateUserDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from 'src/core/dtos/user.dto';
+import { UserDocument } from 'src/frameworks/databases/mongo/model/user.model';
 
 @Injectable()
 export class UserUseCases {
-  constructor(private readonly databaseService: IDatabaseService) { }
+  async commonValidation(userDto: CreateUserDto | UpdateUserDto) {
+    try {
+      if (await this.databaseService.users.isUsernameExists(userDto.username)) {
+        throw new ConflictException({
+          message: 'Username already exists',
+        });
+      }
+
+      if (await this.databaseService.users.isEmailExists(userDto.email)) {
+        throw new ConflictException({ message: 'Email already exists' });
+      }
+
+      if (userDto.password) {
+        userDto.password = await this.hashingService.hash(userDto.password);
+      }
+
+      return userDto;
+    } catch (error) {
+      throw new BadRequestException({ message: error.message });
+    }
+  }
+  constructor(
+    private readonly databaseService: IDatabaseService,
+    private readonly hashingService: IHashingService,
+  ) { }
 
   /**
    * Retrieves all users.
    * @returns A Promise resolving to all user data.
    */
   async getAllUsers(): Promise<any[]> {
-    return this.databaseService.users.find();
+    return await this.databaseService.users.find({
+      hideKeysFromReturn: ['password', '__v'],
+    });
   }
 
   /**
@@ -24,8 +57,10 @@ export class UserUseCases {
    * @returns A Promise resolving to the user data.
    * @throws NotAcceptableException if the user is not found.
    */
-  async getUserById(id: string): Promise<any> {
-    const user = this.databaseService.users.findOneById(id);
+  async getUserById(id: string): Promise<UserDocument | null> {
+    const user = this.databaseService.users.findOneById(id, {
+      hideKeysFromReturn: ['password', '__v'],
+    });
     if (!user) {
       throw new NotFoundException({ message: 'User not found' });
     }
@@ -38,16 +73,44 @@ export class UserUseCases {
    * @returns A Promise resolving to the created user.
    * @throws NotAcceptableException if the email or username already exists.
    */
-  async createUser(createUserDto: CreateUserDto): Promise<any> {
-    if (await this.databaseService.users.isEmailExists(createUserDto.email)) {
-      throw new NotAcceptableException({ message: 'Email already exists' });
+  async register(createUserDto: CreateUserDto): Promise<any> {
+    const user = this.databaseService.users.create(
+      await this.commonValidation(createUserDto),
+    );
+    if (!user) {
+      throw new BadRequestException({ message: 'User not created' });
     }
-    if (
-      await this.databaseService.users.isUsernameExists(createUserDto.username)
-    ) {
-      throw new NotAcceptableException({ message: 'Username already exists' });
+    return {
+      message: 'User created successfully',
+      token: 'token',
+    };
+  }
+
+  /**
+   * Authenticates a user.
+   * @param createUserDto - User data to authenticate a user.
+   * @returns A Promise resolving to the authenticated user.
+   * @throws NotAcceptableException if the email or username already exists.
+   */
+  async authenticate(credentials: AuthenticateUserDto): Promise<any> {
+    const user = await this.databaseService.users.findByUsernameOrEmail(
+      credentials.usernameOrEmail,
+    );
+
+    if (!user) {
+      throw new BadRequestException({ message: 'Invalid credentials' });
     }
-    return this.databaseService.users.create(createUserDto);
+
+    const isPasswordMatched = await this.hashingService.compare(
+      credentials.password,
+      user.password,
+    );
+
+    if (!isPasswordMatched) {
+      throw new BadRequestException({ message: 'Invalid credentials' });
+    }
+
+    return ['token'];
   }
 
   /**
@@ -58,23 +121,11 @@ export class UserUseCases {
    * @throws NotAcceptableException if the email or username already exists.
    */
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<any> {
-    try {
-      if (await this.databaseService.users.isEmailExists(updateUserDto.email)) {
-        throw new NotAcceptableException({ message: 'Email already exists' });
-      }
-      if (
-        await this.databaseService.users.isUsernameExists(
-          updateUserDto.username,
-        )
-      ) {
-        throw new NotAcceptableException({
-          message: 'Username already exists',
-        });
-      }
-      return this.databaseService.users.update(id, updateUserDto);
-    } catch (error) {
-      throw new NotAcceptableException({ message: 'User not found' });
-    }
+    return this.databaseService.users.update(
+      id,
+      await this.commonValidation(updateUserDto),
+      { hideKeysFromReturn: ['password', '__v'] },
+    );
   }
 
   /**
@@ -83,7 +134,17 @@ export class UserUseCases {
    * @returns A Promise indicating successful deletion.
    */
   async deleteUser(id: string): Promise<any> {
-    return this.databaseService.users.delete(id);
+    if (!(await this.databaseService.users.findOneById(id, {}))) {
+      throw new NotFoundException({ message: 'User not found' });
+    }
+    try {
+      await this.databaseService.users.delete(id);
+    } catch (error) {
+      throw new BadRequestException({ message: error.message });
+    }
+    return {
+      message: 'User deleted successfully',
+    };
   }
 
   /**

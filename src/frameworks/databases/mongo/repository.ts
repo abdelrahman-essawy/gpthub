@@ -1,6 +1,7 @@
 import { NotAcceptableException } from '@nestjs/common';
 import { Model, Document, Types } from 'mongoose';
 import { IRepository } from 'src/core/abstracts/repositories/repository.abstract';
+import { OptionsForFind } from 'src/core/abstracts/repositories/user-repository.abstract';
 
 /**
  * MongoDB repository for handling CRUD operations on a specific entity.
@@ -9,6 +10,16 @@ import { IRepository } from 'src/core/abstracts/repositories/repository.abstract
 export class IMongoRepository<T extends Document> implements IRepository<T> {
   readonly repository: Model<T>;
   readonly populateOnFind: string[];
+
+  private projection(hideKeysFromReturn: string[]) {
+    const projection: Record<string, 0 | 1> = {};
+    if (hideKeysFromReturn) {
+      hideKeysFromReturn.forEach((key) => {
+        projection[key] = 0; // 0 means exclude the field
+      });
+    }
+    return projection;
+  }
 
   /**
    * Constructs an instance of IMongoRepository.
@@ -21,39 +32,35 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
   }
 
   /**
-   * Retrieves all entities of type T with optional population of fields.
+   * Retrieves all entities of type T with optional population of fields and dynamic key hiding.
+   * @param options - Options for dynamic key hiding during find operation.
    * @returns A promise that resolves to an array of entities of type T.
    */
-  async find(): Promise<T[]> {
-    return (
-      this.repository
-        .find()
-        .populate(this.populateOnFind)
-        // .select(['-__v', 'password'])
-        .exec()
-    );
+  async find(options: OptionsForFind = {}): Promise<T[]> {
+    const projection = this.projection(options.hideKeysFromReturn);
+    return this.repository
+      .find({}, projection)
+      .populate(this.populateOnFind)
+      .exec();
   }
 
   /**
-   * Retrieves a single entity of type T by its unique identifier.
+   * Retrieves a single entity of type T by its unique identifier with optional population of fields and dynamic key hiding.
    * @param id - The unique identifier of the entity to be retrieved.
+   * @param options - Options for dynamic key hiding during find operation.
    * @returns A promise that resolves to the entity of type T if found, or null if not found.
    */
-  async findOneById(id: string): Promise<T | null> {
+  async findOneById(
+    id: string,
+    options: OptionsForFind = {},
+  ): Promise<T | null> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotAcceptableException({ message: 'Invalid ID' });
     }
-    return await this.repository.findById(id).exec();
-  }
 
-  // /**
-  //  * Retrieves a single entity of type T by its unique identifier with optional population of fields.
-  //  * @param id - The unique identifier of the entity to be retrieved.
-  //  * @returns A promise that resolves to the entity of type T.
-  //  */
-  // async getOne(id: string): Promise<T | null> {
-  //   return this._repository.findById(id).populate(this._populateOnFind).exec();
-  // }
+    const projection = this.projection(options.hideKeysFromReturn);
+    return this.repository.findById(id, projection).exec();
+  }
 
   /**
    * Creates a new entity of type T.
@@ -70,11 +77,19 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @param item - The updated entity data.
    * @returns A promise that resolves to the updated entity of type T.
    */
-  async update(id: string, item: Partial<T>): Promise<T | null> {
+  async update(
+    id: string,
+    item: Partial<T>,
+    options: OptionsForFind,
+  ): Promise<T | null> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotAcceptableException({ message: 'Invalid ID' });
     }
-    return this.repository.findByIdAndUpdate(id, item, { new: true });
+    const projection = this.projection(options.hideKeysFromReturn);
+    return this.repository.findByIdAndUpdate(id, item, {
+      new: true,
+      projection,
+    });
   }
 
   /**
@@ -99,12 +114,12 @@ export class IMongoRepository<T extends Document> implements IRepository<T> {
    * @param ids - An array of unique identifiers for entities.
    * @returns A promise that resolves to an array of entities of type T.
    */
-  async findByIds(ids: Types.ObjectId[]): Promise<T[]> {
-    return this.repository
-      .find({ _id: { $in: ids } })
-      .populate(this.populateOnFind)
-      .exec();
-  }
+  // async findByIds(ids: Types.ObjectId[]): Promise<T[]> {
+  //   return this.repository
+  //     .find({ _id: { $in: ids } })
+  //     .populate(this.populateOnFind)
+  //     .exec();
+  // }
 
   /**
    * Counts the total number of entities that match the provided criteria.
