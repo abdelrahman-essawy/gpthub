@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthenticateUserDto, CreateUserDto } from 'src/core/dtos/user.dto';
 import { UserUseCases } from 'src/use-cases/user/user.use-case';
@@ -20,6 +20,7 @@ export class AuthController {
   }
 
   @Post('signin')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Authenticate a user' })
   @ApiBody({
     type: AuthenticateUserDto,
