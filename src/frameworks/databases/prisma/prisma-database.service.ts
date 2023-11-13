@@ -1,18 +1,24 @@
-// src/prisma-database.service.ts
-
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { IDatabaseService } from 'src/core/abstracts/services/database-service.abstract';
 import { PrismaUserRepository } from './repositories/user.repository';
+import { IUserRepository } from 'src/core/abstracts/repositories/user-repository.abstract';
+import {
+  DatabaseServices,
+  IPrismaDatabaseService,
+} from 'src/core/abstracts/services/database-service.abstract';
 
 @Injectable()
 export class PrismaDatabaseService
-  implements IDatabaseService, OnApplicationBootstrap {
-  users: any;
+  implements DatabaseServices, OnApplicationBootstrap {
+  constructor(private readonly prisma: PrismaClient) {
+    this.prisma.$connect();
+  }
 
-  constructor(private readonly prisma: PrismaClient) { }
+  sql: IPrismaDatabaseService;
 
   async onApplicationBootstrap() {
-    this.users = new PrismaUserRepository(this.prisma);
+    this.sql = {
+      user: new PrismaUserRepository(this.prisma) as unknown as IUserRepository,
+    };
   }
 }

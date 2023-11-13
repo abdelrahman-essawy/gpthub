@@ -3,7 +3,7 @@ import { MongoDatabaseServiceModule } from 'src/frameworks/databases/mongo/mongo
 import { PrismaDatabaseServiceModule } from 'src/frameworks/databases/prisma/prisma.module';
 
 @Module({
-  imports: [MongoDatabaseServiceModule, PrismaDatabaseServiceModule],
-  exports: [MongoDatabaseServiceModule, PrismaDatabaseServiceModule],
+  imports: [PrismaDatabaseServiceModule],
+  exports: [PrismaDatabaseServiceModule],
 })
 export class DatabaseServicesModule { }

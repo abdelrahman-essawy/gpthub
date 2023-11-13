@@ -3,12 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './model/user.model';
 import { Model } from 'mongoose';
 import { MongoUserRepository } from './repositories/user.repository';
-import { IDatabaseService } from 'src/core/abstracts/services/database-service.abstract';
+import { IMongoDatabaseService } from 'src/core/abstracts/services/database-service.abstract';
+import { IUserRepository } from 'src/core/abstracts/repositories/user-repository.abstract';
 
 @Injectable()
 export class MongoDatabaseService
-  implements IDatabaseService, OnApplicationBootstrap {
-  users: any;
+  implements IMongoDatabaseService, OnApplicationBootstrap {
+  user: IUserRepository;
 
   constructor(
     @InjectModel(User.name)
@@ -16,6 +17,6 @@ export class MongoDatabaseService
   ) { }
 
   onApplicationBootstrap() {
-    this.users = new MongoUserRepository(this.userRepositoryModel);
+    this.user = new MongoUserRepository(this.userRepositoryModel);
   }
 }
