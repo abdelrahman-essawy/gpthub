@@ -73,7 +73,7 @@ export class UserUseCases {
    * @returns A Promise resolving to the user data.
    * @throws NotAcceptableException if the user is not found.
    */
-  async getUserById(id: string): Promise<UserDocument | null> {
+  async getUserById(id: string) {
     const user = this.databaseService.sql.user.findOneById(id, {
       hideKeysFromReturn: ['password', '__v'],
     });
