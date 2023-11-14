@@ -6,18 +6,17 @@ import { PrismaClient } from '@prisma/client';
 import { DatabaseServices } from 'src/core/abstracts/services/database-service.abstract';
 
 @Module({
-  providers: [
-    {
-      provide: DatabaseServices,
-      useClass: PrismaDatabaseService,
-    },
-    PrismaClient,
-  ],
-  exports: [
-    {
-      provide: DatabaseServices,
-      useClass: PrismaDatabaseService,
-    },
-  ],
+  imports: [PrismaClient],
+  providers: [PrismaDatabaseService, PrismaClient],
+  exports: [PrismaDatabaseService, PrismaClient],
 })
-export class PrismaDatabaseServiceModule { }
+export class PrismaDatabaseServiceModule {
+  prisma: PrismaClient;
+  constructor(private readonly prisma2: PrismaClient) {
+    console.log('PrismaDatabaseServiceModule initialized');
+    this.prisma = prisma2;
+  }
+  async onApplicationBootstrap() {
+    console.log(await this.prisma.user.count());
+  }
+}

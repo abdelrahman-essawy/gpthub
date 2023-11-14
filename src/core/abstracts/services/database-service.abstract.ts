@@ -3,7 +3,8 @@ import { IUserRepository } from '../repositories/user-repository.abstract';
 import { MongoDatabaseService } from 'src/frameworks/databases/mongo/mongo-database.service';
 
 export abstract class DatabaseServices {
-  sql: IPrismaDatabaseService;
+  sql?: IPrismaDatabaseService;
+  nosql?: IMongoDatabaseService;
   // abstract nosql: MongoDatabaseService;
   // abstract rooms: IRepository<Room>;
   // abstract resources: IRepository<Response>;

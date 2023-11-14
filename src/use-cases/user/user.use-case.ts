@@ -16,6 +16,7 @@ import {
 } from 'src/core/dtos/user.dto';
 import { UserDocument } from 'src/frameworks/databases/mongo/model/user.model';
 import { PrismaDatabaseService } from 'src/frameworks/databases/prisma/prisma-database.service';
+import { DatabaseServicesModule } from 'src/services/databases/databases-service.module';
 
 @Injectable()
 export class UserUseCases {
@@ -47,6 +48,7 @@ export class UserUseCases {
     private readonly hashingService: IHashingService,
   ) {
     console.log('UserUseCases initialized');
+    // console.log(databaseService.sql.user.count());
   }
 
   /**
@@ -57,12 +59,12 @@ export class UserUseCases {
     const sql = await this.databaseService.sql.user.find({
       hideKeysFromReturn: ['password', '__v'],
     });
-    // const nosql = await this.databaseService.nosql.user.find({});
 
-    return {
-      ...sql,
-      // ...nosql,
-    };
+    const nosql = await this.databaseService.nosql.user.find({
+      hideKeysFromReturn: ['password', '__v'],
+    });
+
+    return [...sql, ...nosql];
   }
 
   /**

@@ -30,17 +30,7 @@ import {
       },
     ]),
   ],
-  providers: [
-    {
-      provide: IMongoDatabaseService,
-      useClass: MongoDatabaseService,
-    },
-  ],
-  exports: [
-    {
-      provide: IMongoDatabaseService,
-      useClass: MongoDatabaseService,
-    },
-  ],
+  providers: [MongoDatabaseService],
+  exports: [MongoDatabaseService],
 })
 export class MongoDatabaseServiceModule { }
