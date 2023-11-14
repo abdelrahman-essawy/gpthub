@@ -21,6 +21,18 @@ services:
     ports:
       - 8111:8081
     environment:
-      - ME_CONFIG_MONGODB_SERVER=this
+      - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_PASSWORD: pass
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

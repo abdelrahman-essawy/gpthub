@@ -9,5 +9,5 @@ export class UserPrismaDocument implements Prisma.UserCreateInput {
   lastName: string;
   role: string;
   avatar: string;
-  rooms?: Prisma.UserCreateroomsInput | string[];
+  rooms?: Prisma.RoomUserCreateNestedManyWithoutUserInput;
 }

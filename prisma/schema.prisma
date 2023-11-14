@@ -6,28 +6,56 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("PRISMA_AUTH")
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  username  String   @unique
-  email     String   @unique
+  id        String     @id @default(uuid())
+  username  String     @unique
+  email     String     @unique
   firstName String
   lastName  String
   password  String
-  role      String   @default("user")
+  role      String     @default("user")
   avatar    String
-  rooms     String[]
+  rooms     RoomUser[]
 
-  @@map("users")
+  // @@map("users")
 }
 
-// model Room {
-//   id     String  @id @default(auto()) @map("_id") @db.ObjectId
-//   User   User?   @relation(fields: [userId], references: [id])
-//   userId String? @db.ObjectId
+model Model {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  rooms       Room[]
+}
 
-//   @@map("rooms")
-// }
+model Room {
+  id    String     @id @default(uuid())
+  model Model      @relation(fields: [id], references: [id])
+  users RoomUser[]
+}
+
+model Resource {
+  id      String @id @default(uuid())
+  roomId  Int
+  userId  Int
+  content String
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  roomId    Int
+  userId    Int
+  content   String
+  timestamp DateTime @default(now())
+}
+
+model RoomUser {
+  id     String @id @default(uuid())
+  userId String
+  roomId String
+  User   User   @relation(fields: [userId], references: [id])
+  Room   Room   @relation(fields: [roomId], references: [id])
+}
