@@ -59,15 +59,9 @@ export class UserUseCases {
    * @returns A Promise resolving to all user data.
    */
   async getAllUsers(): Promise<any[]> {
-    const sql = await this.databaseService.sql.user.find({
+    return await this.databaseService.sql.user.find({
       hideKeysFromReturn: ['password', '__v'],
     });
-
-    const nosql = await this.databaseService.nosql.user.find({
-      hideKeysFromReturn: ['password', '__v'],
-    });
-
-    return [...sql, ...nosql];
   }
 
   /**
