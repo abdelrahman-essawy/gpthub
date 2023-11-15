@@ -49,10 +49,7 @@ export class UserUseCases {
   constructor(
     private readonly databaseService: DatabaseServices,
     private readonly hashingService: IHashingService,
-  ) {
-    console.log('UserUseCases initialized');
-    // console.log(databaseService.sql.user.count());
-  }
+  ) {}
 
   /**
    * Retrieves all users.
@@ -138,7 +135,6 @@ export class UserUseCases {
    * @throws NotAcceptableException if the email or username already exists.
    */
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<any> {
-    console.log('updateUser');
     await this.commonConflictValidation(updateUserDto);
     const updatedUser = this.databaseService.sql.user.update(
       id,
@@ -147,7 +143,6 @@ export class UserUseCases {
         hideKeysFromReturn: ['password', '__v'],
       },
     );
-    console.log('updatedUser', updatedUser);
     if (!updatedUser) {
       throw new BadRequestException({ message: 'User not updated' });
     }

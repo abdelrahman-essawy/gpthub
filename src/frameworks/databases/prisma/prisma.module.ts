@@ -13,10 +13,7 @@ import { DatabaseServices } from 'src/core/abstracts/services/database-service.a
 export class PrismaDatabaseServiceModule {
   prisma: PrismaClient;
   constructor(private readonly prisma2: PrismaClient) {
-    console.log('PrismaDatabaseServiceModule initialized');
     this.prisma = prisma2;
   }
-  async onApplicationBootstrap() {
-    console.log(await this.prisma.user.count());
-  }
+  async onApplicationBootstrap() {}
 }

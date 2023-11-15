@@ -11,19 +11,18 @@ import { IUserRepository } from 'src/core/abstracts/repositories/user-repository
 
 @Injectable()
 export class MongoDatabaseService
-  implements DatabaseServices, OnApplicationBootstrap {
+  implements DatabaseServices, OnApplicationBootstrap
+{
   nosql?: IMongoDatabaseService;
 
   constructor(
     @InjectModel(User.name)
     private readonly userRepositoryModel: Model<UserDocument>,
-  ) { }
+  ) {}
 
   onApplicationBootstrap() {
     this.nosql = {
       user: new MongoUserRepository(this.userRepositoryModel),
     };
-    // console.log('MongoDatabaseService.onApplicationBootstrap()');
-    // console.log(this.nosql.user.count());
   }
 }

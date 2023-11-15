@@ -8,7 +8,8 @@ import { UserPrismaDocument } from '../model/user.model';
 
 export class PrismaUserRepository
   extends PrismaRepository<PrismaClient['user']>
-  implements IUserRepository {
+  implements IUserRepository
+{
   constructor(repository: PrismaClient['user']) {
     super(repository);
   }
@@ -23,7 +24,6 @@ export class PrismaUserRepository
   }
 
   async findByEmail(email: string, options: OptionsForFind = {}) {
-    console.log('findByEmail');
     return this.repository.findUnique({
       where: {
         email,
