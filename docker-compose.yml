@@ -1,38 +1,82 @@
 version: '3.8'
+#
+# services:
+#   mongodb:
+#     image: mongo:jammy
+#     restart: always
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: admin
+#       MONGO_INITDB_ROOT_PASSWORD: pass
+#       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+#
+#     # volumes:
+#     # - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
+#     ports:
+#       - 27017:27017
+#       - 9229:9229
+#
+#   postgresql:
+#     image: postgres:alpine
+#     restart: always
+#     environment:
+#       POSTGRES_USER: ${POSTGRES_USER}
+#       POSTGRES_DB: ${POSTGRES_DB}
+#       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#
 
 services:
-  mongodb:
-    image: mongo
+  postgres:
+    image: postgres:15.3-alpine
     restart: always
-    container_name: this
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=pass
-    volumes:
-      - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
+      # You'll notice the DATABASE_URL variable in the docker-compose.yml file is the same as the DATABASE_URL variable in the .env file - except the host has been updated to postgres instead of localhost.
+      # This will prevent you from getting the error: Error: Can't reach database server at localhost:5432
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${POSTGRES_SCHEMA}
+      # volumes:
+      #   - postgres:/var/lib/postgresql/data
+      #     networks:
+      #       - nestjs
+      #
+      #
+      #   api:
+      #     build:
+      #       dockerfile: Dockerfile
+      #       context: .
+      #       # Only will build development stage from our dockerfile
+      #       target: development
+      #     volumes:
+      #       - .:/usr/src/app
+      #     env_file:
+      #       - .env
+      #     environment:
+      #       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${POSTGRES_SCHEMA}
+      #     # Run a command against the development stage of the image
+      #     command: npm run start:dev
+      #     ports:
+      #       - 3000:3000
+      #     depends_on:
+      #       - postgres
+      # volumes:
+      #   postgres:
+      #     name: nestjs-postgres
+      #
+      # networks:
+      #   nestjs:
+      #
+  mongodb:
+    image: mongo:jammy
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASS}
+      MONGO_INITDB_DATABASE: ${MONGODB_DB}
+
+    # volumes:
+    # - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
     ports:
       - 27017:27017
       - 9229:9229
-
-  mongo-express:
-    image: mongo-express
-    restart: always
-    container_name: those
-    ports:
-      - 8111:8081
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
-  postgres:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_DB: test
-      POSTGRES_PASSWORD: pass
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
