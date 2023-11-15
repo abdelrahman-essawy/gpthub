@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import {
   IsEmail,
@@ -77,7 +77,9 @@ export class CreateUserDto {
   }
 }
 
-export class UpdateUserDto extends PartialType(CreateUserDto) { }
+export class UpdateUserDto extends PartialType(
+  OmitType(CreateUserDto, ['password', 'email']),
+) { }
 
 export class AuthenticateUserDto extends PickType(CreateUserDto, ['password']) {
   @ApiProperty({

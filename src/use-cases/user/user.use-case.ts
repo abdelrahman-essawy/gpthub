@@ -33,12 +33,12 @@ export class UserUseCases {
         });
       }
 
-      if (
-        userDto.email &&
-        (await this.databaseService.sql.user.isEmailExists(userDto.email))
-      ) {
-        throw new ConflictException({ message: 'Email already exists' });
-      }
+      // if (
+      //   userDto.email &&
+      //   (await this.databaseService.sql.user.isEmailExists(userDto.email))
+      // ) {
+      //   throw new ConflictException({ message: 'Email already exists' });
+      // }
       // if (userDto.password) {
       //   userDto.password = await this.hashingService.hash(userDto.password);
       // }
