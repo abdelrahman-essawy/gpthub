@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import {
   IsEmail,
@@ -8,6 +8,7 @@ import {
   IsStrongPassword,
   MaxLength,
   MinLength,
+  isNotEmpty,
 } from 'class-validator';
 import { User } from '../entities/user.entity';
 
@@ -76,7 +77,9 @@ export class CreateUserDto {
   }
 }
 
-export class UpdateUserDto extends PartialType(CreateUserDto) { }
+export class UpdateUserDto extends PartialType(
+  OmitType(CreateUserDto, ['password', 'email']),
+) { }
 
 export class AuthenticateUserDto extends PickType(CreateUserDto, ['password']) {
   @ApiProperty({
@@ -86,4 +89,32 @@ export class AuthenticateUserDto extends PickType(CreateUserDto, ['password']) {
   @IsNotEmpty()
   @IsString()
   usernameOrEmail: string;
+}
+
+export class UpdatePasswordDto {
+  @ApiProperty({
+    example: 'P@ssw0rd',
+    description: 'The old password of the user',
+  })
+  @IsNotEmpty()
+  oldPassword: string;
+
+  @ApiProperty({
+    example: 'newP@ssw0rd',
+    description: 'The new password of the user',
+  })
+  @IsStrongPassword(
+    {
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 0,
+    },
+    {
+      message:
+        'Password must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, and 1 number',
+    },
+  )
+  newPassword: string;
 }

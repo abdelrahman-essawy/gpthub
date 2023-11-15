@@ -33,12 +33,12 @@ export class UserUseCases {
         });
       }
 
-      if (
-        userDto.email &&
-        (await this.databaseService.sql.user.isEmailExists(userDto.email))
-      ) {
-        throw new ConflictException({ message: 'Email already exists' });
-      }
+      // if (
+      //   userDto.email &&
+      //   (await this.databaseService.sql.user.isEmailExists(userDto.email))
+      // ) {
+      //   throw new ConflictException({ message: 'Email already exists' });
+      // }
       // if (userDto.password) {
       //   userDto.password = await this.hashingService.hash(userDto.password);
       // }
@@ -88,7 +88,10 @@ export class UserUseCases {
    */
   async register(createUserDto: CreateUserDto): Promise<any> {
     await this.commonConflictValidation(createUserDto);
-    const user = this.databaseService.sql.user.create(createUserDto);
+    const user = this.databaseService.sql.user.create({
+      ...createUserDto,
+      password: await this.hashingService.hash(createUserDto.password),
+    });
 
     if (!user) {
       throw new BadRequestException({ message: 'User not created' });
@@ -209,4 +212,43 @@ export class UserUseCases {
   //   // Assuming there is a method 'getActiveUsers' in the databaseService.
   //   return this.databaseService.users.getActiveUsers();
   // }
+  //
+  //
+  /**
+   * Change User Password
+   * @param id - The ID of the user to update.
+   * @param oldPassword - Old Password
+   * @param newPassword - New Password
+   * @returns A Promise indicating successful update.
+   */
+  async changePassword(id: string, oldPassword: string, newPassword: string) {
+    const user = await this.databaseService.sql.user.findOneById(id);
+    const isPasswordMatched = await this.hashingService.compare(
+      oldPassword,
+      user.password,
+    );
+
+    if (!isPasswordMatched) {
+      throw new BadRequestException({ message: 'Invalid credentials' });
+    }
+
+    const isPreviousPassword = await this.hashingService.compare(
+      newPassword,
+      user.password,
+    );
+
+    if (isPreviousPassword) {
+      throw new BadRequestException({
+        message: 'New password cannot be the same as the old password',
+      });
+    }
+
+    await this.databaseService.sql.user.update(id, {
+      password: await this.hashingService.hash(newPassword),
+    });
+
+    return {
+      message: 'Password updated successfully',
+    };
+  }
 }
