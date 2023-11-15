@@ -37,13 +37,13 @@ export class UserController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a user by ID' })
+  @ApiOperation({ summary: 'Update user basic data' })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiBody({
     type: UpdateUserDto,
-    description: 'User data for the update',
+    description: 'User basic data for the update',
   })
-  @ApiResponse({ status: 200, description: 'Updates a user by ID' })
+  @ApiResponse({ status: 200, description: 'Updates user by ID' })
   async update(
     @Param('id') id: string,
     @Body() data: UpdateUserDto,
