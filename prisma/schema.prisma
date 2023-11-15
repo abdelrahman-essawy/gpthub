@@ -18,10 +18,8 @@ model User {
   lastName  String
   password  String
   role      String     @default("user")
-  avatar    String
+  avatar    String?
   rooms     RoomUser[]
-
-  // @@map("users")
 }
 
 model Model {

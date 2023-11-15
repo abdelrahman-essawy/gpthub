@@ -1,21 +1,22 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '@prisma/client';
 import { NotAcceptableException } from '@nestjs/common';
 import { IRepository } from 'src/core/abstracts/repositories/repository.abstract';
 import { OptionsForFind } from 'src/core/abstracts/repositories/user-repository.abstract';
-import { User } from 'src/core/entities/user.entity';
-import { UserPrismaDocument } from './model/user.model';
 import { isUUID } from 'class-validator';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
 /**
  * Prisma repository for handling CRUD operations on a specific entity.
  * @template T - The entity type.
  */
-export class PrismaRepository implements IRepository<UserPrismaDocument> {
-  readonly prisma: PrismaClient;
+export class PrismaRepository<T extends PrismaClient['user']>
+  implements IRepository<T>
+{
+  readonly repository: T;
   readonly populateOnFind: string[];
 
-  private createBooleanObject(hideKeysFromReturn: string[] = []) {
-    const keys = Object.keys(this.prisma.user.fields);
+  createBooleanObject(hideKeysFromReturn: string[] = []) {
+    const keys = Object.keys(this.repository.fields);
     const otherKeys = keys.filter((key) => !hideKeysFromReturn.includes(key));
     return otherKeys.reduce((acc, key) => {
       acc[key] = true;
@@ -29,21 +30,22 @@ export class PrismaRepository implements IRepository<UserPrismaDocument> {
     }
   }
 
-  constructor(prisma: PrismaClient, populateOnFind: string[] = []) {
-    this.prisma = prisma;
+  constructor(repository: any, populateOnFind: string[] = []) {
+    this.repository = repository;
     this.populateOnFind = populateOnFind;
   }
 
   async find(options: OptionsForFind = {}) {
-    return this.prisma.user.findMany({
+    return this.repository.findMany({
       select: this.createBooleanObject(options.hideKeysFromReturn),
     });
   }
 
   async findOneById(id: string, options: OptionsForFind = {}) {
+    console.log('findOneById');
     this.validateId(id);
 
-    return this.prisma.user.findUnique({
+    return this.repository.findUnique({
       where: {
         id,
       },
@@ -51,25 +53,28 @@ export class PrismaRepository implements IRepository<UserPrismaDocument> {
     });
   }
 
-  async create(data: any) {
-    return this.prisma.user.create(data);
-  }
-
-  async update(id: string, item: Partial<User>, options: OptionsForFind) {
-    this.validateId(id);
-
-    return this.prisma.user.update({
-      where: {
-        id,
-      },
-      data: item,
+  async create(data: any): Promise<any> {
+    return this.repository.create({
+      data,
     });
   }
 
-  async delete(id: string) {
+  async update(id: string, data: any, options: OptionsForFind): Promise<any> {
     this.validateId(id);
 
-    return this.prisma.user.delete({
+    return this.repository.update({
+      where: {
+        id,
+      },
+      data,
+      select: this.createBooleanObject(options.hideKeysFromReturn),
+    });
+  }
+
+  async delete(id: string): Promise<any> {
+    this.validateId(id);
+
+    return this.repository.delete({
       where: {
         id,
       },
@@ -78,17 +83,17 @@ export class PrismaRepository implements IRepository<UserPrismaDocument> {
 
   async deleteAll(): Promise<any> {
     // Implement your logic using Prisma queries
-    return this.prisma.user.deleteMany({});
+    return this.repository.deleteMany({});
   }
 
   async count(): Promise<number> {
     // Implement your logic using Prisma queries
-    return this.prisma.user.count();
+    return this.repository.count();
   }
 
-  async search(query: string) {
+  async search(query: string): Promise<any> {
     // Implement your logic using Prisma queries for search
-    return this.prisma.user.findMany({
+    return this.repository.findMany({
       where: {
         OR: [
           // Specify fields for search

@@ -18,7 +18,7 @@ export class PrismaDatabaseService
 
   async onApplicationBootstrap() {
     this.sql = {
-      user: new PrismaUserRepository(this.prisma) as unknown as IUserRepository,
+      user: new PrismaUserRepository(this.prisma.user),
     };
   }
 }

@@ -20,25 +20,28 @@ import { DatabaseServicesModule } from 'src/services/databases/databases-service
 
 @Injectable()
 export class UserUseCases {
-  async commonValidation(userDto: CreateUserDto | UpdateUserDto) {
+  async commonConflictValidation(
+    userDto: CreateUserDto | Partial<UpdateUserDto>,
+  ) {
     try {
       if (
-        await this.databaseService.sql.user.isUsernameExists(userDto.username)
+        userDto.username &&
+        (await this.databaseService.sql.user.isUsernameExists(userDto.username))
       ) {
         throw new ConflictException({
           message: 'Username already exists',
         });
       }
 
-      if (await this.databaseService.sql.user.isEmailExists(userDto.email)) {
+      if (
+        userDto.email &&
+        (await this.databaseService.sql.user.isEmailExists(userDto.email))
+      ) {
         throw new ConflictException({ message: 'Email already exists' });
       }
-
-      if (userDto.password) {
-        userDto.password = await this.hashingService.hash(userDto.password);
-      }
-
-      return userDto;
+      // if (userDto.password) {
+      //   userDto.password = await this.hashingService.hash(userDto.password);
+      // }
     } catch (error) {
       throw new BadRequestException({ message: error.message });
     }
@@ -90,12 +93,13 @@ export class UserUseCases {
    * @throws NotAcceptableException if the email or username already exists.
    */
   async register(createUserDto: CreateUserDto): Promise<any> {
-    const user = this.databaseService.sql.user.create(
-      await this.commonValidation(createUserDto),
-    );
+    await this.commonConflictValidation(createUserDto);
+    const user = this.databaseService.sql.user.create(createUserDto);
+
     if (!user) {
       throw new BadRequestException({ message: 'User not created' });
     }
+
     return {
       message: 'User created successfully',
       token: 'token',
@@ -137,11 +141,23 @@ export class UserUseCases {
    * @throws NotAcceptableException if the email or username already exists.
    */
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<any> {
-    return this.databaseService.sql.user.update(
+    console.log('updateUser');
+    await this.commonConflictValidation(updateUserDto);
+    const updatedUser = this.databaseService.sql.user.update(
       id,
-      await this.commonValidation(updateUserDto),
-      { hideKeysFromReturn: ['password', '__v'] },
+      updateUserDto,
+      {
+        hideKeysFromReturn: ['password', '__v'],
+      },
     );
+    console.log('updatedUser', updatedUser);
+    if (!updatedUser) {
+      throw new BadRequestException({ message: 'User not updated' });
+    }
+    return {
+      message: 'User updated successfully',
+      data: await updatedUser,
+    };
   }
 
   /**

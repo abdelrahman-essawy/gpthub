@@ -1,23 +1,25 @@
-import { UserDocument } from 'src/frameworks/databases/mongo/model/user.model';
+import { UserDocument as MongoDocument } from 'src/frameworks/databases/mongo/model/user.model';
 import { IRepository } from './repository.abstract';
+import { User as PrismaDocument } from '@prisma/client';
 
 export interface OptionsForFind {
   hideKeysFromReturn?: string[];
 }
+type User = PrismaDocument | MongoDocument;
 
 /**
  * Interface for the UserRepository.
  */
-export interface IUserRepository extends IRepository<UserDocument> {
+export interface IUserRepository extends IRepository<User> {
   findByUsername(
     username: string,
     options?: OptionsForFind,
-  ): Promise<UserDocument | null>;
+  ): Promise<Partial<User> | null>;
 
   findByEmail(
     email: string,
     options?: OptionsForFind,
-  ): Promise<UserDocument | null>;
+  ): Promise<Partial<User> | null>;
 
   isEmailExists(email: string): Promise<boolean>;
 
@@ -26,11 +28,5 @@ export interface IUserRepository extends IRepository<UserDocument> {
   findByUsernameOrEmail(
     usernameOrEmail: string,
     options?: OptionsForFind,
-  ): Promise<UserDocument>;
-
-  getUserPasswordByUsername(username: string): Promise<string>;
-
-  getUserPasswordByEmail(email: string): Promise<string>;
-
-  getUserPasswordById(id: string): Promise<string>;
+  ): Promise<Partial<User>>;
 }
