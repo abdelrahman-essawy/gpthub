@@ -35,14 +35,22 @@ export class PrismaRepository<T extends PrismaClient['user']>
     this.populateOnFind = populateOnFind;
   }
 
-  async find(options: OptionsForFind = {}) {
+  async find(
+    options: OptionsForFind = {
+      hideKeysFromReturn: [],
+    },
+  ) {
     return this.repository.findMany({
       select: this.createBooleanObject(options.hideKeysFromReturn),
     });
   }
 
-  async findOneById(id: string, options: OptionsForFind = {}) {
-    console.log('findOneById');
+  async findOneById(
+    id: string,
+    options: OptionsForFind = {
+      hideKeysFromReturn: [],
+    },
+  ) {
     this.validateId(id);
 
     return this.repository.findUnique({
@@ -59,7 +67,13 @@ export class PrismaRepository<T extends PrismaClient['user']>
     });
   }
 
-  async update(id: string, data: any, options: OptionsForFind): Promise<any> {
+  async update(
+    id: string,
+    data: any,
+    options: OptionsForFind = {
+      hideKeysFromReturn: [],
+    },
+  ): Promise<any> {
     this.validateId(id);
 
     return this.repository.update({
