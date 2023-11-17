@@ -1,7 +1,6 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { PrismaUserRepository } from './repositories/user.repository';
-import { IUserRepository } from 'src/core/abstracts/repositories/user-repository.abstract';
 import {
   DatabaseServices,
   IPrismaDatabaseService,
