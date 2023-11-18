@@ -1,82 +1,78 @@
 version: '3.8'
-#
-# services:
-#   mongodb:
-#     image: mongo:jammy
-#     restart: always
-#     environment:
-#       MONGO_INITDB_ROOT_USERNAME: admin
-#       MONGO_INITDB_ROOT_PASSWORD: pass
-#       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
-#
-#     # volumes:
-#     # - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
-#     ports:
-#       - 27017:27017
-#       - 9229:9229
-#
-#   postgresql:
-#     image: postgres:alpine
-#     restart: always
-#     environment:
-#       POSTGRES_USER: ${POSTGRES_USER}
-#       POSTGRES_DB: ${POSTGRES_DB}
-#       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-#
+
+name: gpthub
+networks:
+  GptHub:
+    driver: bridge
 
 services:
   postgres:
-    image: postgres:15.3-alpine
-    restart: always
+    image: postgres:alpine
+    # restart: always
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     env_file:
       - .env
     environment:
-      # You'll notice the DATABASE_URL variable in the docker-compose.yml file is the same as the DATABASE_URL variable in the .env file - except the host has been updated to postgres instead of localhost.
-      # This will prevent you from getting the error: Error: Can't reach database server at localhost:5432
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${POSTGRES_SCHEMA}
-      # volumes:
-      #   - postgres:/var/lib/postgresql/data
-      #     networks:
-      #       - nestjs
-      #
-      #
-      #   api:
-      #     build:
-      #       dockerfile: Dockerfile
-      #       context: .
-      #       # Only will build development stage from our dockerfile
-      #       target: development
-      #     volumes:
-      #       - .:/usr/src/app
-      #     env_file:
-      #       - .env
-      #     environment:
-      #       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${POSTGRES_SCHEMA}
-      #     # Run a command against the development stage of the image
-      #     command: npm run start:dev
-      #     ports:
-      #       - 3000:3000
-      #     depends_on:
-      #       - postgres
-      # volumes:
-      #   postgres:
-      #     name: nestjs-postgres
-      #
-      # networks:
-      #   nestjs:
-      #
+      # POSTGRES_USER: ${POSTGRES_USER}
+      # POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # POSTGRES_DB: ${POSTGRES_DB}
+      DATABASE_URL: ${POSTGRES_URL}
+    networks:
+      - GptHub
+    # volumes:
+    #   - ./postgres_data:/var/lib/postgresql/data/
+    command:
+      ['postgres', '-c', 'log_statement=all', '-c', 'log_destination=stderr']
+
   mongodb:
     image: mongo:jammy
-    restart: always
+    # restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASS}
       MONGO_INITDB_DATABASE: ${MONGODB_DB}
-
+    networks:
+      - GptHub
     # volumes:
-    # - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
+    #   - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
     ports:
       - 27017:27017
       - 9229:9229
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    networks:
+      - GptHub
+    environment:
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+
+  api:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+      target: development
+    # image: gpthub-api
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: ${POSTGRES_URL}
+      MONGODB_URI: ${MONGODB_URI}
+      MONGODB_USER: ${MONGODB_USER}
+      MONGODB_PASS: ${MONGODB_PASS}
+      MONGODB_DB: ${MONGODB_DB}
+    networks:
+      - GptHub
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - postgres
+      - mongodb
+      - kafka
