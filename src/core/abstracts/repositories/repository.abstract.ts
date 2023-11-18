@@ -20,7 +20,7 @@ export abstract class IRepository<T> {
   abstract update(
     id: string,
     data: Partial<T>,
-    options: OptionsForFind,
+    options?: OptionsForFind,
   ): Promise<T>;
 
   /**
@@ -41,7 +41,7 @@ export abstract class IRepository<T> {
    * @param options - Options for dynamic key hiding during find operation.
    * @returns A promise that resolves to an array of entities of type T.
    */
-  abstract find(options: OptionsForFind): Promise<T[]>;
+  abstract find(options?: OptionsForFind): Promise<Partial<T>[]>;
 
   /**
    * Retrieves a single entity by its unique identifier with an option to hide specified keys.
@@ -51,8 +51,8 @@ export abstract class IRepository<T> {
    */
   abstract findOneById(
     id: string,
-    options: { hideKeysFromReturn?: string[] },
-  ): Promise<T | null>;
+    options?: { hideKeysFromReturn?: string[] },
+  ): Promise<Partial<T> | null>;
 
   /**
    * Retrieves the total count of entities of type T.

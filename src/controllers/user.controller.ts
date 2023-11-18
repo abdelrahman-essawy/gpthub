@@ -6,7 +6,7 @@ import {
   ApiTags,
   ApiOperation,
 } from '@nestjs/swagger';
-import { UpdateUserDto } from 'src/core/dtos/user.dto';
+import { UpdatePasswordDto, UpdateUserDto } from 'src/core/dtos/user.dto';
 import { UserUseCases } from 'src/use-cases/user/user.use-case';
 
 @ApiTags('Users')
@@ -37,13 +37,13 @@ export class UserController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a user by ID' })
+  @ApiOperation({ summary: 'Update user basic data' })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiBody({
     type: UpdateUserDto,
-    description: 'User data for the update',
+    description: 'User basic data for the update',
   })
-  @ApiResponse({ status: 200, description: 'Updates a user by ID' })
+  @ApiResponse({ status: 200, description: 'Updates user by ID' })
   async update(
     @Param('id') id: string,
     @Body() data: UpdateUserDto,
@@ -57,5 +57,20 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Deletes a user by ID' })
   async delete(@Param('id') id: string): Promise<any> {
     return await this.userUseCases.deleteUser(id);
+  }
+
+  @Patch(':id/password')
+  @ApiOperation({ summary: 'Change user password by ID' })
+  @ApiParam({ name: 'id', description: 'User ID' })
+  @ApiBody({
+    type: UpdatePasswordDto,
+    description: 'User password data for the update',
+  })
+  async updatePassword(
+    @Param('id') id: string,
+    @Body() UpdatePasswordDto: UpdatePasswordDto,
+  ): Promise<any> {
+    const { oldPassword, newPassword } = UpdatePasswordDto;
+    return await this.userUseCases.changePassword(id, oldPassword, newPassword);
   }
 }
