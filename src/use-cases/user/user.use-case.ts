@@ -4,52 +4,55 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  DatabaseServices,
-  IPrismaDatabaseService,
-} from 'src/core/abstracts/services/database-service.abstract';
+import { DatabaseServices } from 'src/core/abstracts/services/database-service.abstract';
 import { IHashingService } from 'src/core/abstracts/services/hashing.abstract';
 import {
   AuthenticateUserDto,
   CreateUserDto,
   UpdateUserDto,
 } from 'src/core/dtos/user.dto';
-import { UserDocument } from 'src/frameworks/databases/mongo/model/user.model';
-import { PrismaDatabaseService } from 'src/frameworks/databases/prisma/prisma-database.service';
-import { DatabaseServicesModule } from 'src/services/databases/databases-service.module';
 
 @Injectable()
 export class UserUseCases {
   async commonConflictValidation(
-    userDto: CreateUserDto | Partial<UpdateUserDto>,
-  ) {
+    userDto: CreateUserDto | UpdateUserDto | any, // fix any
+  ): Promise<void> {
     try {
-      if (
-        userDto.username &&
-        (await this.databaseService.sql.user.isUsernameExists(userDto.username))
-      ) {
+      const usernamePromise = userDto.username
+        ? this.databaseService.sql.user.isUsernameExists(userDto.username)
+        : Promise.resolve(false);
+
+      const emailPromise = userDto.email
+        ? this.databaseService.sql.user.isEmailExists(userDto.email)
+        : Promise.resolve(false);
+
+      const [isUsernameExists, isEmailExists] = await Promise.all([
+        usernamePromise,
+        emailPromise,
+      ]);
+
+      if (isUsernameExists && isEmailExists) {
         throw new ConflictException({
-          message: 'Username already exists',
+          message: 'Username and email already exists',
         });
       }
 
-      // if (
-      //   userDto.email &&
-      //   (await this.databaseService.sql.user.isEmailExists(userDto.email))
-      // ) {
-      //   throw new ConflictException({ message: 'Email already exists' });
-      // }
-      // if (userDto.password) {
-      //   userDto.password = await this.hashingService.hash(userDto.password);
-      // }
+      if (isUsernameExists) {
+        throw new ConflictException({ message: 'Username already exists' });
+      }
+
+      if (isEmailExists) {
+        throw new ConflictException({ message: 'Email already exists' });
+      }
     } catch (error) {
       throw new BadRequestException({ message: error.message });
     }
   }
+
   constructor(
     private readonly databaseService: DatabaseServices,
     private readonly hashingService: IHashingService,
-  ) {}
+  ) { }
 
   /**
    * Retrieves all users.
