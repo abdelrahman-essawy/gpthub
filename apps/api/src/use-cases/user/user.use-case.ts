@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { DatabaseServices, IHashingService } from 'core/abstracts';
 import { CreateUserDto, UpdateUserDto, AuthenticateUserDto } from 'core/dtos';
+import { ProducerService, TOPICS } from 'libs/shared/kafka';
 
 @Injectable()
 export class UserUseCases {
@@ -47,6 +48,7 @@ export class UserUseCases {
   constructor(
     private readonly databaseService: DatabaseServices,
     private readonly hashingService: IHashingService,
+    private readonly producerService: ProducerService,
   ) { }
 
   /**
@@ -83,7 +85,7 @@ export class UserUseCases {
    */
   async register(createUserDto: CreateUserDto): Promise<any> {
     await this.commonConflictValidation(createUserDto);
-    const user = this.databaseService.sql.user.create({
+    const user = await this.databaseService.sql.user.create({
       ...createUserDto,
       password: await this.hashingService.hash(createUserDto.password),
     });
@@ -91,6 +93,16 @@ export class UserUseCases {
     if (!user) {
       throw new BadRequestException({ message: 'User not created' });
     }
+
+    const test = await this.producerService.produce({
+      topic: 'RESOURCE_PROCESS',
+      messages: [
+        {
+          key: 'user',
+          value: JSON.stringify(user),
+        },
+      ],
+    });
 
     return {
       message: 'User created successfully',
