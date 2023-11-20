@@ -41,6 +41,9 @@ dependencies:
   class-validator:
     specifier: ^0.14.0
     version: 0.14.0
+  kafkajs:
+    specifier: ^2.2.4
+    version: 2.2.4
   mongoose:
     specifier: ^8.0.0
     version: 8.0.0
@@ -4104,6 +4107,11 @@ packages:
     dependencies:
       jwa: 1.4.1
       safe-buffer: 5.2.1
+    dev: false
+
+  /kafkajs@2.2.4:
+    resolution: {integrity: sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==}
+    engines: {node: '>=14.0.0'}
     dev: false
 
   /kareem@2.5.1:

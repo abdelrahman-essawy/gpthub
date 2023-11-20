@@ -3,4 +3,3 @@ Dockerfile
 docker-compose.yml
 pnpm-lock.yaml
 graph.png
-dist
