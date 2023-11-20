@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BcriptModule } from '../../frameworks/hashing/bcript/bcript.module';
+import { BcriptModule } from 'frameworks/hashing';
 
 @Module({
   imports: [BcriptModule],

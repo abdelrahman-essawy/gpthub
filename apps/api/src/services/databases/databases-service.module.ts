@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { DatabaseServices } from '../../core/abstracts/services/database-service.abstract';
-import { MongoDatabaseService } from '../../frameworks/databases/mongo/mongo-database.service';
-import { MongoDatabaseServiceModule } from '../../frameworks/databases/mongo/mongo.module';
-import { PrismaDatabaseService } from '../../frameworks/databases/prisma/prisma-database.service';
-import { PrismaDatabaseServiceModule } from '../../frameworks/databases/prisma/prisma.module';
+import { DatabaseServices } from 'core/abstracts';
+import {
+  PrismaDatabaseServiceModule,
+  MongoDatabaseServiceModule,
+  PrismaDatabaseService,
+  MongoDatabaseService,
+} from 'frameworks/databases';
 
 @Module({
   imports: [PrismaDatabaseServiceModule, MongoDatabaseServiceModule],

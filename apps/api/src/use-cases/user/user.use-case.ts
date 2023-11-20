@@ -4,13 +4,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { DatabaseServices } from '../../core/abstracts/services/database-service.abstract';
-import { IHashingService } from '../../core/abstracts/services/hashing.abstract';
-import {
-  CreateUserDto,
-  UpdateUserDto,
-  AuthenticateUserDto,
-} from '../../core/dtos/user.dto';
+import { DatabaseServices, IHashingService } from 'core/abstracts';
+import { CreateUserDto, UpdateUserDto, AuthenticateUserDto } from 'core/dtos';
 
 @Injectable()
 export class UserUseCases {

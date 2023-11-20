@@ -6,8 +6,8 @@ import {
   ApiTags,
   ApiOperation,
 } from '@nestjs/swagger';
-import { UpdatePasswordDto, UpdateUserDto } from '../core/dtos/user.dto';
 import { UserUseCases } from '../use-cases/user/user.use-case';
+import { UpdatePasswordDto, UpdateUserDto } from 'core/dtos';
 
 @ApiTags('Users')
 @Controller('users')
