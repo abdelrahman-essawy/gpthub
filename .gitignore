@@ -1,6 +1,10 @@
 # compiled output
 /dist
-/node_modules
+node_modules/
+**/node_modules/
+
+# ./apps/api/node_modules/
+# ./apps/resource-processing/node_modules/
 
 .pnpm-store
 dist

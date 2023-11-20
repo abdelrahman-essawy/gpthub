@@ -3,10 +3,10 @@ import { ResourceProcessingService } from './resource-processing.service';
 
 @Controller()
 export class ResourceProcessingController {
-  constructor(private readonly resourceProcessingService: ResourceProcessingService) {}
+  // constructor(private readonly resourceProcessingService: ResourceProcessingService) {}
 
   @Get()
   getHello(): string {
-    return this.resourceProcessingService.getHello();
+    return 'Hello World!';
   }
 }
