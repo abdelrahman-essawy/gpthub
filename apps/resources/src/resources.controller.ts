@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
-import { ResourceProcessingService } from './resources.service';
+import { ResourcesService } from './resources.service';
 
 @Controller()
-export class ResourceProcessingController {
+export class ResourcesController {
   // constructor(private readonly resourceProcessingService: ResourceProcessingService) {}
 
   @Get()

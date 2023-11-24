@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { ResourceProcessingModule } from '../src/resources.module';
+import { ResourcesModule } from '../src/resources.module';
 
 describe('ResourceProcessingController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [ResourceProcessingModule],
+      imports: [ResourcesModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
