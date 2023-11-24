@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ResourceProcessingService } from './resource-processing.service';
+import { ResourceProcessingService } from './resources.service';
 
 @Controller()
 export class ResourceProcessingController {
@@ -7,6 +7,6 @@ export class ResourceProcessingController {
 
   @Get()
   getHello(): string {
-    return 'Hello World!';
+    return 'Hello Worlds!';
   }
 }

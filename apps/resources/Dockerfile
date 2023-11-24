@@ -16,4 +16,4 @@ COPY . .
 # RUN pnpm build
 
 # CMD ["npm", "run" ,"start:dev"]
-CMD ["./apps/resource-processing/bootstrap.dev.sh"]
+CMD ["./apps/resources/bootstrap.dev.sh"]

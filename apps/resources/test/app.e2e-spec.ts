@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { ResourceProcessingModule } from './../src/resource-processing.module';
+import { ResourceProcessingModule } from '../src/resources.module';
 
 describe('ResourceProcessingController (e2e)', () => {
   let app: INestApplication;

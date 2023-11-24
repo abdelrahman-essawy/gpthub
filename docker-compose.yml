@@ -76,11 +76,11 @@ services:
       - postgres
       - mongodb
       - kafka
-      - resource-processing
+      - resources
 
-  resource-processing:
+  resources:
     build:
-      dockerfile: ./apps/resource-processing/Dockerfile
+      dockerfile: ./apps/resources/Dockerfile
       context: .
       target: development
     # image: gpthub-api

@@ -19,13 +19,13 @@
         "tsConfigPath": "apps/api/tsconfig.app.json"
       }
     },
-    "resource-processing": {
+    "resources": {
       "type": "application",
-      "root": "apps/resource-processing",
+      "root": "apps/resources",
       "entryFile": "main",
-      "sourceRoot": "apps/resource-processing/src",
+      "sourceRoot": "apps/resources/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/resource-processing/tsconfig.app.json"
+        "tsConfigPath": "apps/resources/tsconfig.app.json"
       }
     },
     "shared": {

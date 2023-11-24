@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ResourceProcessingController } from './resource-processing.controller';
-import { ResourceProcessingService } from './resource-processing.service';
+import { ResourceProcessingController } from './resources.controller';
+import { ResourceProcessingService } from './resources.service';
 
 describe('ResourceProcessingController', () => {
   let resourceProcessingController: ResourceProcessingController;
@@ -11,7 +11,9 @@ describe('ResourceProcessingController', () => {
       providers: [ResourceProcessingService],
     }).compile();
 
-    resourceProcessingController = app.get<ResourceProcessingController>(ResourceProcessingController);
+    resourceProcessingController = app.get<ResourceProcessingController>(
+      ResourceProcessingController,
+    );
   });
 
   describe('root', () => {

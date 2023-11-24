@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ResourceProcessingModule } from './resource-processing.module';
+import { ResourceProcessingModule } from './resources.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(ResourceProcessingModule);
