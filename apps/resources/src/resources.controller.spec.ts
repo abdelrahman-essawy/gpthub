@@ -1,24 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ResourceProcessingController } from './resources.controller';
-import { ResourceProcessingService } from './resources.service';
+import { ResourcesController } from './resources.controller';
+import { ResourcesService } from './resources.service';
 
 describe('ResourceProcessingController', () => {
-  let resourceProcessingController: ResourceProcessingController;
+  let resources: ResourcesController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [ResourceProcessingController],
-      providers: [ResourceProcessingService],
+      controllers: [ResourcesController],
+      providers: [ResourcesService],
     }).compile();
 
-    resourceProcessingController = app.get<ResourceProcessingController>(
-      ResourceProcessingController,
-    );
+    resources = app.get<ResourcesController>(ResourcesController);
   });
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(resourceProcessingController.getHello()).toBe('Hello World!');
+      expect(resources.getHello()).toBe('Hello World!');
     });
   });
 });

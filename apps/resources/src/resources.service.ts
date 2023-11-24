@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConsumerService } from 'libs/shared/kafka';
 
 @Injectable()
-export class ResourceProcessingService implements OnModuleInit {
+export class ResourcesService implements OnModuleInit {
   constructor(private readonly consumerService: ConsumerService) { }
   async getHello(): Promise<string> {
     // console.log('consumer service: ');

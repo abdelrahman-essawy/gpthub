@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ResourceProcessingController } from './resources.controller';
-import { ResourceProcessingService } from './resources.service';
+import { ResourcesController } from './resources.controller';
+import { ResourcesService } from './resources.service';
 import { KafkaModule } from 'libs/shared/kafka';
 
 @Module({
   imports: [KafkaModule],
-  controllers: [ResourceProcessingController],
-  providers: [ResourceProcessingService],
+  controllers: [ResourcesController],
+  providers: [ResourcesService],
 })
-export class ResourceProcessingModule { }
+export class ResourcesModule { }
