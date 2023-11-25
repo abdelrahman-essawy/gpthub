@@ -1,4 +1,4 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { DatabaseServices, IMongoDatabaseService } from 'core/abstracts';
@@ -6,8 +6,7 @@ import { Resource, ResourceDocument } from './model/resource.model';
 import { MongoResourceRepository } from './repositories/resource.repository';
 
 @Injectable()
-export class MongoDatabaseService
-  implements DatabaseServices, OnApplicationBootstrap {
+export class MongoDatabaseService implements DatabaseServices, OnModuleInit {
   nosql?: IMongoDatabaseService;
 
   constructor(
@@ -17,7 +16,7 @@ export class MongoDatabaseService
     private readonly resourceRepositoryModel: Model<ResourceDocument>,
   ) { }
 
-  onApplicationBootstrap() {
+  onModuleInit() {
     this.nosql = {
       // user: new MongoUserRepository(this.userRepositoryModel),
       resource: new MongoResourceRepository(this.resourceRepositoryModel),

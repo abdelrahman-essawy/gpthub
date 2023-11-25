@@ -13,11 +13,13 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateResourceDto } from 'core/dtos';
+import { ProducerService, TOPICS } from 'libs/shared/kafka';
 
 @ApiTags('Resources')
 @Controller('resources')
 export class ResourcesController {
   // constructor(producer) {}
+  constructor(private readonly producerService: ProducerService) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a resource' })
@@ -31,9 +33,15 @@ export class ResourcesController {
   async create(@Body() data: CreateResourceDto): Promise<any> {
     try {
       // const createdResource = await this.resourceService.createResource(data);
+      const createdResource = await this.producerService.produce(
+        TOPICS.RESOURCE_PROCESS,
+        {
+          value: JSON.stringify(data),
+        },
+      );
       return {
         status: HttpStatus.CREATED,
-        data: 'createdResource',
+        data: createdResource,
         message: 'Resource created successfully',
       };
     } catch (error) {
@@ -53,6 +61,7 @@ export class ResourcesController {
   async getById(@Param('id') id: string): Promise<any> {
     try {
       // const resource = await this.resourceService.getResourceById(id);
+
       return {
         status: HttpStatus.OK,
         data: 'resource',

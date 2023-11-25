@@ -1,25 +1,20 @@
-import { OnModuleInit } from '@nestjs/common';
+import { OnApplicationBootstrap, OnModuleInit } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-import { ConsumerService } from 'libs/shared/kafka';
+import { ConsumerService, TOPICS } from 'libs/shared/kafka';
 
 @Injectable()
-export class ResourcesService implements OnModuleInit {
+export class ResourcesService implements OnApplicationBootstrap {
   constructor(private readonly consumerService: ConsumerService) { }
-  async getHello(): Promise<string> {
-    // console.log('consumer service: ');
-    return 'Hello World!';
-  }
 
-  async onModuleInit() {
-    await this.consumerService.consume(
-      {
-        topics: ['RESOURCE_PROCESS'],
+  async onApplicationBootstrap() {
+    await this.consumerService.consume({
+      topic: { topic: TOPICS.RESOURCE_PROCESS },
+      config: {
+        groupId: 'resource-process',
       },
-      {
-        eachMessage: async ({ topic, partition, message }) => {
-          console.log(message.value.toString());
-        },
+      onMessage: async (message) => {
+        console.log('message: ', message.value.toString());
       },
-    );
+    });
   }
 }

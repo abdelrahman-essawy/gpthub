@@ -13,8 +13,8 @@ import {
     {
       provide: DatabaseServices,
       useFactory(prisma: PrismaDatabaseService, mongo: MongoDatabaseService) {
-        prisma.onApplicationBootstrap();
-        mongo.onApplicationBootstrap();
+        prisma.onModuleInit();
+        mongo.onModuleInit();
         return {
           sql: prisma.sql,
           nosql: mongo.nosql,
@@ -26,7 +26,14 @@ import {
   exports: [
     {
       provide: DatabaseServices,
-      useClass: PrismaDatabaseService,
+      useFactory(prisma: PrismaDatabaseService, mongo: MongoDatabaseService) {
+        prisma.onModuleInit();
+        mongo.onModuleInit();
+        return {
+          sql: prisma.sql,
+          nosql: mongo.nosql,
+        };
+      },
     },
   ],
 })

@@ -1,43 +1,38 @@
-import {
-  Injectable,
-  OnApplicationShutdown,
-  OnModuleInit,
-} from '@nestjs/common';
-import {
-  Consumer,
-  ConsumerRunConfig,
-  ConsumerSubscribeTopics,
-  Kafka,
-} from 'kafkajs';
-import { TOPICS } from './constants';
+import { Injectable, OnApplicationShutdown } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { ConsumerConfig, ConsumerSubscribeTopic, KafkaMessage } from 'kafkajs';
+import { IConsumer } from './consumer.interface';
+import { KafkajsConsumer } from './kafkajs.consumer';
+
+interface KafkajsConsumerOptions {
+  topic: ConsumerSubscribeTopic;
+  config: ConsumerConfig;
+  onMessage: (message: KafkaMessage) => Promise<void>;
+}
 
 @Injectable()
 export class ConsumerService implements OnApplicationShutdown {
-  private readonly kafka = new Kafka({
-    brokers: ['kafka:9092'],
-  });
-  private readonly consumers: Consumer[] = [];
+  private readonly consumers: IConsumer[] = [];
 
-  async consume(
-    topics: ConsumerSubscribeTopics & {
-      topics: (keyof typeof TOPICS)[];
-    },
-    config: ConsumerRunConfig,
-  ) {
-    const consumer = this.kafka.consumer({
-      groupId: 'test-group',
-    });
+  constructor(
+    private readonly configService: ConfigService, // private readonly databaserService: DatabaseService,
+  ) { }
+
+  async consume({ topic, config, onMessage }: KafkajsConsumerOptions) {
+    const consumer = new KafkajsConsumer(
+      topic,
+      // this.databaserService,
+      config,
+      this.configService.get('KAFKA_BROKERS'),
+    );
     await consumer.connect();
-    await consumer.subscribe(topics);
-    await consumer.run(config);
-
-    // collect consumers to close them later
+    await consumer.consume(onMessage);
     this.consumers.push(consumer);
   }
 
-  onApplicationShutdown() {
-    this.consumers.forEach(async (consumer) => {
+  async onApplicationShutdown() {
+    for (const consumer of this.consumers) {
       await consumer.disconnect();
-    });
+    }
   }
 }

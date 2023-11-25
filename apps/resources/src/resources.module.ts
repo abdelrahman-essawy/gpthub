@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ResourcesService } from './resources.service';
 import { KafkaModule } from 'libs/shared/kafka';
 
