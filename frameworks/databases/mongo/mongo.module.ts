@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User, UserSchema } from './model/user.model';
 import { MongoDatabaseService } from './mongo-database.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -13,10 +13,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get('MONGODB_URI'),
-        user: configService.get('MONGODB_USER'),
-        pass: configService.get('MONGODB_PASS'),
-        dbName: configService.get('MONGODB_DB'),
+        uri: configService.get<string>('MONGODB_URI'),
+        user: configService.get<string>('MONGODB_USER'),
+        pass: configService.get<string>('MONGODB_PASS'),
+        dbName: configService.get<string>('MONGODB_DB'),
       }),
     }),
     MongooseModule.forFeature([
