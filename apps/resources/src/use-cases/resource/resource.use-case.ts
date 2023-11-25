@@ -108,16 +108,6 @@ export class ResourcesUseCases {
       throw new BadRequestException({ message: 'Resource not created' });
     }
 
-    const test = await this.producerService.produce({
-      topic: 'RESOURCE_PROCESS',
-      messages: [
-        {
-          key: 'resource',
-          value: JSON.stringify(resource),
-        },
-      ],
-    });
-
     return {
       message: 'Resource created successfully',
       data: resource,
