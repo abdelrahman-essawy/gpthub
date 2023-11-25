@@ -7,17 +7,17 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ResourcesService } from 'apps/resources/src/resources.service';
-import { CreateResourceDto, UpdateResourceDto } from 'core/dtos';
+import { CreateResourceDto } from 'core/dtos';
 
 @ApiTags('Resources')
 @Controller('resources')
 export class ResourcesController {
-  constructor(private readonly resourceService: ResourcesService) { }
+  // constructor(producer) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a resource' })
@@ -60,35 +60,6 @@ export class ResourcesController {
       };
     } catch (error) {
       console.error('Error retrieving resource:', error);
-      throw new HttpException(
-        'Internal Server Error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  @Put(':id')
-  @ApiOperation({ summary: 'Update a resource by ID' })
-  @ApiBody({
-    type: UpdateResourceDto,
-    description: 'Data to update a resource',
-  })
-  @ApiResponse({ status: 200, description: 'Resource updated successfully' })
-  @ApiResponse({ status: 404, description: 'Resource not found' })
-  @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  async update(
-    @Param('id') id: string,
-    @Body() data: UpdateResourceDto,
-  ): Promise<any> {
-    try {
-      // const updatedResource = await this.resourceService.updateResource(id, data);
-      return {
-        status: HttpStatus.OK,
-        data: 'updatedResource',
-        message: 'Resource updated successfully',
-      };
-    } catch (error) {
-      console.error('Error updating resource:', error);
       throw new HttpException(
         'Internal Server Error',
         HttpStatus.INTERNAL_SERVER_ERROR,

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { User, UserSchema } from './model/user.model';
 import { MongoDatabaseService } from './mongo-database.service';
+import { Resource, ResourceSchema } from './model/resource.model';
 
 @Module({
   imports: [
@@ -20,9 +20,13 @@ import { MongoDatabaseService } from './mongo-database.service';
       }),
     }),
     MongooseModule.forFeature([
+      // {
+      //   name: User.name,
+      //   schema: UserSchema,
+      // },
       {
-        name: User.name,
-        schema: UserSchema,
+        name: Resource.name,
+        schema: ResourceSchema,
       },
     ]),
   ],

@@ -1,11 +1,8 @@
 // import { UserDocument as MongoDocument } from '../frameworks/databases/mongo/model/user.model';
 import { UserDocument } from 'frameworks/databases';
-import { IRepository } from './repository.abstract';
+import { IRepository, OptionsForFind } from './repository.abstract';
 import { User as PrismaDocument } from '@prisma/client';
 
-export interface OptionsForFind {
-  hideKeysFromReturn?: string[];
-}
 type User = PrismaDocument | UserDocument; // MongoDocument;
 
 /**
