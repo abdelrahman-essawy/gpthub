@@ -25,6 +25,17 @@ services:
     command:
       ['postgres', '-c', 'log_statement=all', '-c', 'log_destination=stderr']
 
+  postgres-exporter:
+    image: bitnami/postgres-exporter
+    env_file:
+      - .env
+    environment:
+      - DATA_SOURCE_NAME=${POSTGRES_URL}
+    depends_on:
+      - postgres
+    networks:
+      - GptHub
+
   mongodb:
     image: mongo:jammy
     # restart: always
@@ -34,11 +45,20 @@ services:
       MONGO_INITDB_DATABASE: ${MONGODB_DB}
     networks:
       - GptHub
-    # volumes:
-    #   - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
     ports:
       - 27017:27017
       - 9229:9229
+
+  mongodb-exporter:
+    image: bitnami/mongodb-exporter
+    env_file:
+      - .env
+    networks:
+      - GptHub
+    command: ['--mongodb.uri=mongodb://admin:pass@mongodb:27017']
+    ports:
+      # - 17001:17001
+      - 9216:9216
 
   kafka:
     image: 'bitnami/kafka:latest'
@@ -51,6 +71,16 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+
+  kafka-exporter:
+    image: danielqsj/kafka-exporter
+    command: ['--kafka.server=kafka:9092']
+    ports:
+      - 9308:9308
+    networks:
+      - GptHub
+    depends_on:
+      - kafka
 
   api:
     build:
@@ -129,7 +159,7 @@ services:
   #   environment:
   #     ELASTICSEARCH_URL: http://elasticsearch:9200
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:

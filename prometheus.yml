@@ -1,16 +1,20 @@
 global:
-  scrape_interval: 1s
+  scrape_interval: 15s
 
 scrape_configs:
-  - job_name: 'nestjs'
+  - job_name: 'bind'
     static_configs:
-      - targets: ['api:3000', 'resources:3010'] # Adjust ports as needed
+      - targets:
+          - api:3000
+
   - job_name: 'postgres'
     static_configs:
-      - targets: ['postgres:5432']
+      - targets: ['postgres-exporter:9187']
+
   - job_name: 'mongodb'
     static_configs:
-      - targets: ['mongodb:27017']
+      - targets: ['mongodb-exporter:9216']
+
   - job_name: 'kafka'
     static_configs:
-      - targets: ['kafka:9092']
+      - targets: ['kafka-exporter:9308']
