@@ -16,4 +16,4 @@ export class CreateResourceDto {
   uploader: string;
 }
 
-export class UpdateResourceDto extends PartialType(CreateRoomDto) {}
+export class UpdateResourceDto extends PartialType(CreateRoomDto) { }

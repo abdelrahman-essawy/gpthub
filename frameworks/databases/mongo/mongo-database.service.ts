@@ -1,9 +1,9 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from './model/user.model';
 import { Model } from 'mongoose';
-import { MongoUserRepository } from './repositories/user.repository';
 import { DatabaseServices, IMongoDatabaseService } from 'core/abstracts';
+import { Resource, ResourceDocument } from './model/resource.model';
+import { MongoResourceRepository } from './repositories/resource.repository';
 
 @Injectable()
 export class MongoDatabaseService
@@ -11,13 +11,16 @@ export class MongoDatabaseService
   nosql?: IMongoDatabaseService;
 
   constructor(
-    @InjectModel(User.name)
-    private readonly userRepositoryModel: Model<UserDocument>,
+    // @InjectModel(User.name)
+    // private readonly userRepositoryModel: Model<UserDocument>,
+    @InjectModel(Resource.name)
+    private readonly resourceRepositoryModel: Model<ResourceDocument>,
   ) { }
 
   onApplicationBootstrap() {
     this.nosql = {
-      user: new MongoUserRepository(this.userRepositoryModel),
+      // user: new MongoUserRepository(this.userRepositoryModel),
+      resource: new MongoResourceRepository(this.resourceRepositoryModel),
     };
   }
 }

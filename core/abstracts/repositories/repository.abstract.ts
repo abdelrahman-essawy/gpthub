@@ -1,4 +1,6 @@
-import { OptionsForFind } from './user-repository.abstract';
+export interface OptionsForFind {
+  hideKeysFromReturn?: string[];
+}
 
 /**
  * Blueprint abstract class for a generic repository handling CRUD operations for entities of type T.

@@ -11,13 +11,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ResourcesService } from 'apps/resources/src/resources.service';
 import { CreateResourceDto, UpdateResourceDto } from 'core/dtos';
 
 @ApiTags('Resources')
 @Controller('resources')
 export class ResourcesController {
-  constructor(private readonly resourceService: ResourcesService) { }
+  // constructor(producer) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a resource' })

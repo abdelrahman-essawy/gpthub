@@ -1,3 +1,4 @@
+import { IResourceRepository } from '../repositories';
 import { IUserRepository } from '../repositories/user-repository.abstract';
 
 export abstract class DatabaseServices {
@@ -14,5 +15,6 @@ export abstract class IPrismaDatabaseService {
 }
 
 export abstract class IMongoDatabaseService {
-  abstract user: IUserRepository;
+  // abstract user: IUserRepository;
+  abstract resource: IResourceRepository;
 }

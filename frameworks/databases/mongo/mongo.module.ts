@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './model/user.model';
 import { MongoDatabaseService } from './mongo-database.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Resource, ResourceSchema } from './model/resource.model';
 
 @Module({
   imports: [
@@ -20,9 +21,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
     }),
     MongooseModule.forFeature([
+      // {
+      //   name: User.name,
+      //   schema: UserSchema,
+      // },
       {
-        name: User.name,
-        schema: UserSchema,
+        name: Resource.name,
+        schema: ResourceSchema,
       },
     ]),
   ],
