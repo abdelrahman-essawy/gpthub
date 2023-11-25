@@ -11,7 +11,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiResponse } from '@nestjs/swagger';
 import { DatabaseServices } from 'core/abstracts';
-import { CreateResourceDto, UpdateResourceDto } from 'core/dtos';
+import { CreateResourceDto } from 'core/dtos';
 import { ProducerService, TOPICS } from 'libs/shared/kafka';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -132,27 +132,6 @@ export class ResourcesUseCases {
     }
 
     return resource;
-  }
-
-  async updateResource(
-    id: string,
-    updateResourceDto: UpdateResourceDto,
-  ): Promise<any> {
-    // await this.commonConflictValidation(updateResourceDto);
-
-    const updatedResource = this.databaseService.nosql.resource.update(
-      id,
-      updateResourceDto,
-    );
-
-    if (!updatedResource) {
-      throw new BadRequestException({ message: 'Resource not updated' });
-    }
-
-    return {
-      message: 'Resource updated successfully',
-      data: updatedResource,
-    };
   }
 
   async deleteResource(id: string): Promise<any> {

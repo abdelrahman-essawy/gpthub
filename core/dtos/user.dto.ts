@@ -8,7 +8,6 @@ import {
   IsStrongPassword,
   MaxLength,
   MinLength,
-  isNotEmpty,
 } from 'class-validator';
 import { User } from '../entities/user.entity';
 
