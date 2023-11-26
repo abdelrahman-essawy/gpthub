@@ -8,11 +8,12 @@ import {
   HttpStatus,
   NotFoundException,
 } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiResponse } from '@nestjs/swagger';
 import { DatabaseServices } from 'core/abstracts';
 import { CreateResourceDto } from 'core/dtos';
-import { ProducerService, TOPICS } from 'libs/shared/kafka';
+import { ConsumerService, ProducerService, TOPICS } from 'libs/shared/kafka';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
@@ -21,6 +22,7 @@ export class ResourcesUseCases {
   constructor(
     private readonly databaseService: DatabaseServices,
     private readonly producerService: ProducerService,
+    private readonly consumerService: ConsumerService,
   ) { }
 
   // async commonConflictValidation(
