@@ -1,5 +1,12 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+  MinLength,
+  IsEnum,
+  IsOptional,
+} from 'class-validator';
 import { CreateRoomDto } from './room.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Optional } from '@nestjs/common';
@@ -20,7 +27,7 @@ export class CreateResourceDto {
     description: 'The description of the resource',
   })
   @IsString()
-  @Optional()
+  @IsOptional()
   @MaxLength(500)
   description?: string;
 
@@ -39,5 +46,42 @@ export class CreateResourceDto {
   })
   @IsNotEmpty()
   @IsString()
-  uploader: string;
+  uploaderId: string;
+
+  @ApiProperty({
+    example: ['room1', 'room2'],
+    description: 'The rooms associated with the resource',
+    isArray: true,
+    required: false,
+  })
+  @IsOptional()
+  @IsString({ each: true })
+  rooms?: string[];
+
+  @ApiProperty({
+    example: 'file',
+    description: 'The type of the resource',
+    enum: ['file', 'text', 'link'],
+  })
+  @IsNotEmpty()
+  @IsEnum(['file', 'text', 'link'])
+  type: 'file' | 'text' | 'link';
+
+  @ApiProperty({
+    example: 'resource_file.txt',
+    description: 'The filename for file resources',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  filename?: string;
+
+  @ApiProperty({
+    example: 'https://example.com',
+    description: 'The link URL for link resources',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  linkUrl?: string;
 }

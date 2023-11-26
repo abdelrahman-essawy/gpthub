@@ -13,13 +13,16 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateResourceDto } from 'core/dtos';
-import { ProducerService, TOPICS } from 'libs/shared/kafka';
+import { ConsumerService, ProducerService, TOPICS } from 'libs/shared/kafka';
 
 @ApiTags('Resources')
 @Controller('resources')
 export class ResourcesController {
   // constructor(producer) {}
-  constructor(private readonly producerService: ProducerService) { }
+  constructor(
+    private readonly producerService: ProducerService,
+    private readonly consumerService: ConsumerService,
+  ) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a resource' })
@@ -33,17 +36,26 @@ export class ResourcesController {
   async create(@Body() data: CreateResourceDto): Promise<any> {
     try {
       // const createdResource = await this.resourceService.createResource(data);
-      const createdResource = await this.producerService.produce(
-        TOPICS.RESOURCE_PROCESS,
-        {
-          value: JSON.stringify(data),
-        },
-      );
-      return {
-        status: HttpStatus.CREATED,
-        data: createdResource,
-        message: 'Resource created successfully',
-      };
+      await this.producerService.produce(TOPICS.RESOURCES.CREATE, {
+        value: JSON.stringify(data),
+      });
+
+      // return await this.consumerService.consume({
+      //   topic: { topic: TOPICS.RESOURCES.CREATE_RESPONSE },
+      //   config: { groupId: 'resource-process-group' },
+      //   onMessage: async () => { },
+      // });
+
+      // return {
+      //   status: HttpStatus.CREATED,
+      //   data: consumer,
+      //   message: 'Resource created successfully',
+      // };
+      // return {
+      //   status: HttpStatus.CREATED,
+      //   data: createdResource,
+      //   message: 'Resource created successfully',
+      // };
     } catch (error) {
       console.error('Error creating resource:', error);
       throw new HttpException(

@@ -5,7 +5,7 @@ export type ResourceDocument = Resource & Document;
 
 @Schema({ timestamps: true })
 export class Resource {
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   title: string;
 
   @Prop()
