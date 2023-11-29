@@ -173,3 +173,28 @@ services:
       - '3090:3000'
     networks:
       - GptHub
+
+  auth:
+    build:
+      dockerfile: ./apps/auth/Dockerfile
+      context: .
+      target: development
+    # image: gpthub-api
+    env_file:
+      - .env
+    ports:
+      - 3020:3020
+    environment:
+      # DATABASE_URL: ${POSTGRES_URL}
+      MONGODB_URI: ${MONGODB_URI}
+      MONGODB_USER: ${MONGODB_USER}
+      MONGODB_PASS: ${MONGODB_PASS}
+      MONGODB_DB: ${MONGODB_DB}
+    networks:
+      - GptHub
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      # - postgres
+      - mongodb
+      - kafka

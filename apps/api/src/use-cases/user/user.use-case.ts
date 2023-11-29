@@ -78,39 +78,6 @@ export class UserUseCases {
   }
 
   /**
-   * Creates a new user.
-   * @param createUserDto - User data to create a new user.
-   * @returns A Promise resolving to the created user.
-   * @throws NotAcceptableException if the email or username already exists.
-   */
-  async register(createUserDto: CreateUserDto): Promise<any> {
-    await this.commonConflictValidation(createUserDto);
-    const user = await this.databaseService.sql.user.create({
-      ...createUserDto,
-      password: await this.hashingService.hash(createUserDto.password),
-    });
-
-    if (!user) {
-      throw new BadRequestException({ message: 'User not created' });
-    }
-
-    const test = await this.producerService.produce({
-      topic: 'RESOURCE_PROCESS',
-      messages: [
-        {
-          key: 'user',
-          value: JSON.stringify(user),
-        },
-      ],
-    });
-
-    return {
-      message: 'User created successfully',
-      token: 'token',
-    };
-  }
-
-  /**
    * Authenticates a user.
    * @param createUserDto - User data to authenticate a user.
    * @returns A Promise resolving to the authenticated user.

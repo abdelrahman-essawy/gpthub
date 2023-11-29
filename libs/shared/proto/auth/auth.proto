@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package authentication;
+
+// Define the CreateUserRequest message
+message CreateUserRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string avatar = 6;
+}
+
+// Define the UpdateUserRequest message
+message UpdateUserRequest {
+  string first_name = 1;
+  string last_name = 2;
+  string avatar = 3;
+}
+
+// Define the AuthenticateUserRequest message
+message AuthenticateUserRequest {
+  string username_or_email = 1;
+  string password = 2;
+}
+
+// Define the UpdatePasswordRequest message
+message UpdatePasswordRequest {
+  string old_password = 1;
+  string new_password = 2;
+}
+
+// Define the CreateUserResponse message
+message CreateUserResponse {
+  // You can define any response fields here
+}
+
+// Define the UpdateUserResponse message
+message UpdateUserResponse {
+  // You can define any response fields here
+}
+
+// Define the UpdatePasswordResponse message
+message UpdatePasswordResponse {
+  // You can define any response fields here
+}
+
+// Define the AuthenticationService service
+service AuthenticationService {
+  // gRPC method for user registration
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+
+  // gRPC method for updating user information
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+
+  // gRPC method for updating user password
+  rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse);
+}
