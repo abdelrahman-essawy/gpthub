@@ -16,7 +16,8 @@
         "tsConfig": "apps/backend/apps/auth/tsconfig.app.json",
         "assets": ["apps/backend/apps/auth/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/backend/apps/auth/webpack.config.js"
+        "webpackConfig": "apps/backend/apps/auth/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},
@@ -51,6 +52,10 @@
       "options": {
         "jestConfig": "apps/backend/apps/auth/jest.config.ts"
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/backend/apps/auth/Dockerfile . -t auth"
     }
   },
   "tags": []

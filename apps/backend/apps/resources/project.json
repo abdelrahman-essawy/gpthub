@@ -16,7 +16,8 @@
         "tsConfig": "apps/backend/apps/resources/tsconfig.app.json",
         "assets": ["apps/backend/apps/resources/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/backend/apps/resources/webpack.config.js"
+        "webpackConfig": "apps/backend/apps/resources/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},
@@ -51,6 +52,10 @@
       "options": {
         "jestConfig": "apps/backend/apps/resources/jest.config.ts"
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/backend/apps/resources/Dockerfile . -t resources"
     }
   },
   "tags": []
