@@ -1,7 +1,7 @@
 {
-  "name": "backend",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/backend/apps/gateway",
+  "name": "gateway",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/apps/gateway/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -12,12 +12,11 @@
         "target": "node",
         "compiler": "tsc",
         "outputPath": "dist/apps/backend/apps/gateway",
-        "main": "apps/backend/apps/auth/src/main.ts",
-        "tsConfig": "apps/backend/tsconfig.app.json",
+        "main": "apps/backend/apps/gateway/src/main.ts",
+        "tsConfig": "apps/backend/apps/gateway/tsconfig.app.json",
         "assets": ["apps/backend/apps/gateway/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/backend/webpack.config.js",
-        "generatePackageJson": true
+        "webpackConfig": "apps/backend/apps/gateway/webpack.config.js"
       },
       "configurations": {
         "development": {},
@@ -28,14 +27,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "backend:build"
+        "buildTarget": "gateway:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "backend:build:development"
+          "buildTarget": "gateway:build:development"
         },
         "production": {
-          "buildTarget": "backend:build:production"
+          "buildTarget": "gateway:build:production"
         }
       }
     },
@@ -43,14 +42,14 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/backend/**/*.ts"]
+        "lintFilePatterns": ["apps/backend/apps/gateway/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/backend/jest.config.ts"
+        "jestConfig": "apps/backend/apps/gateway/jest.config.ts"
       }
     }
   },
