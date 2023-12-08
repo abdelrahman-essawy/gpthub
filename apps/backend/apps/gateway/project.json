@@ -56,6 +56,14 @@
     "docker-build": {
       "dependsOn": ["build"],
       "command": "docker build -f apps/backend/apps/gateway/Dockerfile . -t gateway"
+    },
+    "docker-run": {
+      "dependsOn": ["docker-build"],
+      "command": "docker run -p 3000:3000 gateway"
+    },
+    "docker-run-dev": {
+
+      "command": "docker-compose down && docker-compose up gateway --build -V -d"
     }
   },
   "tags": []

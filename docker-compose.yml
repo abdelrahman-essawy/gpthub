@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  gateway:
+    container_name: gateway
+    build:
+      dockerfile: apps/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    environment:
+      NODE_ENV: "development"
+      PORT: 3000
+    command:
+      - npx
+      - nx
+      - run
+      - gateway:serve:development
+    restart: on-failure
+  auth:
+    container_name: auth
+    build:
+      dockerfile: apps/Dockerfile
+    ports:
+      - "3010:3010"
+    volumes:
+      - .:/app
+    environment:
+      NODE_ENV: "development"
+      PORT: 3010
+    command:
+      - npx
+      - nx
+      - run
+      - auth:serve:development
+    restart: on-failure

@@ -2,7 +2,9 @@
   "name": "@nx/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build:base-image": "docker build . -t base-image"
+  },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^10.0.2",
