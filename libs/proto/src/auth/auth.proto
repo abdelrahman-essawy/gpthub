@@ -1,24 +1,196 @@
 syntax = "proto3";
 
-package Auth;
-
-service Auth {
-  rpc Login(LoginRequest) returns (LoginOrRegisterResponse) {}
-  rpc Register(RegisterRequest) returns (LoginOrRegisterResponse) {}
+// User message represents user information.
+message User {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string hashed_password = 4;
+  repeated string roles = 5;
+  bool email_verified = 6;
+  // Add any additional user information fields as needed.
 }
 
+// RegistrationRequest message represents a request to register a new user.
+message RegistrationRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  // Add any additional registration fields as needed.
+}
+
+// RegistrationResponse message represents the response to a registration request.
+message RegistrationResponse {
+  string user_id = 1;
+  string message = 2;
+}
+
+// EmailVerificationRequest represents a request to verify a user's email.
+message EmailVerificationRequest {
+  string user_id = 1;
+  string verification_code = 2;
+}
+
+// EmailVerificationResponse represents the response to an email verification request.
+message EmailVerificationResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// LoginRequest message represents a request to authenticate a user.
 message LoginRequest {
-  string email = 1;
+  string username = 1;
   string password = 2;
 }
 
-message LoginOrRegisterResponse {
-  string token = 1;
+// TokenInfo message represents information about a token.
+message TokenInfo {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_at = 3;
 }
 
-message RegisterRequest {
+// LoginResponse message represents the response to a login request.
+message LoginResponse {
+  string user_id = 1;
+  TokenInfo tokens = 2;
+  string message = 3;
+}
+
+// RefreshTokenRequest represents a request to refresh an access token.
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+// RefreshTokenResponse represents the response to a token refresh request.
+message RefreshTokenResponse {
+  TokenInfo tokens = 1;
+  string message = 2;
+}
+
+// MultiFactorAuthRequest represents a request for multi-factor authentication.
+message MultiFactorAuthRequest {
+  string user_id = 1;
+  string factor_code = 2;
+}
+
+// MultiFactorAuthResponse represents the response to a multi-factor authentication request.
+message MultiFactorAuthResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// UserProfile message represents user profile information.
+message UserProfile {
+  string user_id = 1;
+  string username = 2;
+  string email = 3;
+  repeated string roles = 4;
+  // Add any additional user profile information fields as needed.
+}
+
+// UpdateUserProfileRequest message represents a request to update user profile information.
+message UpdateUserProfileRequest {
+  string user_id = 1;
+  string username = 2;
+  string email = 3;
+  repeated string roles = 4;
+  // Add any additional fields for updating user profile as needed.
+}
+
+// UpdateUserProfileResponse message represents the response to a user profile update request.
+message UpdateUserProfileResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// ChangePasswordRequest message represents a request to change the user's password.
+message ChangePasswordRequest {
+  string user_id = 1;
+  string old_password = 2;
+  string new_password = 3;
+}
+
+// ChangePasswordResponse message represents the response to a password change request.
+message ChangePasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// ForgotPasswordRequest message represents a request for password reset.
+message ForgotPasswordRequest {
   string email = 1;
-  string password = 2;
-  string name = 3;
 }
 
+// ForgotPasswordResponse message represents the response to a password reset request.
+message ForgotPasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// ResetPasswordRequest message represents a request to reset the user's password.
+message ResetPasswordRequest {
+  string user_id = 1;
+  string new_password = 2;
+  string reset_code = 3;
+}
+
+// ResetPasswordResponse message represents the response to a password reset request.
+message ResetPasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// RoleBasedAccessRequest message represents a request for role-based access control.
+message RoleBasedAccessRequest {
+  string user_id = 1;
+  string resource_id = 2;
+  string action = 3;
+}
+
+// RoleBasedAccessResponse message represents the response to a role-based access control request.
+message RoleBasedAccessResponse {
+  bool has_access = 1;
+  string message = 2;
+}
+
+// GetUserProfileRequest message represents a request to get user profile using a token.
+message GetUserProfileRequest {
+  string access_token = 1;
+}
+
+// AuthenticationService defines the authentication service.
+service AuthenticationService {
+  // Register method handles user registration.
+  rpc Register(RegistrationRequest) returns (RegistrationResponse);
+
+  // VerifyEmail method initiates the email verification process.
+  rpc VerifyEmail(EmailVerificationRequest) returns (EmailVerificationResponse);
+
+  // Login method handles user authentication and token generation.
+  rpc Login(LoginRequest) returns (LoginResponse);
+
+  // RefreshToken method refreshes an access token using a refresh token.
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+
+  // VerifyMultiFactorAuth method verifies a multi-factor authentication code.
+  rpc VerifyMultiFactorAuth(MultiFactorAuthRequest) returns (MultiFactorAuthResponse);
+
+  // GetUserProfile method retrieves user profile information.
+  rpc GetUserProfile(GetUserProfileRequest) returns (UserProfile);
+
+  // UpdateUserProfile method updates user profile information.
+  rpc UpdateUserProfile(UpdateUserProfileRequest) returns (UpdateUserProfileResponse);
+
+  // ChangePassword method changes the user's password.
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
+
+  // ForgotPassword method initiates the password reset process.
+  rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse);
+
+  // ResetPassword method resets the user's password.
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
+
+  // CheckRoleBasedAccess method checks if the user has access to a resource.
+  rpc CheckRoleBasedAccess(RoleBasedAccessRequest) returns (RoleBasedAccessResponse);
+}

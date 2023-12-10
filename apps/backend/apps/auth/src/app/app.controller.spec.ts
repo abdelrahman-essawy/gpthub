@@ -1,25 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
-describe('AppController', () => {
+describe('AuthController', () => {
   let app: TestingModule;
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService],
+      controllers: [AuthController],
+      providers: [AuthService],
     }).compile();
   });
 
-  describe('getData', () => {
-    it('should return "Hello API"', () => {
-      const appController = app.get<AppController>(AppController);
-      expect(appController.login({
-        email: "test",
-        password: "test"
-      })).toEqual({token:"TOKEN"});
+  describe('Login User', () => {
+    it('should return token', () => {
+      const appController = app.get<AuthController>(AuthController);
+      expect(
+        appController.login({
+          username: 'test',
+          password: 'test',
+        })
+      ).toEqual(
+        expect.objectContaining({
+          token: expect.any(String),
+        })
+      );
     });
   });
 });
