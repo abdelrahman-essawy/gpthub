@@ -70,10 +70,10 @@ echo -e "// Auto-generated index.ts\n" > "${INDEX_FILE}"
 
 # Iterate over each generated file and folder
 while IFS= read -r -d '' GENERATED_FILE; do
-    GENERATED_RELATIVE_PATH="${GENERATED_FILE#${OUT_DIR}/}"
-    GENERATED_PATH="${OUT_DIR}/${GENERATED_RELATIVE_PATH}"
+    GENERATED_RELATIVE_PATH="${GENERATED_FILE#${OUT_DIR}\\}"
+    GENERATED_PATH="${OUT_DIR}\\${GENERATED_RELATIVE_PATH}"
 
-    # Check if it's a TypeScript files
+    # Check if it's a TypeScript file
     if [ -f "${GENERATED_PATH}" ] && [[ "${GENERATED_PATH}" == *.ts ]]; then
         echo -e "export * from './${GENERATED_RELATIVE_PATH%.ts}';" >> "${INDEX_FILE}"
     fi
