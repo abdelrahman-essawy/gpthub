@@ -1,57 +1,69 @@
-#!/usr/bin/env bash
+import 'dart:io';
 
-# Root directory of app
-ROOT_DIR=$(git rev-parse --show-toplevel)
+void main() {
+  // Root directory of app
+  String rootDir = Process.runSync('git', ['rev-parse', '--show-toplevel'])
+      .stdout
+      .trim();
 
-# Directory holding all .proto files
-SRC_DIR="${ROOT_DIR}/libs/core/src/proto/src"
+  // Directory holding all .proto files
+  String srcDir = '$rootDir/libs/core/src/proto/src';
 
-# Directory to write generated code (.dart files)
-OUT_DIR="${ROOT_DIR}/libs/core/src/proto/generated_dart"
+  // Directory to write generated code (.dart files)
+  String outDir = '$rootDir/libs/core/src/proto/generated_dart';
 
-# Clean all existing generated files
-rm -rf "${OUT_DIR}"
-mkdir -p "${OUT_DIR}"
+  // Clean all existing generated files
+  Process.runSync('rm', ['-rf', outDir]);
+  Process.runSync('mkdir', ['-p', outDir]);
 
-# Find all .proto files
-PROTO_FILES=($(find "${SRC_DIR}" -name "*.proto"))
+  // Find all .proto files
+  List<String> protoFiles =
+      Process.runSync('find', [srcDir, '-name', '*.proto'])
+          .stdout
+          .trim()
+          .split('\n')
+          .map((file) => file.trim())
+          .toList();
 
-# Count the total number of .proto files
-TOTAL_FILES=${#PROTO_FILES[@]}
+  // Count the total number of .proto files
+  int totalFiles = protoFiles.length;
 
-# Counter for completed files
-COMPLETED_FILES=0
+  // Counter for completed files
+  int completedFiles = 0;
 
-# Colors for formatting
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+  // Colors for formatting
+  String green = '\x1B[0;32m';
+  String yellow = '\x1B[1;33m';
+  String nc = '\x1B[0m'; // No Color
 
-echo -e "${YELLOW}Generating Dart Files...${NC}"
+  print('${yellow}Generating Dart Files...$nc');
 
-# Start time for measuring elapsed time
-START_TIME=$(date +%s)
+  // Start time for measuring elapsed time
+  int startTime = DateTime.now().millisecondsSinceEpoch;
 
-# Iterate over each .proto file
-for PROTO_FILE in "${PROTO_FILES[@]}"; do
-    FILENAME=$(basename -- "$PROTO_FILE")
-    FILENAME_NOEXT="${FILENAME%.*}"
+  // Iterate over each .proto file
+  for (String protoFile in protoFiles) {
+    String fileName = protoFile.split('/').last;
+    String fileNameNoExt = fileName.split('.').first;
 
-    echo -e "${GREEN}Processing $FILENAME...${NC}"
+    print('${green}Processing $fileName...$nc');
 
-    # Generate code for the current .proto file with various options
-    protoc \
-        --dart_out="${OUT_DIR}" \
-        --proto_path="${SRC_DIR}" \
-        "${PROTO_FILE}"
+    // Generate code for the current .proto file with various options
+    Process.runSync('protoc', [
+      '--dart_out=$outDir',
+      '--proto_path=$srcDir',
+      protoFile,
+    ]);
 
-    # Increment completed files counter
-    ((COMPLETED_FILES++))
-done
+    // Increment completed files counter
+    completedFiles++;
+  }
 
-echo -e "\n${YELLOW}Generation completed for $COMPLETED_FILES out of $TOTAL_FILES files.${NC}"
+  print(
+      '\n${yellow}Generation completed for $completedFiles out of $totalFiles files.$nc');
 
-# Display the time taken
-END_TIME=$(date +%s)
-ELAPSED_TIME=$((END_TIME - START_TIME))
-echo -e "${YELLOW}Time taken: $ELAPSED_TIME seconds.${NC}"
+  // Display the time taken
+  int endTime = DateTime.now().millisecondsSinceEpoch;
+  int elapsedTime = (endTime - startTime) ~/ 1000; // Convert to seconds
+  print('${yellow}Time taken: $elapsedTime seconds.$nc');
+}
