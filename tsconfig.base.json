@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@backend/database": ["apps/backend/libs/database/src/index.ts"]
+      "@backend/database": ["apps/backend/libs/database/src/index.ts"],
+      "@global/proto": ["libs/proto/generated/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,0 +1,29 @@
+{
+  "name": "proto",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/libs/proto/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/backend/libs/proto",
+        "main": "apps/backend/libs/proto/src/index.ts",
+        "tsConfig": "apps/backend/libs/proto/tsconfig.lib.json",
+        "assets": ["apps/backend/libs/proto/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/backend/libs/proto/**/*.ts",
+          "apps/backend/libs/proto/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
