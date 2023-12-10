@@ -1,5 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 
+import { Observable } from 'rxjs';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import { AuthService } from './auth.service';
 import {
   AuthenticationServiceController,
@@ -26,10 +29,9 @@ import {
   UpdateUserProfileRequest,
   UpdateUserProfileResponse,
   UserProfile,
-} from '@global/proto';
-import { Observable } from 'rxjs';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from '../../../../libs/dtos/src/user.dto';
+} from '@core/proto';
+
+import { CreateUserDto } from '@backend/dtos';
 
 @ApiTags('Authentication')
 @AuthenticationServiceControllerMethods()

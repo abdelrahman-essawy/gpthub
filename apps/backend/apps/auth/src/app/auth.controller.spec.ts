@@ -12,16 +12,16 @@ describe('AuthController', () => {
     app = await Test.createTestingModule({
       imports: [DatabaseModule],
       controllers: [AuthController],
-      providers: [AuthService]
+      providers: [AuthService],
     }).compile();
   });
 
   const user = {
     username: faker.internet.userName(),
     email: faker.internet.email(),
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    password: faker.internet.password()
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    password: faker.internet.password(),
   };
 
   describe('Register User', () => {
@@ -32,7 +32,7 @@ describe('AuthController', () => {
       expect(result).toEqual(
         expect.objectContaining({
           message: 'User has been created successfully',
-          userId: expect.any(String)
+          userId: expect.any(String),
         })
       );
     });
@@ -44,11 +44,11 @@ describe('AuthController', () => {
       expect(
         authController.login({
           username: user.username,
-          password: user.password
+          password: user.password,
         })
       ).toEqual(
         expect.objectContaining({
-          token: expect.any(String)
+          token: expect.any(String),
         })
       );
     });

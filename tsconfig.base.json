@@ -21,14 +21,14 @@
       "@backend/database": [
         "apps/backend/libs/database/src/index.ts"
       ],
+      "@backend/dtos": [
+        "apps/backend/libs/dtos/src/index.ts"
+      ],
       "@core": [
         "libs/core/src/index.ts"
       ],
-      "@global/proto": [
-        "libs/proto/generated/index.ts"
-      ],
-      "@backend/dtos": [
-        "apps/backend/libs/dtos/src/index.ts"
+      "@core/proto": [
+        "libs/core/src/proto/generated/index.ts"
       ]
     }
   },

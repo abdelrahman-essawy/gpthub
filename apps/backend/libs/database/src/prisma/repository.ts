@@ -95,17 +95,14 @@ export class PrismaRepository<T extends PrismaClient['user']>
   }
 
   async deleteAll(): Promise<any> {
-    // Implement your logic using Prisma queries
     return this.repository.deleteMany({});
   }
 
   async count(): Promise<number> {
-    // Implement your logic using Prisma queries
     return this.repository.count();
   }
 
   async search(query: string): Promise<any> {
-    // Implement your logic using Prisma queries for search
     return this.repository.findMany({
       where: {
         OR: [

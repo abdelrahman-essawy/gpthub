@@ -18,7 +18,11 @@ import { DatabaseService } from '@core';
   exports: [
     {
       provide: DatabaseService,
-      useClass: PrismaDatabaseService,
+      useFactory(prisma: PrismaDatabaseService) {
+        return {
+          sql: prisma.sql,
+        };
+      },
     },
   ],
 })

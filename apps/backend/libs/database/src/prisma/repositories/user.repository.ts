@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaRepository } from '../repository';
-import { UserPrismaDocument } from '../model';
 import { IUserRepository, OptionsForFind } from '@core';
 
 export class PrismaUserRepository
@@ -13,7 +12,6 @@ export class PrismaUserRepository
 
   async findByUsername(username: string, options: OptionsForFind = {}) {
     return this.repository.findUnique({
-      // @ts-ignore
       where: {
         username,
       },
@@ -23,7 +21,6 @@ export class PrismaUserRepository
 
   async findByEmail(email: string, options: OptionsForFind = {}) {
     return this.repository.findUnique({
-      // @ts-ignore
       where: {
         email,
       },
@@ -39,25 +36,5 @@ export class PrismaUserRepository
   async isUsernameExists(username: string): Promise<boolean> {
     const user = await this.findByUsername(username);
     return user !== null;
-  }
-
-  // @ts-ignore
-  async findByUsernameOrEmail(
-    usernameOrEmail: string,
-    options: OptionsForFind = {}
-  ): Promise<Partial<UserPrismaDocument> | null> {
-    return this.repository.findFirst({
-      where: {
-        OR: [
-          {
-            username: usernameOrEmail,
-          },
-          {
-            email: usernameOrEmail,
-          },
-        ],
-      },
-      select: this.createBooleanObject(options.hideKeysFromReturn),
-    });
   }
 }

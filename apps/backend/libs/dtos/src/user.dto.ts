@@ -8,7 +8,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { RegistrationRequest, User } from '@global/proto';
+import { RegistrationRequest, User } from '@core';
 
 export class CreateUserDto implements RegistrationRequest {
   @ApiProperty({ example: 'john_doe', description: 'The username of the user' })

@@ -23,9 +23,4 @@ export interface IUserRepository extends IRepository<User> {
   isEmailExists(email: string): Promise<boolean>;
 
   isUsernameExists(username: string): Promise<boolean>;
-
-  findByUsernameOrEmail(
-    usernameOrEmail: string,
-    options?: OptionsForFind
-  ): Promise<Partial<User>>;
 }

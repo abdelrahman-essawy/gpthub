@@ -3,9 +3,9 @@ import {
   ConflictException,
   Injectable,
 } from '@nestjs/common';
-import { DatabaseService } from '@core';
+
+import { DatabaseService, RegistrationResponse } from '@core';
 import { CreateUserDto, UpdateUserDto } from '@backend/dtos';
-import { RegistrationResponse } from '@global/proto';
 
 @Injectable()
 export class AuthService {
