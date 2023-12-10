@@ -45,7 +45,7 @@ export interface EmailVerificationResponse {
 
 /** LoginRequest message represents a request to authenticate a user. */
 export interface LoginRequest {
-  username: string;
+  usernameOrEmail: string;
   password: string;
 }
 

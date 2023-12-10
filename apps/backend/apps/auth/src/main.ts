@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AuthModule } from './app/auth.module';
-import { AUTHENTICATION_PACKAGE_NAME } from '@global/proto';
+import { AUTHENTICATION_PACKAGE_NAME } from '@core';
 
 async function bootstrap() {
   // gRPC Microservice
@@ -13,7 +13,7 @@ async function bootstrap() {
       transport: Transport.GRPC,
       options: {
         package: AUTHENTICATION_PACKAGE_NAME,
-        protoPath: 'libs/proto/src/auth/auth.proto',
+        protoPath: 'libs/core/src/proto/src/auth/auth.proto',
       },
     }
   );
@@ -30,6 +30,8 @@ async function bootstrap() {
     .setTitle('Authentication Microservice')
     .setDescription('API documentation for the Authentication microservice')
     .setVersion('1.0')
+    .addBasicAuth()
+    .addBearerAuth()
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(httpApp, swaggerOptions);

@@ -4,27 +4,33 @@ import {
   Injectable,
 } from '@nestjs/common';
 
-import { DatabaseService, RegistrationResponse } from '@core';
-import { CreateUserDto, UpdateUserDto } from '@backend/dtos';
+import { DatabaseService, HashingService, RegistrationResponse } from '@core';
+import {
+  AuthenticateUserDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from '@backend/dtos';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(
+    private readonly databaseService: DatabaseService,
+    private readonly jwtService: JwtService,
+    private readonly hashingService: HashingService
+  ) {}
 
   async commonConflictValidation(
-    userDto: CreateUserDto | UpdateUserDto
+    userDto: CreateUserDto | UpdateUserDto | any // TODOL fix any
   ): Promise<void> {
-    let emailPromise: boolean = false;
     try {
       const usernamePromise = userDto.username
         ? await this.databaseService.sql.user.isUsernameExists(userDto.username)
         : false;
 
-      if (userDto instanceof CreateUserDto) {
-        emailPromise = userDto.email
-          ? await this.databaseService.sql.user.isEmailExists(userDto.email)
-          : false;
-      }
+      const emailPromise = userDto.email
+        ? await this.databaseService.sql.user.isEmailExists(userDto.email)
+        : false;
 
       const [isUsernameExists, isEmailExists] = await Promise.all([
         usernamePromise,
@@ -51,10 +57,50 @@ export class AuthService {
 
   async register(userDto: CreateUserDto): Promise<RegistrationResponse> {
     await this.commonConflictValidation(userDto);
+    userDto.password = await this.hashingService.hash(userDto.password);
     const user = await this.databaseService.sql.user.create(userDto);
     return {
       message: 'User has been created successfully',
       userId: user.id,
+    };
+  }
+
+  /**
+   * Authenticates a user.
+   * @returns A Promise resolving to the authenticated user.
+   * @throws NotAcceptableException if the email or username already exists.
+   * @param credentials
+   */
+  async authenticate(credentials: AuthenticateUserDto): Promise<any> {
+    const user = await this.databaseService.sql.user.findByUsernameOrEmail(
+      credentials.usernameOrEmail,
+      credentials.usernameOrEmail,
+      {
+        hideKeysFromReturn: ['__v'],
+      }
+    );
+
+    if (!user) {
+      throw new BadRequestException({ message: 'Invalid credentials' });
+    }
+
+    const isPasswordMatched = await this.hashingService.compare(
+      credentials.password,
+      user.password
+    );
+
+    if (!isPasswordMatched) {
+      throw new BadRequestException({ message: 'Invalid credentials' });
+    }
+
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      token: this.jwtService.sign({ id: user.id }),
     };
   }
 }

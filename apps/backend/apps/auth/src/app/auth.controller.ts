@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 
 import { Observable } from 'rxjs';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -28,24 +28,28 @@ import {
   RoleBasedAccessResponse,
   UpdateUserProfileRequest,
   UpdateUserProfileResponse,
-  UserProfile,
+  UserProfile
 } from '@core/proto';
 
-import { CreateUserDto } from '@backend/dtos';
+import { AuthenticateUserDto, CreateUserDto } from '@backend/dtos';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Authentication')
 @AuthenticationServiceControllerMethods()
 @Controller()
 export class AuthController implements AuthenticationServiceController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {
+  }
 
   @Post('login')
   @ApiOperation({ summary: 'Login' })
+  @ApiBody({ type: AuthenticateUserDto })
+  @UseGuards(AuthGuard('local'))
   @ApiResponse({ status: 200 })
   login(
-    @Body() request: LoginRequest
+    @Body() user: LoginRequest
   ): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse {
-    return undefined;
+    return this.authService.authenticate(user);
   }
 
   @Post('refresh-token')

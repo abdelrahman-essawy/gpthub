@@ -10,6 +10,34 @@ export class PrismaUserRepository
     super(repository);
   }
 
+  findByUsernameOrEmail(
+    username: string,
+    email: string,
+    options?: OptionsForFind | undefined
+  ): Promise<Partial<{
+    id: string;
+    username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+    role: string;
+  }> | null> {
+    return this.repository.findFirst({
+      where: {
+        OR: [
+          {
+            username,
+          },
+          {
+            email,
+          },
+        ],
+      },
+      select: this.createBooleanObject(options?.hideKeysFromReturn),
+    });
+  }
+
   async findByUsername(username: string, options: OptionsForFind = {}) {
     return this.repository.findUnique({
       where: {

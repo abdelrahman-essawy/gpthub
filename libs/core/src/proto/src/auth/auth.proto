@@ -43,7 +43,7 @@ message EmailVerificationResponse {
 
 // LoginRequest message represents a request to authenticate a user.
 message LoginRequest {
-  string username = 1;
+  string username_or_email = 1;
   string password = 2;
 }
 
