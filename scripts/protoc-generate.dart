@@ -9,30 +9,30 @@ void main() {
   var PROTOC_GEN_DART_PATH = "${ROOT_DIR}/path/to/protoc-gen-dart";
 
   // Directory holding all .proto files
-  var SRC_DIR = "${ROOT_DIR}/path/to/your/proto/files";
+  var SRC_DIR = "${ROOT_DIR}/src";
 
   // Directory to write generated Dart code
-  var OUT_DIR = "${ROOT_DIR}/generated_dart";
+  var OUT_DIR = "${ROOT_DIR}/build/gen";
 
   // Clean all existing generated files
   Process.runSync('rm', ['-rf', OUT_DIR]);
   Process.runSync('mkdir', ['-p', OUT_DIR]);
 
-  // Find all .proto files
-  var protoFiles = Process.runSync('find', [SRC_DIR, '-name', '*.proto']);
-  var PROTO_FILES = protoFiles.stdout.trim().split('\n');
+  // List of .proto files
+  var protoFiles = ["foo.proto", "bar/baz.proto"];
 
-  // Iterate over each .proto file
-  for (var PROTO_FILE in PROTO_FILES) {
-    var fileName = PROTO_FILE.split('/').last;
-    var fileNameNoExt = fileName.split('.').first;
+  // Generate Dart code for the specified .proto files
+  for (var protoFile in protoFiles) {
+    var protoPath = "$SRC_DIR/$protoFile";
+    var outputFilePath = "$OUT_DIR/${protoFile.replaceAll('.proto', '.pb.dart')}";
 
-    // Generate Dart code for the current .proto file
     Process.runSync('protoc', [
       '--dart_out=$OUT_DIR',
       '--proto_path=$SRC_DIR',
-      PROTO_FILE,
+      protoPath,
     ]);
+
+    print("Generated Dart code for $protoPath to $outputFilePath");
   }
 
   print("Dart code generation completed in $OUT_DIR");
