@@ -1,30 +1,47 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
-import { AuthModule } from './app/auth.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { AUTH_PACKAGE_NAME } from '@global/proto';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AuthModule } from './app/auth.module';
+import { AUTHENTICATION_PACKAGE_NAME } from '@global/proto';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+  // gRPC Microservice
+  const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     AuthModule,
     {
       transport: Transport.GRPC,
       options: {
-        package: AUTH_PACKAGE_NAME,
+        package: AUTHENTICATION_PACKAGE_NAME,
         protoPath: 'libs/proto/src/auth/auth.proto',
       },
     }
   );
 
-  await app
-    .listen()
-    .then(() => {
-      Logger.log('Auth microservice is listening...');
-    })
-    .catch((err) => {
-      Logger.error(err);
-    });
+  const httpApp = await NestFactory.create(AuthModule);
+  const globalPrefix = 'api';
+  httpApp.setGlobalPrefix(globalPrefix);
+  httpApp.useGlobalPipes(new ValidationPipe());
+  grpcApp.useGlobalPipes(new ValidationPipe());
+  const port = process.env.PORT || 3001;
+
+  // Enable Swagger for the HTTP server
+  const swaggerOptions = new DocumentBuilder()
+    .setTitle('Authentication Microservice')
+    .setDescription('API documentation for the Authentication microservice')
+    .setVersion('1.0')
+    .build();
+
+  const swaggerDocument = SwaggerModule.createDocument(httpApp, swaggerOptions);
+  SwaggerModule.setup('api', httpApp, swaggerDocument);
+
+  // Start both gRPC and HTTP servers
+  await Promise.all([grpcApp.listen(), await httpApp.listen(port)]);
+  Logger.log(
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+  );
+
+  Logger.log('Auth microservice is running...');
 }
 
 bootstrap();

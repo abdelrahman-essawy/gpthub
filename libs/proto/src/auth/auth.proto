@@ -1,14 +1,17 @@
 syntax = "proto3";
 
+package Authentication;
+
 // User message represents user information.
 message User {
   string id = 1;
   string username = 2;
-  string email = 3;
-  string hashed_password = 4;
-  repeated string roles = 5;
-  bool email_verified = 6;
-  // Add any additional user information fields as needed.
+  string first_name = 3;
+  string last_name = 4;
+  string email = 5;
+  string hashed_password = 6;
+  repeated string roles = 7;
+  bool email_verified = 8;
 }
 
 // RegistrationRequest message represents a request to register a new user.
@@ -16,7 +19,8 @@ message RegistrationRequest {
   string username = 1;
   string email = 2;
   string password = 3;
-  // Add any additional registration fields as needed.
+  string first_name = 4;
+  string last_name = 5;
 }
 
 // RegistrationResponse message represents the response to a registration request.

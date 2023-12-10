@@ -2,16 +2,17 @@
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
-export const protobufPackage = "";
+export const protobufPackage = "Authentication";
 
 /** User message represents user information. */
 export interface User {
   id: string;
   username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   hashedPassword: string;
   roles: string[];
-  /** Add any additional user information fields as needed. */
   emailVerified: boolean;
 }
 
@@ -19,8 +20,9 @@ export interface User {
 export interface RegistrationRequest {
   username: string;
   email: string;
-  /** Add any additional registration fields as needed. */
   password: string;
+  firstName: string;
+  lastName: string;
 }
 
 /** RegistrationResponse message represents the response to a registration request. */
@@ -163,7 +165,7 @@ export interface GetUserProfileRequest {
   accessToken: string;
 }
 
-export const _PACKAGE_NAME = "";
+export const AUTHENTICATION_PACKAGE_NAME = "Authentication";
 
 /** AuthenticationService defines the authentication service. */
 
