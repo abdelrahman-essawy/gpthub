@@ -1,0 +1,10 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+  - name: frontend
+    url: http://localhost:4200
+    routes:
+      - name: frontend
+        paths:
+          - /frontend

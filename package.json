@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "base-image:build": "docker build . -t base-image",
+    "base:build": "docker build . -t base-image",
     "proto:build": "scripts/protoc-generate.sh",
     "prisma:generate": "scripts/prisma/prisma-generate.sh",
     "prisma:migrate": "scripts/prisma/prisma-migrate.sh",
