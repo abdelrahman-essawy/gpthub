@@ -22,6 +22,7 @@ async function bootstrap() {
   const globalPrefix = '/';
   httpApp.setGlobalPrefix(globalPrefix);
   httpApp.useGlobalPipes(new ValidationPipe());
+  httpApp.enableCors();
   grpcApp.useGlobalPipes(new ValidationPipe());
   const port = process.env.PORT || 3001;
 

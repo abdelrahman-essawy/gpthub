@@ -48,11 +48,11 @@ services:
       - users-database
 
   kong:
-    image: kong:latest
+    image: kong
     container_name: kong
     restart: on-failure
     ports:
-      - "8000:8000"
+      - "80:8000"
       - "8443:8443"
       - "8001:8001"
       - "8002:8002"
