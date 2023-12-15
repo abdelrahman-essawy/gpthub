@@ -19,9 +19,10 @@ async function bootstrap() {
   );
 
   const httpApp = await NestFactory.create(AuthModule);
-  const globalPrefix = 'api';
+  const globalPrefix = '/';
   httpApp.setGlobalPrefix(globalPrefix);
   httpApp.useGlobalPipes(new ValidationPipe());
+  httpApp.enableCors();
   grpcApp.useGlobalPipes(new ValidationPipe());
   const port = process.env.PORT || 3001;
 
@@ -35,7 +36,7 @@ async function bootstrap() {
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(httpApp, swaggerOptions);
-  SwaggerModule.setup('api', httpApp, swaggerDocument);
+  SwaggerModule.setup('/', httpApp, swaggerDocument);
 
   // Start both gRPC and HTTP servers
   await Promise.all([grpcApp.listen(), await httpApp.listen(port)]);

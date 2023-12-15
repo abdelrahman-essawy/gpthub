@@ -1,9 +1,4 @@
 version: '3.8'
-networks:
-  GptHub:
-    driver: bridge
-
-
 services:
   #  gateway:
   #    container_name: gateway
@@ -42,29 +37,74 @@ services:
   #    restart: on-failure
   #    depends_on:
   #      - postgres
-  #
-  postgres:
-    image: postgres:alpine
-    # restart: always
-    ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
-    env_file:
-      - .env
-    environment:
-      # POSTGRES_USER: ${POSTGRES_USER}
-      # POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      # POSTGRES_DB: ${POSTGRES_DB}
-      DATABASE_URL: ${USERS_POSTGRES_URL}
-    # volumes:
-    #   - ./postgres_data:/var/lib/postgresql/data/
-    command:
-      [ 'postgres', '-c', 'log_statement=all', '-c', 'log_destination=stderr' ]
 
-  postgres-exporter:
+
+
+  users-database-exporter:
     image: bitnami/postgres-exporter
-    env_file:
-      - .env
     environment:
-      - DATA_SOURCE_NAME=${POSTGRES_URL}
+      - DATA_SOURCE_NAME=${USERS_POSTGRES_URL}
     depends_on:
-      - postgres
+      - users-database
+
+  kong:
+    image: kong
+    container_name: kong
+    restart: on-failure
+    ports:
+      - "80:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8002:8002"
+      - "8444:8444"
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: ${KONG_POSTGRES_HOST}
+      KONG_PG_PORT: ${KONG_POSTGRES_PORT}
+      KONG_PG_USER: ${KONG_POSTGRES_USER}
+      KONG_PG_PASSWORD: ${KONG_POSTGRES_PASSWORD}
+      KONG_PG_DATABASE: ${KONG_POSTGRES_DB}
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
+      KONG_DECLARATIVE_CONFIG: /opt/kong/kong.yaml
+      KONG_ADMIN_GUI_PATH: /admin
+      KONG_ADMIN_GUI_URL: http://localhost:8002/admin
+    command: sh -c "kong migrations bootstrap && kong start"
+    volumes:
+      - ./kong.yaml:/opt/kong/kong.yaml
+      - kong-data:/usr/local/kong/
+    depends_on:
+      - kong-database
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  kong-database:
+    image: postgres:alpine
+    ports:
+      - ${KONG_POSTGRES_PORT}:${DEFAULT_POSTGRES_PORT}
+    expose:
+      - ${KONG_POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${KONG_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${KONG_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${KONG_POSTGRES_DB}
+    volumes:
+      - kong-postgres-data:/var/lib/postgresql/data
+
+  users-database:
+    image: postgres:alpine
+    ports:
+      - ${USERS_POSTGRES_PORT}:${DEFAULT_POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${USERS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${USERS_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${USERS_POSTGRES_DB}
+    volumes:
+      - users-postgres-data:/var/lib/postgresql/data
+volumes:
+  kong-data:
+  kong-postgres-data:
+  users-postgres-data:

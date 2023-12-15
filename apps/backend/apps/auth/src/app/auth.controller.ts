@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 
 import { Observable } from 'rxjs';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -39,6 +39,13 @@ import { AuthGuard } from '@nestjs/passport';
 @Controller()
 export class AuthController implements AuthenticationServiceController {
   constructor(private readonly authService: AuthService) {
+  }
+
+  @Get('health')
+  @ApiOperation({ summary: 'Health Check' })
+  @ApiResponse({ status: 200 })
+  healthCheck(): string {
+    return 'Authentication Service is up and running!';
   }
 
   @Post('login')

@@ -1,15 +1,7 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 
 import { DatabaseService, HashingService, RegistrationResponse } from '@core';
-import {
-  AuthenticateUserDto,
-  CreateUserDto,
-  UpdateUserDto,
-} from '@backend/dtos';
+import { AuthenticateUserDto, CreateUserDto, UpdateUserDto } from '@backend/dtos';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -21,7 +13,7 @@ export class AuthService {
   ) {}
 
   async commonConflictValidation(
-    userDto: CreateUserDto | UpdateUserDto | any // TODOL fix any
+    userDto: CreateUserDto | UpdateUserDto | any // TODO fix any
   ): Promise<void> {
     try {
       const usernamePromise = userDto.username
