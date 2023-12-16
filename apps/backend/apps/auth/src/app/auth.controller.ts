@@ -29,7 +29,7 @@ import {
   UpdateUserProfileRequest,
   UpdateUserProfileResponse,
   UserProfile
-} from '@core/proto';
+} from '@backend/generated';
 
 import { AuthenticateUserDto, CreateUserDto } from '@backend/dtos';
 import { AuthGuard } from '@nestjs/passport';

@@ -1,14 +1,7 @@
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  IsStrongPassword,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
-import { RegistrationRequest, User } from '@core';
+import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, MaxLength, MinLength } from 'class-validator';
+import { RegistrationRequest, User } from '@backend/generated';
 
 export class CreateUserDto implements RegistrationRequest {
   @ApiProperty({ example: 'john_doe', description: 'The username of the user' })
@@ -74,7 +67,6 @@ export class CreateUserDto implements RegistrationRequest {
     Object.assign(this, partial);
   }
 }
-
 export class UpdateUserDto extends PartialType(
   OmitType(CreateUserDto, ['password', 'email'])
 ) {}

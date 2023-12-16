@@ -17,9 +17,19 @@
     "paths": {
       "@backend/database": ["apps/backend/libs/database/src/index.ts"],
       "@backend/dtos": ["apps/backend/libs/dtos/src/index.ts"],
+      "@backend/generated": [
+        "apps/backend/libs/generated-backend/index.ts"
+      ],
       "@backend/hashing": ["apps/backend/libs/hashing/src/index.ts"],
-      "@core": ["libs/core/src/index.ts"],
-      "@core/proto": ["libs/core/src/proto/generated/index.ts"]
+      "@core": [
+        "libs/core/index.ts"
+      ],
+      "@core/proto": [
+        "libs/core/proto/index.ts"
+      ],
+      "@frontend/generated": [
+        "apps/frontend/libs/generated-frontend/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

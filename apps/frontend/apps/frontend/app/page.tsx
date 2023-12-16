@@ -1,4 +1,5 @@
 import styles from './page.module.css';
+import { AuthenticationServiceClient } from '@core';
 
 export default async function Index() {
   /*
@@ -6,6 +7,11 @@ export default async function Index() {
    *
    * Note: The corresponding styles are in the ./index.css file.
    */
+  const authClient =
+    new AuthenticationServiceClient('asd');
+
+  console.log(authClient);
+
   return (
     <div className={styles.page}>
       <div className="wrapper">
