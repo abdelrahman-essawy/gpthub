@@ -3,7 +3,9 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AuthModule } from './app/auth.module';
-import { AUTHENTICATION_PACKAGE_NAME } from '@core';
+import { AUTHENTICATION_PACKAGE_NAME } from '@backend/generated';
+
+// eslint-disable-next-line @nx/enforce-module-boundaries
 
 async function bootstrap() {
   // gRPC Microservice
@@ -13,7 +15,7 @@ async function bootstrap() {
       transport: Transport.GRPC,
       options: {
         package: AUTHENTICATION_PACKAGE_NAME,
-        protoPath: 'libs/core/src/proto/src/auth/auth.proto',
+        protoPath: 'libs/core/proto/src/auth/auth.proto'
       },
     }
   );

@@ -92,7 +92,7 @@ services:
       POSTGRES_PASSWORD: ${KONG_POSTGRES_PASSWORD}
       POSTGRES_DB: ${KONG_POSTGRES_DB}
     volumes:
-      - kong-postgres-data:/var/lib/postgresql/data
+      - kong-postgres-data:/var/proto/postgresql/data
 
   users-database:
     image: postgres:alpine
@@ -103,7 +103,7 @@ services:
       POSTGRES_PASSWORD: ${USERS_POSTGRES_PASSWORD}
       POSTGRES_DB: ${USERS_POSTGRES_DB}
     volumes:
-      - users-postgres-data:/var/lib/postgresql/data
+      - users-postgres-data:/var/proto/postgresql/data
 volumes:
   kong-data:
   kong-postgres-data:

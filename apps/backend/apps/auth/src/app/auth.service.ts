@@ -1,8 +1,9 @@
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 
-import { DatabaseService, HashingService, RegistrationResponse } from '@core';
+import { DatabaseService, HashingService } from '@core';
 import { AuthenticateUserDto, CreateUserDto, UpdateUserDto } from '@backend/dtos';
 import { JwtService } from '@nestjs/jwt';
+import { RegistrationResponse } from '@backend/generated';
 
 @Injectable()
 export class AuthService {

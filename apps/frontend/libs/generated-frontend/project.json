@@ -1,0 +1,31 @@
+{
+  "name": "generated-frontend",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/frontend/libs/generated-frontend/src",
+  "projectType": "library",
+  "implicitDependencies": [
+    "core"
+  ],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm run proto:build:frontend"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/frontend/libs/generated-frontend/package.json"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "scope:frontend"
+  ]
+}

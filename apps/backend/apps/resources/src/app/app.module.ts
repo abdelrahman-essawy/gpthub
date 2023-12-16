@@ -3,10 +3,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import {
-  AUTHENTICATION_PACKAGE_NAME,
-  AUTHENTICATION_SERVICE_NAME,
-} from '@global/proto';
+import { AUTHENTICATION_PACKAGE_NAME, AUTHENTICATION_SERVICE_NAME } from '@global/proto';
 
 @Module({
   imports: [
@@ -16,7 +13,7 @@ import {
         transport: Transport.GRPC,
         options: {
           package: AUTHENTICATION_PACKAGE_NAME,
-          protoPath: 'libs/proto/src/auth/auth.proto',
+          protoPath: 'libs/proto/grpc/auth/auth.proto'
         },
       },
     ]),

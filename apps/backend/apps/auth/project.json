@@ -4,6 +4,36 @@
   "sourceRoot": "apps/backend/apps/auth/src",
   "projectType": "application",
   "targets": {
+    "prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker-compose up users-database -d",
+          "pnpm run prisma:migrate:dev",
+          "pnpm run prisma:generate",
+          "pnpm run proto:build:backend"
+        ],
+        "parallel": false
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "auth:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "auth:build:development"
+        },
+        "production": {
+          "buildTarget": "auth:build:production"
+        }
+      },
+      "dependsOn": [
+        "prepare"
+      ]
+    },
     "build": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
@@ -22,21 +52,6 @@
       "configurations": {
         "development": {},
         "production": {}
-      }
-    },
-    "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "auth:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "auth:build:development"
-        },
-        "production": {
-          "buildTarget": "auth:build:production"
-        }
       }
     },
     "lint": {

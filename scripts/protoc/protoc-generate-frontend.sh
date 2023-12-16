@@ -7,10 +7,10 @@ ROOT_DIR=$(git rev-parse --show-toplevel)
 PROTOC_GEN_TS_PATH="${ROOT_DIR}/node_modules/.bin/protoc-gen-ts_proto"
 
 # Directory holding all .proto files
-SRC_DIR="${ROOT_DIR}/libs/core/src/proto/src"
+SRC_DIR="${ROOT_DIR}/libs/core/proto/src"
 
 # Directory to write generated code (.d.ts files)
-OUT_DIR="${ROOT_DIR}/libs/core/src/proto/generated"
+OUT_DIR="${ROOT_DIR}/apps/frontend/libs/generated-frontend/proto"
 
 # Clean all existing generated files
 rm -rf "${OUT_DIR}"
@@ -44,9 +44,8 @@ for PROTO_FILE in "${PROTO_FILES[@]}"; do
 
     # Generate code for the current .proto file with various options
     protoc \
-        --plugin="${PROTOC_GEN_TS_PATH}" \
-        --ts_proto_out="${OUT_DIR}" \
-        --ts_proto_opt=nestJs=true \
+        --js_out=import_style=commonjs,binary:${OUT_DIR} \
+        --grpc-web_out=import_style=typescript,mode=grpcweb:${OUT_DIR} \
         --proto_path="${SRC_DIR}" \
         "${PROTO_FILE}"
 

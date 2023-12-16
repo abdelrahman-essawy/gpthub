@@ -1,4 +1,4 @@
-// src/prisma.module.ts
+// grpc/prisma.module.ts
 
 import { Module } from '@nestjs/common';
 import { PrismaDatabaseService } from './prisma-database.service';

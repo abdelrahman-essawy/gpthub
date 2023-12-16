@@ -53,6 +53,12 @@ dependencies:
   class-validator:
     specifier: ^0.14.0
     version: 0.14.0
+  grpc-web:
+    specifier: ^1.5.0
+    version: 1.5.0
+  long:
+    specifier: ^5.2.3
+    version: 5.2.3
   next:
     specifier: 14.0.4
     version: 14.0.4(@babel/core@7.23.5)(react-dom@18.2.0)(react@18.2.0)
@@ -68,6 +74,12 @@ dependencies:
   protoc:
     specifier: ^1.1.3
     version: 1.1.3
+  protoc-gen-grpc:
+    specifier: ^2.0.4
+    version: 2.0.4
+  protoc-gen-ts:
+    specifier: ^0.8.7
+    version: 0.8.7
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -7559,6 +7571,10 @@ packages:
       slash: 4.0.0
     dev: true
 
+  /google-protobuf@3.21.2:
+    resolution: { integrity: sha512-3MSOYFO5U9mPGikIYCzK0SaThypfGgS6bHqrUGXG3DPHCrb+txNqeEcns1W0lkGfk0rCyNXm7xB9rMxnCiZOoA== }
+    dev: false
+
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -7570,6 +7586,10 @@ packages:
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
+
+  /grpc-web@1.5.0:
+    resolution: { integrity: sha512-y1tS3BBIoiVSzKTDF3Hm7E8hV2n7YY7pO0Uo7depfWJqKzWE+SKr0jvHNIJsJJYILQlpYShpi/DRJJMbosgDMQ== }
+    dev: false
 
   /handle-thing@2.0.1:
     resolution: {integrity: sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==}
@@ -10486,6 +10506,26 @@ packages:
       '@protobufjs/utf8': 1.1.0
       '@types/node': 18.14.2
       long: 5.2.3
+
+  /protoc-gen-grpc@2.0.4:
+    resolution: { integrity: sha512-QSLpHhuIWEu3GJtCBEk68CD2RsxfW7FB2lksSvyMEeeN5uGkGqa+Ycy2UkNsCVdLc0+KWPy+HAb7EK2vIaLSPA== }
+    engines: { node: '>=8' }
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@mapbox/node-pre-gyp': 1.0.11
+      google-protobuf: 3.21.2
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+    bundledDependencies:
+      - '@mapbox/node-pre-gyp'
+
+  /protoc-gen-ts@0.8.7:
+    resolution: { integrity: sha512-jr4VJey2J9LVYCV7EVyVe53g1VMw28cCmYJhBe5e3YX5wiyiDwgxWxeDf9oTqAe4P1bN/YGAkW2jhlH8LohwiQ== }
+    hasBin: true
+    dev: false
 
   /protoc@1.1.3:
     resolution: {integrity: sha512-Vy4OBxCcF0W38YrZZRFix659gFu8ujIxVDP1SUBK9ELzyeMSBe8m8tYyYlX1PI5j9gse9hWu4c4nzQaHesAf8Q==}
