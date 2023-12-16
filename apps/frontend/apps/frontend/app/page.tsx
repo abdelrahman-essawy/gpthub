@@ -1,9 +1,8 @@
 'use client';
 import styles from './page.module.css';
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
 import { AuthenticationServiceClient } from '../../../libs/generated-frontend/proto/auth/AuthServiceClientPb';
-import { LoginRequest, RegistrationRequest } from '../../../libs/generated-frontend/proto/auth/auth_pb';
-
+import { LoginRequest } from '../../../libs/generated-frontend/proto/auth/auth_pb';
 
 export default function Index() {
   /*
@@ -12,13 +11,13 @@ export default function Index() {
    * Note: The corresponding styles are in the ./index.css file.
    */
 
-
   useEffect(() => {
     async function login() {
-      const authClient =
-        new AuthenticationServiceClient('http://api.localhost:8080');
+      const authClient = new AuthenticationServiceClient(
+        'http://api.localhost:8080'
+      );
       const loginRequest = new LoginRequest();
-      loginRequest.setUsernameOrEmail('admin');
+      loginRequest.setUsernameOrEmail('admins');
       loginRequest.setPassword('admin');
 
       authClient.login(loginRequest, {}, (err, response) => {
@@ -26,31 +25,34 @@ export default function Index() {
       });
     }
 
-    login().then((res) => {
-      console.log(res);
-    });
+    login()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    async function register() {
-      const authClient =
-        new AuthenticationServiceClient('http://api.localhost:8080');
-      const registerRequest = new RegistrationRequest();
-      registerRequest.setUsername('admin');
-      registerRequest.setEmail('admin@admin.admin.com');
-      registerRequest.setPassword('admin');
-      registerRequest.setFirstName('admin');
-      registerRequest.setLastName('admin');
-
-      authClient.register(registerRequest, {}, (err, response) => {
-          console.log(response);
-        }
-      );
-    }
-
-    register().then((res) => {
-      console.log(res);
-    });
-
-
+    // async function register() {
+    //   const authClient = new AuthenticationServiceClient(
+    //     'http://api.localhost:8080'
+    //   );
+    //   const registerRequest = new RegistrationRequest();
+    //   registerRequest.setUsername('admssin');
+    //   registerRequest.setEmail('admin@asdmsin.admin.com');
+    //   registerRequest.setPassword('1');
+    //   registerRequest.setFirstName('admin');
+    //   registerRequest.setLastName('admin');
+    //
+    //   authClient.register(registerRequest, {}, (err, response) => {
+    //     console.log(response);
+    //   });
+    /* }
+ 
+     register().then((res) => {
+       console.log(res);
+     });
+     */
   }, []);
 
   // authClient.login(loginRequest).then((res) => {
@@ -59,7 +61,6 @@ export default function Index() {
   //   console.log(err);
   // }
   // );
-
 
   return (
     <div className={styles.page}>

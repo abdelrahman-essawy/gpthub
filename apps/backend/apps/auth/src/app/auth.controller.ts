@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseFilters,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 
 import { Observable } from 'rxjs';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -28,18 +36,16 @@ import {
   RoleBasedAccessResponse,
   UpdateUserProfileRequest,
   UpdateUserProfileResponse,
-  UserProfile
 } from '@backend/generated';
 
 import { AuthenticateUserDto, CreateUserDto } from '@backend/dtos';
-import { AuthGuard } from '@nestjs/passport';
+import { Http2gRPCExceptionFilter } from '../filters/http2gRPCException.filter';
 
 @ApiTags('Authentication')
 @AuthenticationServiceControllerMethods()
 @Controller()
 export class AuthController implements AuthenticationServiceController {
-  constructor(private readonly authService: AuthService) {
-  }
+  constructor(private readonly authService: AuthService) {}
 
   @Get('health')
   @ApiOperation({ summary: 'Health Check' })
@@ -48,11 +54,10 @@ export class AuthController implements AuthenticationServiceController {
     return 'Authentication Service is up and running!';
   }
 
-
   @Post('login')
   @ApiOperation({ summary: 'Login' })
   @ApiBody({ type: AuthenticateUserDto })
-  @UseGuards(AuthGuard('local'))
+  // @UseGuards(AuthGuard('local'))
   @ApiResponse({ status: 200 })
   login(
     @Body() user: LoginRequest
@@ -75,6 +80,8 @@ export class AuthController implements AuthenticationServiceController {
   @ApiOperation({ summary: 'Register User' })
   @ApiResponse({ status: 201 })
   @ApiBody({ type: CreateUserDto })
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @UseFilters(new Http2gRPCExceptionFilter())
   register(
     @Body() request: RegistrationRequest
   ):

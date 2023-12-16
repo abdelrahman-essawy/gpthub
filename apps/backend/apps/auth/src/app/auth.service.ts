@@ -1,9 +1,15 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 
 import { DatabaseService, HashingService } from '@core';
-import { AuthenticateUserDto, CreateUserDto, UpdateUserDto } from '@backend/dtos';
+import { AuthenticateUserDto, CreateUserDto } from '@backend/dtos';
 import { JwtService } from '@nestjs/jwt';
 import { RegistrationResponse } from '@backend/generated';
+import { RpcException } from '@nestjs/microservices';
+import { status } from '@grpc/grpc-js';
 
 @Injectable()
 export class AuthService {
@@ -74,7 +80,10 @@ export class AuthService {
     );
 
     if (!user) {
-      throw new BadRequestException({ message: 'Invalid credentials' });
+      throw new RpcException({
+        message: 'Invalid credentials',
+        code: status.UNAUTHENTICATED,
+      });
     }
 
     const isPasswordMatched = await this.hashingService.compare(
@@ -83,7 +92,10 @@ export class AuthService {
     );
 
     if (!isPasswordMatched) {
-      throw new BadRequestException({ message: 'Invalid credentials' });
+      throw new RpcException({
+        message: 'Invalid credentials',
+        code: status.UNAUTHENTICATE,
+      });
     }
 
     return {

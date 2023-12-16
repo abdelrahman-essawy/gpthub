@@ -1,24 +1,15 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { MicroserviceOptions } from '@nestjs/microservices';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AuthModule } from './app/auth.module';
-import { AUTHENTICATION_PACKAGE_NAME } from '@backend/generated';
-
-// eslint-disable-next-line @nx/enforce-module-boundaries
+import { grpcClientOptions } from './app/gprc-client-options';
 
 async function bootstrap() {
   // gRPC Microservice
   const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     AuthModule,
-    {
-      transport: Transport.GRPC,
-      options: {
-        url: '0.0.0.0:5000',
-        package: AUTHENTICATION_PACKAGE_NAME,
-        protoPath: 'libs/core/proto/src/auth/auth.proto'
-      },
-    }
+    grpcClientOptions
   );
 
   const httpApp = await NestFactory.create(AuthModule);
@@ -26,7 +17,6 @@ async function bootstrap() {
   httpApp.setGlobalPrefix(globalPrefix);
   httpApp.useGlobalPipes(new ValidationPipe());
   httpApp.enableCors();
-  grpcApp.useGlobalPipes(new ValidationPipe());
   const port = process.env.PORT || 3001;
 
   // Enable Swagger for the HTTP server

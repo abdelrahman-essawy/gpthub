@@ -33,6 +33,8 @@
     "google-protobuf": "^3.21.2",
     "grpc-web": "^1.5.0",
     "long": "^5.2.3",
+    "nestjs-grpc-exceptions": "^0.2.1",
+    "nestjs-grpc-reflection": "^0.2.2",
     "next": "14.0.4",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
