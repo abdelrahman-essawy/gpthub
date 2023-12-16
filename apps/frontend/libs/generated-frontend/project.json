@@ -1,7 +1,7 @@
 {
   "name": "generated-frontend",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/frontend/libs/generated-frontend/src",
+  "sourceRoot": "apps/frontend/libs/generated-frontend/",
   "projectType": "library",
   "implicitDependencies": [
     "core"

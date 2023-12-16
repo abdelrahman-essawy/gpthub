@@ -17,7 +17,7 @@
 
 import * as grpcWeb from 'grpc-web';
 
-import * as auth_auth_pb from '../auth/auth_pb'; // proto import: "auth/auth.proto"
+import * as auth_auth_pb from './auth_pb'; // proto import: "auth/auth.proto"
 
 
 export class AuthenticationServiceClient {
@@ -25,116 +25,6 @@ export class AuthenticationServiceClient {
   hostname_: string;
   credentials_: null | { [index: string]: string; };
   options_: null | { [index: string]: any; };
-  methodDescriptorRegister = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/Register',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.RegistrationRequest,
-    auth_auth_pb.RegistrationResponse,
-    (request: auth_auth_pb.RegistrationRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.RegistrationResponse.deserializeBinary
-  );
-  methodDescriptorVerifyEmail = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/VerifyEmail',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.EmailVerificationRequest,
-    auth_auth_pb.EmailVerificationResponse,
-    (request: auth_auth_pb.EmailVerificationRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.EmailVerificationResponse.deserializeBinary
-  );
-  methodDescriptorLogin = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/Login',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.LoginRequest,
-    auth_auth_pb.LoginResponse,
-    (request: auth_auth_pb.LoginRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.LoginResponse.deserializeBinary
-  );
-  methodDescriptorRefreshToken = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/RefreshToken',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.RefreshTokenRequest,
-    auth_auth_pb.RefreshTokenResponse,
-    (request: auth_auth_pb.RefreshTokenRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.RefreshTokenResponse.deserializeBinary
-  );
-  methodDescriptorVerifyMultiFactorAuth = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/VerifyMultiFactorAuth',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.MultiFactorAuthRequest,
-    auth_auth_pb.MultiFactorAuthResponse,
-    (request: auth_auth_pb.MultiFactorAuthRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.MultiFactorAuthResponse.deserializeBinary
-  );
-  methodDescriptorGetUserProfile = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/GetUserProfile',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.GetUserProfileRequest,
-    auth_auth_pb.UserProfile,
-    (request: auth_auth_pb.GetUserProfileRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.UserProfile.deserializeBinary
-  );
-  methodDescriptorUpdateUserProfile = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/UpdateUserProfile',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.UpdateUserProfileRequest,
-    auth_auth_pb.UpdateUserProfileResponse,
-    (request: auth_auth_pb.UpdateUserProfileRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.UpdateUserProfileResponse.deserializeBinary
-  );
-  methodDescriptorChangePassword = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/ChangePassword',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.ChangePasswordRequest,
-    auth_auth_pb.ChangePasswordResponse,
-    (request: auth_auth_pb.ChangePasswordRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.ChangePasswordResponse.deserializeBinary
-  );
-  methodDescriptorForgotPassword = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/ForgotPassword',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.ForgotPasswordRequest,
-    auth_auth_pb.ForgotPasswordResponse,
-    (request: auth_auth_pb.ForgotPasswordRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.ForgotPasswordResponse.deserializeBinary
-  );
-  methodDescriptorResetPassword = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/ResetPassword',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.ResetPasswordRequest,
-    auth_auth_pb.ResetPasswordResponse,
-    (request: auth_auth_pb.ResetPasswordRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.ResetPasswordResponse.deserializeBinary
-  );
-  methodDescriptorCheckRoleBasedAccess = new grpcWeb.MethodDescriptor(
-    '/Authentication.AuthenticationService/CheckRoleBasedAccess',
-    grpcWeb.MethodType.UNARY,
-    auth_auth_pb.RoleBasedAccessRequest,
-    auth_auth_pb.RoleBasedAccessResponse,
-    (request: auth_auth_pb.RoleBasedAccessRequest) => {
-      return request.serializeBinary();
-    },
-    auth_auth_pb.RoleBasedAccessResponse.deserializeBinary
-  );
 
   constructor(hostname: string,
               credentials?: null | { [index: string]: string; },
@@ -148,6 +38,17 @@ export class AuthenticationServiceClient {
     this.credentials_ = credentials;
     this.options_ = options;
   }
+
+  methodDescriptorRegister = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/Register',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.RegistrationRequest,
+    auth_auth_pb.RegistrationResponse,
+    (request: auth_auth_pb.RegistrationRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.RegistrationResponse.deserializeBinary
+  );
 
   register(
     request: auth_auth_pb.RegistrationRequest,
@@ -181,6 +82,17 @@ export class AuthenticationServiceClient {
       this.methodDescriptorRegister);
   }
 
+  methodDescriptorVerifyEmail = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/VerifyEmail',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.EmailVerificationRequest,
+    auth_auth_pb.EmailVerificationResponse,
+    (request: auth_auth_pb.EmailVerificationRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.EmailVerificationResponse.deserializeBinary
+  );
+
   verifyEmail(
     request: auth_auth_pb.EmailVerificationRequest,
     metadata?: grpcWeb.Metadata | null): Promise<auth_auth_pb.EmailVerificationResponse>;
@@ -212,6 +124,17 @@ export class AuthenticationServiceClient {
       metadata || {},
       this.methodDescriptorVerifyEmail);
   }
+
+  methodDescriptorLogin = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/Login',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.LoginRequest,
+    auth_auth_pb.LoginResponse,
+    (request: auth_auth_pb.LoginRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.LoginResponse.deserializeBinary
+  );
 
   login(
     request: auth_auth_pb.LoginRequest,
@@ -245,6 +168,17 @@ export class AuthenticationServiceClient {
       this.methodDescriptorLogin);
   }
 
+  methodDescriptorRefreshToken = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/RefreshToken',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.RefreshTokenRequest,
+    auth_auth_pb.RefreshTokenResponse,
+    (request: auth_auth_pb.RefreshTokenRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.RefreshTokenResponse.deserializeBinary
+  );
+
   refreshToken(
     request: auth_auth_pb.RefreshTokenRequest,
     metadata?: grpcWeb.Metadata | null): Promise<auth_auth_pb.RefreshTokenResponse>;
@@ -276,6 +210,17 @@ export class AuthenticationServiceClient {
       metadata || {},
       this.methodDescriptorRefreshToken);
   }
+
+  methodDescriptorVerifyMultiFactorAuth = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/VerifyMultiFactorAuth',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.MultiFactorAuthRequest,
+    auth_auth_pb.MultiFactorAuthResponse,
+    (request: auth_auth_pb.MultiFactorAuthRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.MultiFactorAuthResponse.deserializeBinary
+  );
 
   verifyMultiFactorAuth(
     request: auth_auth_pb.MultiFactorAuthRequest,
@@ -309,6 +254,17 @@ export class AuthenticationServiceClient {
       this.methodDescriptorVerifyMultiFactorAuth);
   }
 
+  methodDescriptorGetUserProfile = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/GetUserProfile',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.GetUserProfileRequest,
+    auth_auth_pb.UserProfile,
+    (request: auth_auth_pb.GetUserProfileRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.UserProfile.deserializeBinary
+  );
+
   getUserProfile(
     request: auth_auth_pb.GetUserProfileRequest,
     metadata?: grpcWeb.Metadata | null): Promise<auth_auth_pb.UserProfile>;
@@ -340,6 +296,17 @@ export class AuthenticationServiceClient {
       metadata || {},
       this.methodDescriptorGetUserProfile);
   }
+
+  methodDescriptorUpdateUserProfile = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/UpdateUserProfile',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.UpdateUserProfileRequest,
+    auth_auth_pb.UpdateUserProfileResponse,
+    (request: auth_auth_pb.UpdateUserProfileRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.UpdateUserProfileResponse.deserializeBinary
+  );
 
   updateUserProfile(
     request: auth_auth_pb.UpdateUserProfileRequest,
@@ -373,6 +340,17 @@ export class AuthenticationServiceClient {
       this.methodDescriptorUpdateUserProfile);
   }
 
+  methodDescriptorChangePassword = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/ChangePassword',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.ChangePasswordRequest,
+    auth_auth_pb.ChangePasswordResponse,
+    (request: auth_auth_pb.ChangePasswordRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.ChangePasswordResponse.deserializeBinary
+  );
+
   changePassword(
     request: auth_auth_pb.ChangePasswordRequest,
     metadata?: grpcWeb.Metadata | null): Promise<auth_auth_pb.ChangePasswordResponse>;
@@ -404,6 +382,17 @@ export class AuthenticationServiceClient {
       metadata || {},
       this.methodDescriptorChangePassword);
   }
+
+  methodDescriptorForgotPassword = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/ForgotPassword',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.ForgotPasswordRequest,
+    auth_auth_pb.ForgotPasswordResponse,
+    (request: auth_auth_pb.ForgotPasswordRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.ForgotPasswordResponse.deserializeBinary
+  );
 
   forgotPassword(
     request: auth_auth_pb.ForgotPasswordRequest,
@@ -437,6 +426,17 @@ export class AuthenticationServiceClient {
       this.methodDescriptorForgotPassword);
   }
 
+  methodDescriptorResetPassword = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/ResetPassword',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.ResetPasswordRequest,
+    auth_auth_pb.ResetPasswordResponse,
+    (request: auth_auth_pb.ResetPasswordRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.ResetPasswordResponse.deserializeBinary
+  );
+
   resetPassword(
     request: auth_auth_pb.ResetPasswordRequest,
     metadata?: grpcWeb.Metadata | null): Promise<auth_auth_pb.ResetPasswordResponse>;
@@ -468,6 +468,17 @@ export class AuthenticationServiceClient {
       metadata || {},
       this.methodDescriptorResetPassword);
   }
+
+  methodDescriptorCheckRoleBasedAccess = new grpcWeb.MethodDescriptor(
+    '/Authentication.AuthenticationService/CheckRoleBasedAccess',
+    grpcWeb.MethodType.UNARY,
+    auth_auth_pb.RoleBasedAccessRequest,
+    auth_auth_pb.RoleBasedAccessResponse,
+    (request: auth_auth_pb.RoleBasedAccessRequest) => {
+      return request.serializeBinary();
+    },
+    auth_auth_pb.RoleBasedAccessResponse.deserializeBinary
+  );
 
   checkRoleBasedAccess(
     request: auth_auth_pb.RoleBasedAccessRequest,

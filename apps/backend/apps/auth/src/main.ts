@@ -14,6 +14,7 @@ async function bootstrap() {
     {
       transport: Transport.GRPC,
       options: {
+        url: '0.0.0.0:5000',
         package: AUTHENTICATION_PACKAGE_NAME,
         protoPath: 'libs/core/proto/src/auth/auth.proto'
       },

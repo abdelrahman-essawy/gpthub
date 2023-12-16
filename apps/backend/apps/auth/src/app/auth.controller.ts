@@ -48,6 +48,7 @@ export class AuthController implements AuthenticationServiceController {
     return 'Authentication Service is up and running!';
   }
 
+
   @Post('login')
   @ApiOperation({ summary: 'Login' })
   @ApiBody({ type: AuthenticateUserDto })

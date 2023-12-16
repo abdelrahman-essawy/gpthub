@@ -42,12 +42,10 @@ for PROTO_FILE in "${PROTO_FILES[@]}"; do
 
     echo -e "${GREEN}Processing $FILENAME...${NC}"
 
-    # Generate code for the current .proto file with various options
-    protoc \
-        --js_out=import_style=commonjs,binary:${OUT_DIR} \
-        --grpc-web_out=import_style=typescript,mode=grpcweb:${OUT_DIR} \
-        --proto_path="${SRC_DIR}" \
-        "${PROTO_FILE}"
+    # Use the specific protoc command you provided
+    protoc -I="${SRC_DIR}" "${PROTO_FILE}" \
+        --js_out=import_style=commonjs,binary:"${OUT_DIR}" \
+        --grpc-web_out=import_style=typescript,mode=grpcweb:"${OUT_DIR}"
 
     # Increment completed files counter
     ((COMPLETED_FILES++))
@@ -71,7 +69,6 @@ while IFS= read -r -d '' GENERATED_FILE; do
 done < <(find "${OUT_DIR}" -type f -name "*.ts" -print0)
 
 echo -e "\n${YELLOW}Generated index.ts.${NC}"
-
 
 # Display the time taken
 END_TIME=$(date +%s)

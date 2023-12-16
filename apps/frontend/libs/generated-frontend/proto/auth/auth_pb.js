@@ -554,6 +554,7 @@ if (goog.DEBUG && !COMPILED) {
 proto.Authentication.User.repeatedFields_ = [7];
 
 
+
 if (jspb.Message.GENERATE_TO_OBJECT) {
   /**
    * Creates an object representation of this proto.
@@ -2799,12 +2800,14 @@ proto.Authentication.MultiFactorAuthResponse.prototype.setMessage = function(val
 };
 
 
+
 /**
  * List of repeated fields within this message type.
  * @private {!Array<number>}
  * @const
  */
 proto.Authentication.UserProfile.repeatedFields_ = [4];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -3043,12 +3046,14 @@ proto.Authentication.UserProfile.prototype.clearRolesList = function() {
 };
 
 
+
 /**
  * List of repeated fields within this message type.
  * @private {!Array<number>}
  * @const
  */
 proto.Authentication.UpdateUserProfileRequest.repeatedFields_ = [4];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {

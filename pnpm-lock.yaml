@@ -53,6 +53,9 @@ dependencies:
   class-validator:
     specifier: ^0.14.0
     version: 0.14.0
+  google-protobuf:
+    specifier: ^3.21.2
+    version: 3.21.2
   grpc-web:
     specifier: ^1.5.0
     version: 1.5.0

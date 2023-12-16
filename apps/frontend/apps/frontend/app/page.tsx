@@ -1,16 +1,65 @@
+'use client';
 import styles from './page.module.css';
-import { AuthenticationServiceClient } from '@core';
+import { use, useEffect } from 'react';
+import { AuthenticationServiceClient } from '../../../libs/generated-frontend/proto/auth/AuthServiceClientPb';
+import { LoginRequest, RegistrationRequest } from '../../../libs/generated-frontend/proto/auth/auth_pb';
 
-export default async function Index() {
+
+export default function Index() {
   /*
    * Replace the elements below with your own.
    *
    * Note: The corresponding styles are in the ./index.css file.
    */
-  const authClient =
-    new AuthenticationServiceClient('asd');
 
-  console.log(authClient);
+
+  useEffect(() => {
+    async function login() {
+      const authClient =
+        new AuthenticationServiceClient('http://api.localhost:8080');
+      const loginRequest = new LoginRequest();
+      loginRequest.setUsernameOrEmail('admin');
+      loginRequest.setPassword('admin');
+
+      authClient.login(loginRequest, {}, (err, response) => {
+        console.log(response);
+      });
+    }
+
+    login().then((res) => {
+      console.log(res);
+    });
+
+    async function register() {
+      const authClient =
+        new AuthenticationServiceClient('http://api.localhost:8080');
+      const registerRequest = new RegistrationRequest();
+      registerRequest.setUsername('admin');
+      registerRequest.setEmail('admin@admin.admin.com');
+      registerRequest.setPassword('admin');
+      registerRequest.setFirstName('admin');
+      registerRequest.setLastName('admin');
+
+      authClient.register(registerRequest, {}, (err, response) => {
+          console.log(response);
+        }
+      );
+    }
+
+    register().then((res) => {
+      console.log(res);
+    });
+
+
+  }, []);
+
+  // authClient.login(loginRequest).then((res) => {
+  //   console.log(res);
+  // }).catch((err) => {
+  //   console.log(err);
+  // }
+  // );
+
 
   return (
     <div className={styles.page}>
