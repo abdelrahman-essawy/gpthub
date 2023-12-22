@@ -28,7 +28,7 @@ import {
   RoleBasedAccessResponse,
   UpdateUserProfileRequest,
   UpdateUserProfileResponse,
-  UserProfile
+  UserProfile,
 } from '@core/proto';
 
 import { AuthenticateUserDto, CreateUserDto } from '@backend/dtos';
@@ -38,8 +38,7 @@ import { AuthGuard } from '@nestjs/passport';
 @AuthenticationServiceControllerMethods()
 @Controller()
 export class AuthController implements AuthenticationServiceController {
-  constructor(private readonly authService: AuthService) {
-  }
+  constructor(private readonly authService: AuthService) {}
 
   @Get('health')
   @ApiOperation({ summary: 'Health Check' })

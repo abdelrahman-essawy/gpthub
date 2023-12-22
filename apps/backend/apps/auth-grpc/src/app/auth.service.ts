@@ -1,7 +1,15 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 
 import { DatabaseService, HashingService, RegistrationResponse } from '@core';
-import { AuthenticateUserDto, CreateUserDto, UpdateUserDto } from '@backend/dtos';
+import {
+  AuthenticateUserDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from '@backend/dtos';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
