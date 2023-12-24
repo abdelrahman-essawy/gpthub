@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { PrismaUserRepository } from './repositories';
-import { DatabaseService, IPrismaDatabaseService } from '@core';
+import { DatabaseService, ISQLDatabaseService } from '@core';
 
 @Injectable()
 export class PrismaDatabaseService implements DatabaseService {
+  sql: ISQLDatabaseService = {
+    user: new PrismaUserRepository(this.prisma.user),
+  };
+
   constructor(private readonly prisma: PrismaClient) {
     this.prisma.$connect();
   }
-
-  sql: IPrismaDatabaseService = {
-    user: new PrismaUserRepository(this.prisma.user),
-  };
 
   // async onApplicationBootstrap() {
   //   this.sql = {

@@ -1,7 +1,7 @@
 import { IUserRepository } from '../repositories';
 
 export abstract class DatabaseService {
-  sql?: IPrismaDatabaseService;
+  sql?: ISQLDatabaseService;
   nosql?: IMongoDatabaseService;
   // abstract nosql: MongoDatabaseService;
   // abstract rooms: IRepository<Room>;
@@ -9,7 +9,7 @@ export abstract class DatabaseService {
   // abstract messages: IRepository<Message>;
 }
 
-export abstract class IPrismaDatabaseService {
+export abstract class ISQLDatabaseService {
   abstract user: IUserRepository;
 }
 

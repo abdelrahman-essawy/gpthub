@@ -1,4 +1,3 @@
-export * from './model';
 export * from './repository';
 export * from './prisma.module';
 export * from './repositories';
