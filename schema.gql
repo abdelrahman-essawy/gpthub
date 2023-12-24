@@ -7,7 +7,6 @@ type User {
   firstName: String!
   lastName: String!
   username: String!
-  password: String!
   email: String!
   isEmailConfirmed: String!
   birthday: String!

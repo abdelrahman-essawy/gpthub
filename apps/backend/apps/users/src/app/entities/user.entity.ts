@@ -10,14 +10,17 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { IUser, UserRole } from '@core';
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
 
 @Entity()
 @ObjectType()
+@Directive('@extends')
+@Directive('@key(fields: "id")')
 export class User implements IUser {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
+  @Directive('@external')
   id: string;
   @Field(() => String)
   @Column()
@@ -28,8 +31,7 @@ export class User implements IUser {
   @Field(() => String)
   @Column({ unique: true })
   username: string;
-  @Field(() => String)
-  @Column({ select: true })
+  @Column({ select: false })
   password: string;
   @Field(() => String)
   @Column({ unique: true })

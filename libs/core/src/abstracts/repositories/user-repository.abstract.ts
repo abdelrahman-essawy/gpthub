@@ -1,6 +1,8 @@
 // import { UserDocument as MongoDocument } from '../frameworks/databases/mongo/model/user.model';
 import { IRepository } from './repository.abstract';
-import { User } from '@prisma/client';
+import { User } from '../../../../../apps/backend/apps/users/src/app/entities/user.entity';
+
+// import { User } from '@prisma/client';
 
 export interface OptionsForFind {
   hideKeysFromReturn?: string[];

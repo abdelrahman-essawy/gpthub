@@ -16,8 +16,7 @@
         "tsConfig": "apps/backend/apps/gateway/tsconfig.app.json",
         "assets": ["apps/backend/apps/gateway/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/backend/apps/gateway/webpack.config.js",
-        "generatePackageJson": true
+        "webpackConfig": "apps/backend/apps/gateway/webpack.config.js"
       },
       "configurations": {
         "development": {},
@@ -52,18 +51,6 @@
       "options": {
         "jestConfig": "apps/backend/apps/gateway/jest.config.ts"
       }
-    },
-    "docker-build": {
-      "dependsOn": ["build"],
-      "command": "docker build -f apps/backend/apps/gateway/Dockerfile . -t gateway"
-    },
-    "docker-run": {
-      "dependsOn": ["docker-build"],
-      "command": "docker run -p 3000:3000 gateway"
-    },
-    "docker-run-dev": {
-
-      "command": "docker-compose down && docker-compose up gateway --build -V -d"
     }
   },
   "tags": []

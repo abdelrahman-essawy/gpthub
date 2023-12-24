@@ -30,9 +30,6 @@
       "@core": [
         "libs/core/src/index.ts"
       ]
-      //      "@core/proto": [
-      //        "libs/core/src/proto/generated/index.ts"
-      //      ],
     }
   },
   "exclude": [
