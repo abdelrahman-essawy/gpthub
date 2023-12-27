@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { IntrospectAndCompose } from '@apollo/gateway';
+import * as process from 'process';
 
 @Module({
   imports: [
@@ -24,12 +25,12 @@ import { IntrospectAndCompose } from '@apollo/gateway';
           subgraphs: [
             {
               name: 'users-microservice',
-              url: 'http://localhost:3001/graphql',
+              url: process.env.USERS_MICROSERVICES_URL,
             },
-            // {
-            //   name: 'messages',
-            //   url: 'http://localhost:3002/graphql',
-            // },
+            {
+              name: 'resources-microservice',
+              url: process.env.RESOURCES_MICROSERVICES_UR,
+            ,
           ],
           subgraphHealthCheck: true,
           logger: console,

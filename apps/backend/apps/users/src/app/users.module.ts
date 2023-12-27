@@ -26,5 +26,6 @@ import { User } from './entities/user.entity';
     HashingModule,
   ],
   providers: [UsersResolver, UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}

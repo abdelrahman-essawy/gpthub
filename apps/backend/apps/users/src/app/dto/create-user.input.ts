@@ -9,10 +9,12 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { IUser } from '@core';
+import { IDatabaseEntity } from '../../../../../../../libs/core/src/interfaces/interface';
 
 @InputType()
 @ArgsType()
-export class CreateUserInput {
+export class CreateUserInput implements Omit<IUser, keyof IDatabaseEntity> {
   @Field(() => Date, { nullable: true })
   @IsDate()
   @IsOptional()

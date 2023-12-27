@@ -1,11 +1,11 @@
-import { IEntityInDatabase } from './interface';
+import { IDatabaseEntity } from './interface';
 
-export interface IUser extends IEntityInDatabase {
+export interface IUser extends IDatabaseEntity {
   firstName: string;
   lastName: string;
   username: string;
   email: string;
-  isEmailConfirmed?: boolean;
+  verified?: boolean;
   birthday?: Date;
   role?: UserRole;
   password: string;

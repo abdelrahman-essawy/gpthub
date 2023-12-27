@@ -1,11 +1,12 @@
-export interface Resource {
-  id: string;
-  name: string;
-  description: string;
+import { IDatabaseEntity } from './interface';
+
+export interface IResource extends IDatabaseEntity {
+  title: string;
+  description?: string;
   type: ResourceType;
   format: ResourceFormat;
-  createdAt: Date;
-  updatedAt: Date;
+
+  authorId: string;
 }
 
 export enum ResourceType {

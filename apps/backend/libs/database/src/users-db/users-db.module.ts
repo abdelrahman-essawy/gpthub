@@ -2,10 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import {
-  User,
-  UserSubscriber,
-} from '../../../../apps/users/src/app/entities/user.entity';
+import { User } from '../../../../apps/users/src/app/entities/user.entity';
 import { HashingModule } from '@backend/hashing';
 
 @Module({
@@ -20,7 +17,6 @@ import { HashingModule } from '@backend/hashing';
         url: configService.get<string>('USERS_POSTGRES_URL'),
         keepConnectionAlive: true,
         synchronize: true,
-        subscribers: [UserSubscriber],
       }),
     }),
     HashingModule,

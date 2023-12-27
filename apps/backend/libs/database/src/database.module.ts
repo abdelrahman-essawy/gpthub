@@ -19,7 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           }),
         };
       },
-      inject: [PrismaDatabaseService, ConfigServic],
+      inject: [PrismaDatabaseService, ConfigService],
     },
   ],
   exports: [

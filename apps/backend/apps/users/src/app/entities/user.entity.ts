@@ -3,15 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  EntitySubscriberInterface,
-  EventSubscriber,
-  InsertEvent,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IUser, UserRole } from '@core';
 import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 import * as bcrypt from 'bcrypt';
+import { IDatabaseEntity } from '../../../../../../../libs/core/src/interfaces/interface';
 
 @Entity()
 @ObjectType()
@@ -22,53 +20,52 @@ export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   @Directive('@external')
   id: string;
+
   @Field(() => String)
   @Column()
   firstName: string;
+
   @Field(() => String)
   @Column()
   lastName: string;
+
   @Field(() => String)
   @Column({ unique: true })
   username: string;
+
   @Column({ select: false })
   password: string;
+
   @Field(() => String)
   @Column({ unique: true })
   email: string;
-  @Field(() => String)
+
+  @Field(() => Boolean)
   @Column({ default: false })
-  isEmailConfirmed: boolean;
-  @Field(() => String)
+  verified: boolean;
+
+  @Field(() => Date, { nullable: true })
   @Column({ nullable: true })
   birthday?: Date;
+
   @Field(() => String)
   @Column({ enum: UserRole, default: UserRole.USER, type: 'enum' })
   role?: UserRole;
+
   @Field(() => Date)
   @CreateDateColumn()
   createdAt: Date;
+
   @Field(() => Date)
   @UpdateDateColumn()
   updatedAt: Date;
 
-  constructor(user: IUser) {
+  constructor(user: Omit<IUser, keyof IDatabaseEntity>) {
     Object.assign(this, user);
   }
 
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
-  }
-}
-
-@EventSubscriber()
-export class UserSubscriber implements EntitySubscriberInterface<User> {
-  listenTo() {
-    return User;
-  }
-
-  async beforeInsert(event: InsertEvent<User>) {
-    const { password } = event.entity;
   }
 }
