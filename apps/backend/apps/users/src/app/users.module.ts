@@ -6,7 +6,7 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
-import { UsersDatabaseModule } from '../../../../libs/database/src/users-db/users-db.module';
+import { UsersDatabaseModule } from './users-db/users-db.module';
 import { HashingModule } from '@backend/hashing';
 import { User } from './entities/user.entity';
 

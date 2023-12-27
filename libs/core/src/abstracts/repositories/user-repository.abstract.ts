@@ -1,34 +1,33 @@
-// import { UserDocument as MongoDocument } from '../frameworks/databases/mongo/model/user.model';
+// import { TDocument as MongoDocument } from '../frameworks/databases/mongo/model/T.model';
 import { IRepository } from './repository.abstract';
-import { User } from '../../../../../apps/backend/apps/users/src/app/entities/user.entity';
 
-// import { User } from '@prisma/client';
+// import { T } from '@prisma/client';
 
 export interface OptionsForFind {
   hideKeysFromReturn?: string[];
 }
 
 /**
- * Interface for the UserRepository.
+ * Interface for the TRepository.
  */
-export interface IUserRepository extends IRepository<User> {
-  findByUsername(
-    username: string,
+export interface ITRepository<T> extends IRepository<T> {
+  findByTname(
+    Tname: string,
     options?: OptionsForFind
-  ): Promise<Partial<User> | null>;
+  ): Promise<Partial<T> | null>;
 
   findByEmail(
     email: string,
     options?: OptionsForFind
-  ): Promise<Partial<User> | null>;
+  ): Promise<Partial<T> | null>;
 
   isEmailExists(email: string): Promise<boolean>;
 
-  isUsernameExists(username: string): Promise<boolean>;
+  isTnameExists(Tname: string): Promise<boolean>;
 
-  findByUsernameOrEmail(
-    username: string,
+  findByTnameOrEmail(
+    Tname: string,
     email: string,
     options?: OptionsForFind
-  ): Promise<Partial<User> | null>;
+  ): Promise<Partial<T> | null>;
 }

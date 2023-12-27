@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import { HashingModule } from '@backend/hashing';
-import { Resource } from '../../../../apps/resources/src/app/entities/resource.entity';
+import { Resource } from '../entities/resource.entity';
 
 @Module({
   imports: [
@@ -19,6 +19,7 @@ import { Resource } from '../../../../apps/resources/src/app/entities/resource.e
         database: configService.get<string>('RESOURCES_MONGO_DATABASE'),
         host: configService.get<string>('RESOURCES_MONGO_HOST'),
         port: configService.get<number>('RESOURCES_MONGO_PORT'),
+        url: configService.get<string>('RESOURCES_MONGO_URL'),
         keepConnectionAlive: true,
         synchronize: true,
         // subscribers: [UserSubscriber],

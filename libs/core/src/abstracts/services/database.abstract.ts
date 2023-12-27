@@ -1,4 +1,4 @@
-import { IUserRepository } from '../repositories';
+import { IRepository } from '../repositories';
 
 export abstract class DatabaseService {
   sql?: ISQLDatabaseService;
@@ -10,9 +10,9 @@ export abstract class DatabaseService {
 }
 
 export abstract class ISQLDatabaseService {
-  abstract user: IUserRepository;
+  abstract user: IRepository<any>;
 }
 
 export abstract class IMongoDatabaseService {
-  abstract user: IUserRepository;
+  abstract user: IRepository<any>;
 }

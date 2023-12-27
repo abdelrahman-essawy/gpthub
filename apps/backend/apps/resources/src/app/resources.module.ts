@@ -6,7 +6,7 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
-import { ResourcesDatabaseModule } from '../../../../libs/database/src/resources-db/resources-db.module';
+import { ResourcesDatabaseModule } from './resources-db/resources-db.module';
 import { Resource } from './entities/resource.entity';
 import { ResourceAuthorResolver } from './user.resolver';
 
