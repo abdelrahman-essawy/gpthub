@@ -30,7 +30,7 @@ import * as process from 'process';
             {
               name: 'resources-microservice',
               url: process.env.RESOURCES_MICROSERVICES_UR,
-            ,
+            },
           ],
           subgraphHealthCheck: true,
           logger: console,
