@@ -16,7 +16,7 @@ export class UsersResolver {
     const metadata = this.usersService.paginate({
       page,
       limit: pageSize,
-      route: 'http://localhost:3000/graphql,
+      route: 'http://localhost:3000/graphql, // TODO: Make this dynamic
     });
     return { users, metadata };
   }
