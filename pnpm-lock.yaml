@@ -17,6 +17,9 @@ dependencies:
   '@apollo/subgraph':
     specifier: ^2.6.2
     version: 2.6.2(graphql@16.8.1)
+  '@as-integrations/fastify':
+    specifier: ^2.1.1
+    version: 2.1.1(@apollo/server@4.9.5)(fastify@4.25.1)
   '@faker-js/faker':
     specifier: ^8.3.1
     version: 8.3.1
@@ -31,7 +34,7 @@ dependencies:
     version: 0.7.10
   '@nestjs/apollo':
     specifier: ^12.0.11
-    version: 12.0.11(@apollo/gateway@2.6.2)(@apollo/server@4.9.5)(@apollo/subgraph@2.6.2)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/graphql@12.0.11)(graphql@16.8.1)
+    version: 12.0.11(@apollo/gateway@2.6.2)(@apollo/server@4.9.5)(@apollo/subgraph@2.6.2)(@as-integrations/fastify@2.1.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/graphql@12.0.11)(graphql@16.8.1)
   '@nestjs/common':
     specifier: ^10.0.2
     version: 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)
@@ -709,6 +712,18 @@ packages:
     resolution: {integrity: sha512-xCcXpoz52rI4ksJSdOCxeOCn2DLocxwHf9dVT/Q90Pte1LX+LY+91SFtJF3KXVHH8kEin+g1KKCQPKBjZJfWNA==}
     dependencies:
       xss: 1.0.14
+    dev: false
+
+  /@as-integrations/fastify@2.1.1(@apollo/server@4.9.5)(fastify@4.25.1):
+    resolution: {integrity: sha512-iupYSQyRrlBAdsDcCYzuKjJlJAKiQpRDLd33A6yAF3Ip/rGrSDDDrxfJWp6FqyVlivSL+MQkGIphmUI/ckfZkg==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@apollo/server': ^4.0.0
+      fastify: ^4.4.0
+    dependencies:
+      '@apollo/server': 4.9.5(graphql@16.8.1)
+      fastify: 4.25.1
+      fastify-plugin: 4.5.1
     dev: false
 
   /@babel/code-frame@7.23.5:
@@ -2599,7 +2614,7 @@ packages:
       sparse-bitfield: 3.0.3
     dev: false
 
-  /@nestjs/apollo@12.0.11(@apollo/gateway@2.6.2)(@apollo/server@4.9.5)(@apollo/subgraph@2.6.2)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/graphql@12.0.11)(graphql@16.8.1):
+  /@nestjs/apollo@12.0.11(@apollo/gateway@2.6.2)(@apollo/server@4.9.5)(@apollo/subgraph@2.6.2)(@as-integrations/fastify@2.1.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/graphql@12.0.11)(graphql@16.8.1):
     resolution: {integrity: sha512-E8kBOyGBZ8Zx4qMLnK3+ECZgmLKqNHyYbtkOi0fXWr8ackosLMkRqGgtDVffXRlVA3eo6G3RgnL0Qyu3VvfD5A==}
     peerDependencies:
       '@apollo/gateway': ^2.0.0
@@ -2622,6 +2637,7 @@ packages:
       '@apollo/server': 4.9.5(graphql@16.8.1)
       '@apollo/server-plugin-landing-page-graphql-playground': 4.0.0(@apollo/server@4.9.5)
       '@apollo/subgraph': 2.6.2(graphql@16.8.1)
+      '@as-integrations/fastify': 2.1.1(@apollo/server@4.9.5)(fastify@4.25.1)
       '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core': 10.2.10(@nestjs/common@10.2.10)(@nestjs/microservices@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/graphql': 12.0.11(@apollo/subgraph@2.6.2)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.8.1)(reflect-metadata@0.1.14)
