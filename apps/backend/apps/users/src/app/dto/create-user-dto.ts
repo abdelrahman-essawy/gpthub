@@ -1,4 +1,4 @@
-import { ArgsType, Field, InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import {
   IsDate,
   IsEmail,
@@ -9,30 +9,22 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { IUser } from '@core';
-import { IDatabaseEntity } from '../../../../../../../libs/core/src/interfaces/interface';
+import { IUser, IUserDatabaseEntity } from '@core';
 
-@InputType()
-@ArgsType()
-export class CreateUserInput implements Omit<IUser, keyof IDatabaseEntity> {
-  @Field(() => Date, { nullable: true })
-  @IsDate()
-  @IsOptional()
-  birthday: Date;
-
-  @Field()
+@InputType({ description: 'Create new user' })
+export class CreateUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
   @IsNotEmpty()
   @IsEmail()
+  @Field(() => String)
   email: string;
 
-  @Field()
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
   @MaxLength(20)
+  @Field(() => String)
   firstName: string;
 
-  @Field()
   @IsNotEmpty()
   @IsString()
   @IsStrongPassword({
@@ -40,23 +32,29 @@ export class CreateUserInput implements Omit<IUser, keyof IDatabaseEntity> {
     minLowercase: 1,
     minUppercase: 1,
   })
+  @Field(() => String)
   password: string;
 
-  @Field()
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
   @MaxLength(20)
+  @Field(() => String)
   lastName: string;
 
-  @Field()
   @IsNotEmpty()
   @IsString()
   @MinLength(4)
   @MaxLength(20)
+  @Field(() => String)
   username: string;
 
-  constructor(createUserInput: CreateUserInput) {
+  @IsDate()
+  @IsOptional()
+  @Field(() => Date, { nullable: true })
+  birthday: Date;
+
+  constructor(createUserInput: CreateUserDto) {
     Object.assign(this, createUserInput);
   }
 }

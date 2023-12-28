@@ -1,14 +1,17 @@
 import { IDatabaseEntity } from './interface';
 
-export interface IUser extends IDatabaseEntity {
+export interface IUser extends IUserDatabaseEntity {
   firstName: string;
   lastName: string;
   username: string;
   email: string;
-  verified?: boolean;
   birthday?: Date;
-  role?: UserRole;
   password: string;
+}
+
+export interface IUserDatabaseEntity extends IDatabaseEntity {
+  verified: boolean;
+  role: UserRole;
 }
 
 export enum UserRole {

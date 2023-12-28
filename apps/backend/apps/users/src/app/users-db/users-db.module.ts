@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { HashingModule } from '@backend/hashing';
 
 @Module({
@@ -13,7 +13,7 @@ import { HashingModule } from '@backend/hashing';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        entities: [User],
+        entities: [UserEntity],
         url: configService.get<string>('USERS_POSTGRES_URL'),
         keepConnectionAlive: true,
         synchronize: true,
@@ -24,7 +24,8 @@ import { HashingModule } from '@backend/hashing';
   providers: [
     {
       provide: 'USERS_DATABASE_SERVICE',
-      useFactory: (dataSource: DataSource) => dataSource.getRepository(User),
+      useFactory: (dataSource: DataSource) =>
+        dataSource.getRepository(UserEntity),
 
       inject: [DataSource],
     },

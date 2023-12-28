@@ -1,4 +1,4 @@
-import { ArgsType, Field, InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { IResource, ResourceFormat, ResourceType } from '@core';
 import {
   IsEnum,
@@ -10,9 +10,8 @@ import {
 } from 'class-validator';
 import { IDatabaseEntity } from '../../../../../../../libs/core/src/interfaces/interface';
 
-@InputType()
-@ArgsType()
-export class CreateResourceInput
+@InputType({ description: 'Create new resource' })
+export class CreateResourceDto
   implements Omit<IResource, keyof IDatabaseEntity>
 {
   @Field(() => String)
@@ -30,8 +29,6 @@ export class CreateResourceInput
   @IsEnum(ResourceFormat)
   format: ResourceFormat;
 
-  @Field(() => String)
-  @IsNotEmpty()
   @Field(() => String)
   @IsNotEmpty()
   @MinLength(3)
