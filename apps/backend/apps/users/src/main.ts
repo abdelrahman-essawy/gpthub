@@ -6,6 +6,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { UsersModule } from './app/users.module';
+import cors from 'cors';
 
 async function bootstrap() {
   const app = await NestFactory.create(UsersModule);
@@ -14,6 +15,11 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3001;
   await app.listen(port);
+  app.use(
+    cors({
+      origin: '*',
+    })
+  );
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );
