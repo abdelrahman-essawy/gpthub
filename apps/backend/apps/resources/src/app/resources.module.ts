@@ -5,11 +5,12 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { ResourcesDatabaseModule } from './resources-db/resources-db.module';
+import { UserReferenceDTO } from './dto/user-refrence.dto';
+import { ResourceResolver } from './resolvers/resource.resolver';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ResourceService } from './services/resource.service';
 import { ResourceEntity } from './entities/resource.entity';
-import { NestjsQueryGraphQLModule } from '@ptc-org/nestjs-query-graphql';
-import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
-import { ResourceDto } from './dto/resource.dto';
-import { CreateResourceDto } from './dto/create-resource.dto';
+import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { CreateResourceDto } from './dto/create-resource.dto';
         path: 'apps/backend/apps/resources/src/schema.gql',
       },
       buildSchemaOptions: {
-        orphanedTypes: [ResourceDto],
+        orphanedTypes: [UserReferenceDTO],
       },
       playground: {
         settings: {
@@ -29,20 +30,8 @@ import { CreateResourceDto } from './dto/create-resource.dto';
       },
     }),
     ResourcesDatabaseModule,
-    NestjsQueryGraphQLModule.forFeature({
-      imports: [NestjsQueryTypeOrmModule.forFeature([ResourceEntity])],
-      resolvers: [
-        {
-          EntityClass: ResourceEntity,
-          DTOClass: ResourceDto,
-          CreateDTOClass: CreateResourceDto,
-
-          referenceBy: {
-            key: 'id',
-          },
-        },
-      ],
-    }),
+    TypeOrmModule.forFeature([ResourceEntity]),
   ],
+  providers: [ResourceResolver, ResourceService, UserReferenceResolver],
 })
 export class ResourcesModule {}

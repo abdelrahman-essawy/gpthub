@@ -10,7 +10,7 @@ import {
 
 @Entity()
 export class ResourceEntity implements IResource {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

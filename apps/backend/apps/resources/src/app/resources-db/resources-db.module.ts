@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { HashingModule } from '@backend/hashing';
 import { ResourceEntity } from '../entities/resource.entity';
 
 @Module({
@@ -12,7 +11,21 @@ import { ResourceEntity } from '../entities/resource.entity';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        name: 'resources-sql',
+        entities: [ResourceEntity],
+        url: configService.get<string>('RESOURCES_POSTGRES_URL'),
+        keepConnectionAlive: true,
+        synchronize: true,
+        // subscribers: [UserSubscriber],
+      }),
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         type: 'mongodb',
+        name: 'resources-nosql',
         entities: [ResourceEntity],
         username: configService.get<string>('RESOURCES_MONGO_USER'),
         password: configService.get<string>('RESOURCES_MONGO_PASSWORD'),
@@ -25,7 +38,6 @@ import { ResourceEntity } from '../entities/resource.entity';
         // subscribers: [UserSubscriber],
       }),
     }),
-    HashingModule,
   ],
   providers: [
     {

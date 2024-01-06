@@ -5,8 +5,6 @@ export interface IResource extends IDatabaseEntity {
   description?: string;
   type: ResourceType;
   format: ResourceFormat;
-
-  authorId: string;
 }
 
 export enum ResourceType {

@@ -1,19 +1,17 @@
 import {
-  Directive,
+  Field,
   GraphQLISODateTime,
   ID,
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
 import { IResource, ResourceFormat, ResourceType } from '@core';
-import { FilterableField, Reference } from '@ptc-org/nestjs-query-graphql';
+import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
 import { UserReferenceDTO } from './user-refrence.dto';
 
 @ObjectType('Resource')
-@Directive('@key(fields: "id")')
-@Reference('author', () => UserReferenceDTO, { id: 'authorId' })
 export class ResourceDto implements IResource {
-  @FilterableField(() => ID)
+  @IDField(() => ID)
   id: string;
 
   @FilterableField()
@@ -34,8 +32,8 @@ export class ResourceDto implements IResource {
   @FilterableField(() => GraphQLISODateTime)
   updatedAt: Date;
 
-  @FilterableField(() => ID)
-  authorId: string;
+  @Field(() => UserReferenceDTO)
+  author: UserReferenceDTO;
 }
 
 registerEnumType(ResourceType, {

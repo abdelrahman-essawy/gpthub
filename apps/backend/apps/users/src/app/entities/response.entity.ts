@@ -1,7 +1,7 @@
 // src/scalars/json.scalar.ts
 import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSONObject } from 'graphql-type-json';
-import { UserModel } from '../models/user.model';
+import { UserDto } from '../dto/user.dto';
 
 @ObjectType()
 export class ResponseEntity {
@@ -11,7 +11,7 @@ export class ResponseEntity {
   @Field(() => Number)
   protected statusCode: number;
 
-  @Field(() => [UserModel], { nullable: true })
+  @Field(() => [UserDto], { nullable: true })
   protected data: any;
 
   @Field(() => String)

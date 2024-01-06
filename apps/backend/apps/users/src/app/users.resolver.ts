@@ -1,13 +1,13 @@
 import { Resolver } from '@nestjs/graphql';
-import { UserModel } from './models/user.model';
+import { UserDto } from './dto/user.dto';
 
-@Resolver(() => UserModel)
+@Resolver(() => UserDto)
 export class UsersResolver {
   // @ResolveReference()
   // async resolveReference(reference: {
   //   __typename: string;
   //   authorId: string;
-  // }): Promise<UserModel> {
+  // }): Promise<UserDto> {
   //   return this.usersService.findOne(reference.authorId);
   // }
 }

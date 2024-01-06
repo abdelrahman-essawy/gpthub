@@ -3,17 +3,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
-import {
-  ApolloFederationDriver,
-  ApolloGatewayDriverConfig,
-} from '@nestjs/apollo';
+import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { IntrospectAndCompose } from '@apollo/gateway';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
     GraphQLModule.forRootAsync<ApolloGatewayDriverConfig>({
-      driver: ApolloFederationDriver,
+      driver: ApolloGatewayDriver,
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -25,6 +23,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           //   message: err.message,
           //   serverName: err.extensions.serviceName,
           // }),
+          plugins: [ApolloServerPluginLandingPageLocalDefault()],
+          playground: false
         },
         gateway: {
           supergraphSdl: new IntrospectAndCompose({

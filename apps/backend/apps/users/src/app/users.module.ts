@@ -10,7 +10,7 @@ import { GraphQLJSONObject } from 'graphql-type-json';
 import { NestjsQueryGraphQLModule } from '@ptc-org/nestjs-query-graphql';
 import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
 import { CreateUserDto } from './dto/create-user-dto';
-import { UserModel } from './models/user.model';
+import { UserDto } from './dto/user.dto';
 import { UserEntity } from './entities/user.entity';
 import { PagingStrategies } from '@ptc-org/nestjs-query-graphql/src/types';
 
@@ -23,9 +23,7 @@ import { PagingStrategies } from '@ptc-org/nestjs-query-graphql/src/types';
         federation: 2,
         path: 'apps/backend/apps/users/src/schema.gql',
       },
-      buildSchemaOptions: {
-        orphanedTypes: [UserModel],
-      },
+      buildSchemaOptions: {},
       playground: {
         settings: {
           'request.credentials': 'include', // Allow credentials in Playground
@@ -39,7 +37,7 @@ import { PagingStrategies } from '@ptc-org/nestjs-query-graphql/src/types';
       resolvers: [
         {
           EntityClass: UserEntity,
-          DTOClass: UserModel,
+          DTOClass: UserDto,
           CreateDTOClass: CreateUserDto,
           enableTotalCount: true,
           pagingStrategy: PagingStrategies.NONE,

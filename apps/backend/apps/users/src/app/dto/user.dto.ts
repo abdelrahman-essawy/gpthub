@@ -1,11 +1,10 @@
 import { IUser, UserRole } from '@core';
-import { Directive, ID, ObjectType } from '@nestjs/graphql';
+import { Directive, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
 
 @ObjectType('User')
-@Directive('@extends')
 @Directive('@key(fields: "id")')
-export class UserModel implements Omit<IUser, 'password'> {
+export class UserDto implements Omit<IUser, 'password'> {
   @IDField(() => ID)
   id: string;
 
@@ -27,7 +26,7 @@ export class UserModel implements Omit<IUser, 'password'> {
   @FilterableField()
   birthday?: Date;
 
-  @FilterableField(() => String)
+  @FilterableField(() => UserRole)
   role: UserRole;
 
   @FilterableField()
@@ -36,3 +35,7 @@ export class UserModel implements Omit<IUser, 'password'> {
   @FilterableField()
   updatedAt: Date;
 }
+
+registerEnumType(UserRole, {
+  name: 'UserRole',
+});

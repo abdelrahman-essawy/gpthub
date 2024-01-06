@@ -10,7 +10,7 @@ type User {
   email: String!
   verified: Boolean!
   birthday: DateTime!
-  role: String!
+  role: UserRole!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -19,6 +19,11 @@ type User {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+enum UserRole {
+  ADMIN
+  USER
+}
 
 type DeleteManyResponse {
   """The number of records deleted."""
@@ -33,7 +38,7 @@ type UserDeleteResponse {
   email: String
   verified: Boolean
   birthday: DateTime
-  role: String
+  role: UserRole
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -67,7 +72,7 @@ input UserFilter {
   email: StringFieldComparison
   verified: BooleanFieldComparison
   birthday: DateFieldComparison
-  role: StringFieldComparison
+  role: UserRoleFilterComparison
   createdAt: DateFieldComparison
   updatedAt: DateFieldComparison
 }
@@ -129,6 +134,23 @@ input DateFieldComparison {
 input DateFieldComparisonBetween {
   lower: DateTime!
   upper: DateTime!
+}
+
+input UserRoleFilterComparison {
+  is: Boolean
+  isNot: Boolean
+  eq: UserRole
+  neq: UserRole
+  gt: UserRole
+  gte: UserRole
+  lt: UserRole
+  lte: UserRole
+  like: UserRole
+  notLike: UserRole
+  iLike: UserRole
+  notILike: UserRole
+  in: [UserRole!]
+  notIn: [UserRole!]
 }
 
 input UserSort {
@@ -207,7 +229,7 @@ input UpdateUser {
   email: String
   verified: Boolean
   birthday: DateTime
-  role: String
+  role: UserRole
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -230,7 +252,7 @@ input UserUpdateFilter {
   email: StringFieldComparison
   verified: BooleanFieldComparison
   birthday: DateFieldComparison
-  role: StringFieldComparison
+  role: UserRoleFilterComparison
   createdAt: DateFieldComparison
   updatedAt: DateFieldComparison
 }
@@ -255,7 +277,7 @@ input UserDeleteFilter {
   email: StringFieldComparison
   verified: BooleanFieldComparison
   birthday: DateFieldComparison
-  role: StringFieldComparison
+  role: UserRoleFilterComparison
   createdAt: DateFieldComparison
   updatedAt: DateFieldComparison
 }
