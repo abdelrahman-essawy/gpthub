@@ -6,9 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
@@ -16,9 +14,7 @@
         "outputPath": "dist/apps/backend/apps/users",
         "main": "apps/backend/apps/users/src/main.ts",
         "tsConfig": "apps/backend/apps/users/tsconfig.app.json",
-        "assets": [
-          "apps/backend/apps/users/src/assets"
-        ],
+        "assets": ["apps/backend/apps/users/src/assets"],
         "isolatedConfig": true,
         "webpackConfig": "apps/backend/apps/users/webpack.config.js"
       },
@@ -44,20 +40,11 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
-      "options": {
-        "lintFilePatterns": [
-          "apps/backend/apps/users/**/*.ts"
-        ]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/backend/apps/users/jest.config.ts"
       }
