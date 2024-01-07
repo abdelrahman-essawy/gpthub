@@ -9,7 +9,9 @@ import { IResource, ResourceFormat, ResourceType } from '@core';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
 import { UserReferenceDTO } from './user-refrence.dto';
 
-@ObjectType('Resource')
+@ObjectType('Resource', {
+  description: 'Resources uploaded by users',
+})
 export class ResourceDto implements IResource {
   @IDField(() => ID)
   id: string;

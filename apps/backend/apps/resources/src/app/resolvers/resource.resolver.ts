@@ -17,13 +17,20 @@ export class ResourceResolver {
   constructor(private resourceService: ResourceService) {}
 
   @Query(() => ResourceDto)
-  async resource(@Args('id') id: string) {
+  async getResource(@Args('id') id: string) {
     return this.resourceService.findOne(id);
   }
 
   @Query(() => [ResourceDto])
-  async resources() {
+  async getResources() {
     return this.resourceService.findAll();
+  }
+
+  @Query(() => [ResourceDto])
+  async similarResources(@Args('id') id: string) {
+    const resource = await this.resourceService.findOne(id);
+    const resources = await this.resourceService.findAll();
+    return resources.filter((r) => r.type === resource.type);
   }
 
   @Mutation(() => ResourceDto)

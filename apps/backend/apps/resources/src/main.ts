@@ -6,7 +6,6 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import cors from 'cors';
-import fastifyCsrfProtection from '@fastify/csrf-protection';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -16,7 +15,7 @@ import { ResourcesModule } from './app/resources.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     ResourcesModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
   );
 
   app.useGlobalPipes(new ValidationPipe());
@@ -30,11 +29,8 @@ async function bootstrap() {
     cors({
       origin: '*', // Change this to the specific origin of your frontend in production
       credentials: true,
-    })
+    }),
   );
-
-  // CSRF protection
-  await app.register(fastifyCsrfProtection);
 
   // Set up routes for GraphQL playground
   app.use(`/${globalPrefix}`, (req, res, next) => {
@@ -47,7 +43,7 @@ async function bootstrap() {
 
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
 }
 

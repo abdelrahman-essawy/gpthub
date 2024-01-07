@@ -2,6 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""Resources uploaded by users"""
 type Resource {
   id: ID!
   title: String!
@@ -55,8 +56,9 @@ type User {
 }
 
 type Query {
-  resource(id: String!): Resource!
-  resources: [Resource!]!
+  getResource(id: String!): Resource!
+  getResources: [Resource!]!
+  similarResources(id: String!): [Resource!]!
 }
 
 type Mutation {
