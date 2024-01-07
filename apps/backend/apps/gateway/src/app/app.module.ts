@@ -24,7 +24,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
           //   serverName: err.extensions.serviceName,
           // }),
           plugins: [ApolloServerPluginLandingPageLocalDefault()],
-          playground: false
+          playground: false,
         },
         gateway: {
           supergraphSdl: new IntrospectAndCompose({
@@ -36,6 +36,10 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
               {
                 name: 'resources-microservice',
                 url: configService.get<string>('RESOURCES_MICROSERVICES_URL'),
+              },
+              {
+                name: 'rooms-microservice',
+                url: configService.get<string>('ROOMS_MICROSERVICES_URL'),
               },
             ],
             subgraphHealthCheck: true,

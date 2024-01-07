@@ -127,10 +127,24 @@ services:
     volumes:
       - resources-mongo-data:/data/db
 
+
+
+  rooms-postgres-database:
+    image: postgres:alpine
+    ports:
+      - ${ROOMS_POSTGRES_PORT}:${DEFAULT_POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${ROOMS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${ROOMS_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${ROOMS_POSTGRES_DB}
+    volumes:
+      - rooms-postgres-data:/var/lib/postgresql/data
+
 volumes:
   kong-data:
   kong-postgres-data:
   users-postgres-data:
   resources-mongo-data:
   resources-postgres-data:
+  rooms-postgres-data:
 

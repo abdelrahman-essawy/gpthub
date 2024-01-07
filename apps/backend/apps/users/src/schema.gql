@@ -9,7 +9,7 @@ type User {
   username: String!
   email: String!
   verified: Boolean!
-  birthday: DateTime!
+  birthday: DateTime
   role: UserRole!
   createdAt: DateTime!
   updatedAt: DateTime!

@@ -1,0 +1,53 @@
+{
+  "name": "rooms",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/apps/rooms/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/backend/apps/rooms",
+        "main": "apps/backend/apps/rooms/src/main.ts",
+        "tsConfig": "apps/backend/apps/rooms/tsconfig.app.json",
+        "assets": ["apps/backend/apps/rooms/src/assets"],
+        "webpackConfig": "apps/backend/apps/rooms/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "rooms:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "rooms:build:development"
+        },
+        "production": {
+          "buildTarget": "rooms:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/backend/apps/rooms/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

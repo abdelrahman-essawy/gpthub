@@ -23,7 +23,9 @@ export class UserDto implements Omit<IUser, 'password'> {
   @FilterableField()
   verified: boolean;
 
-  @FilterableField()
+  @FilterableField({
+    nullable: true,
+  })
   birthday?: Date;
 
   @FilterableField(() => UserRole)
