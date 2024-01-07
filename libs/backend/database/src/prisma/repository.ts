@@ -13,6 +13,11 @@ export class PrismaRepository<T extends PrismaClient['user']>
   readonly repository: T;
   readonly populateOnFind: string[];
 
+  constructor(repository: any, populateOnFind: string[] = []) {
+    this.repository = repository;
+    this.populateOnFind = populateOnFind;
+  }
+
   createBooleanObject(hideKeysFromReturn: string[] = []) {
     const keys = Object.keys(this.repository.fields);
     const otherKeys = keys.filter((key) => !hideKeysFromReturn.includes(key));
@@ -23,21 +28,10 @@ export class PrismaRepository<T extends PrismaClient['user']>
     }, {});
   }
 
-  private validateId(id: string) {
-    if (!id || !isUUID(id)) {
-      throw new NotAcceptableException({ message: 'Invalid ID' });
-    }
-  }
-
-  constructor(repository: any, populateOnFind: string[] = []) {
-    this.repository = repository;
-    this.populateOnFind = populateOnFind;
-  }
-
   async find(
     options: OptionsForFind = {
       hideKeysFromReturn: [],
-    }
+    },
   ) {
     return this.repository.findMany({
       select: this.createBooleanObject(options.hideKeysFromReturn),
@@ -48,7 +42,7 @@ export class PrismaRepository<T extends PrismaClient['user']>
     id: string,
     options: OptionsForFind = {
       hideKeysFromReturn: [],
-    }
+    },
   ) {
     this.validateId(id);
 
@@ -71,7 +65,7 @@ export class PrismaRepository<T extends PrismaClient['user']>
     data: any,
     options: OptionsForFind = {
       hideKeysFromReturn: [],
-    }
+    },
   ): Promise<any> {
     this.validateId(id);
 
@@ -110,5 +104,11 @@ export class PrismaRepository<T extends PrismaClient['user']>
         ],
       },
     });
+  }
+
+  private validateId(id: string) {
+    if (!id || !isUUID(id)) {
+      throw new NotAcceptableException({ message: 'Invalid ID' });
+    }
   }
 }

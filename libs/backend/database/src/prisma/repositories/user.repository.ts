@@ -13,7 +13,7 @@ export class PrismaUserRepository
   findByUsernameOrEmail(
     username: string,
     email: string,
-    options?: OptionsForFind | undefined
+    options?: OptionsForFind | undefined,
   ): Promise<Partial<{
     id: string;
     username: string;

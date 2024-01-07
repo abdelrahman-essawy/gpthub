@@ -15,9 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@backend/database": ["apps/backend/libs/database/src/index.ts"],
-      "@backend/dtos": ["apps/backend/libs/dtos/src/index.ts"],
-      "@backend/hashing": ["apps/backend/libs/hashing/src/index.ts"],
+      "@backend/database": ["libs/backend/database/src/index.ts"],
+      "@backend/dtos": ["libs/backend/dtos/src/index.ts"],
+      "@backend/hashing": ["libs/backend/hashing/src/index.ts"],
       "@core": ["libs/core/src/index.ts"]
     }
   },

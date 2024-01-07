@@ -1,7 +1,7 @@
 {
-  "name": "hashing",
-  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/backend/libs/hashing/src",
+  "name": "dtos",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/dtos/src",
   "projectType": "library",
   "targets": {
     "lint": {
@@ -12,7 +12,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/backend/libs/hashing/jest.config.ts"
+        "jestConfig": "libs/backend/dtos/jest.config.ts"
       }
     }
   },

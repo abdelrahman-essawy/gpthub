@@ -31,7 +31,7 @@ export class CreateUserDto implements RegistrationRequest {
     {
       message:
         'Password must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, and 1 number',
-    }
+    },
   )
   @Exclude({ toPlainOnly: true })
   password: string;
@@ -76,7 +76,7 @@ export class CreateUserDto implements RegistrationRequest {
 }
 
 export class UpdateUserDto extends PartialType(
-  OmitType(CreateUserDto, ['password', 'email'])
+  OmitType(CreateUserDto, ['password', 'email']),
 ) {}
 
 export class AuthenticateUserDto extends PickType(CreateUserDto, ['password']) {
@@ -112,7 +112,7 @@ export class UpdatePasswordDto {
     {
       message:
         'Password must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, and 1 number',
-    }
+    },
   )
   newPassword: string;
 }

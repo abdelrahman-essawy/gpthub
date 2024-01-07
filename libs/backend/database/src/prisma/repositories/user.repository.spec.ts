@@ -45,7 +45,7 @@ describe('PrismaUserRepository', () => {
 
       expect(mockUserPrismaClient.findByUsername).toHaveBeenCalledWith(
         username,
-        expect.any(Object) // Adjust as needed
+        expect.any(Object), // Adjust as needed
       );
     });
   });
