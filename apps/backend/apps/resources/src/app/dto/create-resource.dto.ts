@@ -1,5 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IResource, ResourceFormat, ResourceType } from '@core';
+import {
+  IResource,
+  IResourceContent,
+  ResourceFormat,
+  ResourceType,
+} from '@core';
 import {
   IsEnum,
   IsNotEmpty,
@@ -12,7 +17,7 @@ import { IDatabaseEntity } from '../../../../../../../libs/core/src/interfaces/i
 
 @InputType({ description: 'Create new resource' })
 export class CreateResourceDto
-  implements Omit<IResource, keyof IDatabaseEntity>
+  implements Omit<IResource, keyof (IDatabaseEntity & IResourceContent)>
 {
   @Field(() => String)
   @IsNotEmpty()

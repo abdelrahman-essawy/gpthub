@@ -9,13 +9,16 @@ import { HashingModule } from '@backend/hashing';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import { NestjsQueryGraphQLModule } from '@ptc-org/nestjs-query-graphql';
 import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
-import { CreateUserDto } from './dto/create-user-dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { UserEntity } from './entities/user.entity';
-import { PagingStrategies } from '@ptc-org/nestjs-query-graphql/src/types';
+import { UsersResolver } from './users.resolver';
+import { UsersService } from './users.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       resolvers: { JSON: GraphQLJSONObject },
@@ -34,20 +37,21 @@ import { PagingStrategies } from '@ptc-org/nestjs-query-graphql/src/types';
     HashingModule,
     NestjsQueryGraphQLModule.forFeature({
       imports: [NestjsQueryTypeOrmModule.forFeature([UserEntity])],
-      resolvers: [
+      dtos: [
         {
-          EntityClass: UserEntity,
           DTOClass: UserDto,
           CreateDTOClass: CreateUserDto,
-          enableTotalCount: true,
-          pagingStrategy: PagingStrategies.NONE,
-
-          referenceBy: {
-            key: 'id',
-          },
+        },
+      ],
+      services: [UsersService],
+      resolvers: [
+        {
+          DTOClass: UserDto,
+          ServiceClass: UsersService,
         },
       ],
     }),
   ],
+  providers: [UsersResolver],
 })
 export class UsersModule {}

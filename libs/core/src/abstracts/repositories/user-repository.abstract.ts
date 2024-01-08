@@ -1,5 +1,5 @@
 // import { TDocument as MongoDocument } from '../frameworks/databases/mongo/model/T.model';
-import { IRepository } from './repository.abstract';
+import { IUser } from '../../interfaces';
 
 // import { T } from '@prisma/client';
 
@@ -10,24 +10,20 @@ export interface OptionsForFind {
 /**
  * Interface for the TRepository.
  */
-export interface ITRepository<T> extends IRepository<T> {
-  findByTname(
-    Tname: string,
-    options?: OptionsForFind
-  ): Promise<Partial<T> | null>;
+export interface IUserRepository {
+  // findByName(
+  //   name: string,
+  //   options?: OptionsForFind,
+  // ): Promise<Partial<IUser> | null>;
 
-  findByEmail(
-    email: string,
-    options?: OptionsForFind
-  ): Promise<Partial<T> | null>;
+  // findByEmail(
+  //   email: string,
+  //   options?: OptionsForFind,
+  // ): Promise<Partial<IUser> | null>;
 
-  isEmailExists(email: string): Promise<boolean>;
+  // isEmailExists(email: string): Promise<boolean>;
 
-  isTnameExists(Tname: string): Promise<boolean>;
+  // isNameExists(name: string): Promise<boolean>;
 
-  findByTnameOrEmail(
-    Tname: string,
-    email: string,
-    options?: OptionsForFind
-  ): Promise<Partial<T> | null>;
+  findByUsernameOrEmail(name?: string, email?: string): Promise<IUser | null>;
 }

@@ -1,4 +1,9 @@
-import { IResource, ResourceFormat, ResourceType } from '@core';
+import {
+  IResource,
+  IResourceContent,
+  ResourceFormat,
+  ResourceType,
+} from '@core';
 import {
   Column,
   CreateDateColumn,
@@ -9,7 +14,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class ResourceEntity implements IResource {
+export class ResourceEntity implements Omit<IResource, keyof IResourceContent> {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

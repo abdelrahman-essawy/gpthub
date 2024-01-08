@@ -13,6 +13,7 @@ type User {
   role: UserRole!
   createdAt: DateTime!
   updatedAt: DateTime!
+  password: String
 }
 
 """
@@ -41,11 +42,45 @@ type UserDeleteResponse {
   role: UserRole
   createdAt: DateTime
   updatedAt: DateTime
+  password: String
 }
 
 type UpdateManyResponse {
   """The number of records updated."""
   updatedCount: Int!
+}
+
+type UserEdge {
+  """The node containing the User"""
+  node: User!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+"""Cursor for paging through collections"""
+scalar ConnectionCursor
+
+type PageInfo {
+  """true if paging forward and there are more records."""
+  hasNextPage: Boolean
+
+  """true if paging backwards and there are more records."""
+  hasPreviousPage: Boolean
+
+  """The cursor of the first returned record."""
+  startCursor: ConnectionCursor
+
+  """The cursor of the last returned record."""
+  endCursor: ConnectionCursor
+}
+
+type UserConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [UserEdge!]!
 }
 
 type Query {
@@ -54,12 +89,30 @@ type Query {
     id: ID!
   ): User!
   users(
+    """Limit or page results."""
+    paging: CursorPaging! = {first: 10}
+
     """Specify to filter the records returned."""
     filter: UserFilter! = {}
 
     """Specify to sort results."""
     sorting: [UserSort!]! = []
-  ): [User!]!
+  ): UserConnection!
+  me: User!
+}
+
+input CursorPaging {
+  """Paginate before opaque cursor"""
+  before: ConnectionCursor
+
+  """Paginate after opaque cursor"""
+  after: ConnectionCursor
+
+  """Paginate first"""
+  first: Int
+
+  """Paginate last"""
+  last: Int
 }
 
 input UserFilter {
@@ -75,6 +128,7 @@ input UserFilter {
   role: UserRoleFilterComparison
   createdAt: DateFieldComparison
   updatedAt: DateFieldComparison
+  password: StringFieldComparison
 }
 
 input IDFilterComparison {
@@ -170,6 +224,7 @@ enum UserSortFields {
   role
   createdAt
   updatedAt
+  password
 }
 
 """Sort Directions"""
@@ -191,26 +246,31 @@ type Mutation {
   updateManyUsers(input: UpdateManyUsersInput!): UpdateManyResponse!
   deleteOneUser(input: DeleteOneUserInput!): UserDeleteResponse!
   deleteManyUsers(input: DeleteManyUsersInput!): DeleteManyResponse!
+  login: User!
 }
 
 input CreateOneUserInput {
   """The record to create"""
-  user: CreateUserDto!
+  user: CreateUser!
 }
 
-"""Create new user"""
-input CreateUserDto {
-  email: String!
+input CreateUser {
+  id: ID!
   firstName: String!
-  password: String!
   lastName: String!
   username: String!
+  email: String!
+  verified: Boolean!
   birthday: DateTime
+  role: UserRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  password: String
 }
 
 input CreateManyUsersInput {
   """Array of records to create"""
-  users: [CreateUserDto!]!
+  users: [CreateUser!]!
 }
 
 input UpdateOneUserInput {
@@ -232,6 +292,7 @@ input UpdateUser {
   role: UserRole
   createdAt: DateTime
   updatedAt: DateTime
+  password: String
 }
 
 input UpdateManyUsersInput {
@@ -255,6 +316,7 @@ input UserUpdateFilter {
   role: UserRoleFilterComparison
   createdAt: DateFieldComparison
   updatedAt: DateFieldComparison
+  password: StringFieldComparison
 }
 
 input DeleteOneUserInput {
@@ -280,4 +342,5 @@ input UserDeleteFilter {
   role: UserRoleFilterComparison
   createdAt: DateFieldComparison
   updatedAt: DateFieldComparison
+  password: StringFieldComparison
 }

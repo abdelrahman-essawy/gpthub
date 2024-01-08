@@ -36,6 +36,15 @@ export class ResourceDto implements IResource {
 
   @Field(() => UserReferenceDTO)
   author: UserReferenceDTO;
+
+  @Field(() => String, {
+    nullable: true,
+  })
+  indexed: string;
+  @Field(() => String, {
+    nullable: true,
+  })
+  raw: string;
 }
 
 registerEnumType(ResourceType, {

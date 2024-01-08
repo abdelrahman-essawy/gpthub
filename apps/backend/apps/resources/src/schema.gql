@@ -12,6 +12,8 @@ type Resource {
   createdAt: DateTime!
   updatedAt: DateTime!
   author: User!
+  indexed: String
+  raw: String
 }
 
 enum ResourceType {
