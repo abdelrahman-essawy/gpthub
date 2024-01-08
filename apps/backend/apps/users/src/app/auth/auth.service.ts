@@ -41,4 +41,8 @@ export class AuthService {
       role: user.role,
     });
   }
+
+  async parseToken(token: string) {
+    return this.jwtService.decode(token);
+  }
 }

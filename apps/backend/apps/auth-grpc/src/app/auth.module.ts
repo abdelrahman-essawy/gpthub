@@ -21,5 +21,6 @@ import * as process from 'process';
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}

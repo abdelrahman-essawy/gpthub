@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import {
   ApolloFederationDriver,
@@ -7,18 +7,21 @@ import {
 import { UsersDatabaseModule } from './users-db/users-db.module';
 import { HashingModule } from '@backend/hashing';
 import { GraphQLJSONObject } from 'graphql-type-json';
-import { NestjsQueryGraphQLModule } from '@ptc-org/nestjs-query-graphql';
+import {
+  NestjsQueryGraphQLModule,
+  PagingStrategies,
+} from '@ptc-org/nestjs-query-graphql';
 import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserDto } from './dto/user.dto';
 import { UserEntity } from './entities/user.entity';
-import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
 import { AuthModule } from './auth/auth.module';
+import { AuthResolver } from './auth/auth.resolver';
+import { UserDto } from './dto/user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Module({
   imports: [
-    AuthModule,
+    forwardRef(() => AuthModule),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       resolvers: { JSON: GraphQLJSONObject },
@@ -37,21 +40,17 @@ import { AuthModule } from './auth/auth.module';
     HashingModule,
     NestjsQueryGraphQLModule.forFeature({
       imports: [NestjsQueryTypeOrmModule.forFeature([UserEntity])],
-      dtos: [
-        {
-          DTOClass: UserDto,
-          CreateDTOClass: CreateUserDto,
-        },
-      ],
-      services: [UsersService],
       resolvers: [
         {
           DTOClass: UserDto,
-          ServiceClass: UsersService,
+          EntityClass: UserEntity,
+          pagingStrategy: PagingStrategies.NONE,
+          CreateDTOClass: CreateUserDto,
         },
       ],
     }),
   ],
-  providers: [UsersResolver],
+  providers: [UsersService, AuthResolver],
+  exports: [UsersService],
 })
 export class UsersModule {}

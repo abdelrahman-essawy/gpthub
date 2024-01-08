@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IUser } from '@core';
 import {
   IsEmail,
@@ -8,8 +8,14 @@ import {
   MinLength,
   ValidateIf,
 } from 'class-validator';
+import {
+  FilterableField,
+  PagingStrategies,
+  QueryOptions,
+} from '@ptc-org/nestjs-query-graphql';
 
 @InputType('Credentials', { description: 'Login user' })
+@QueryOptions({ pagingStrategy: PagingStrategies.NONE })
 export class LoginUserDto
   implements Partial<Pick<IUser, 'username' | 'email' | 'password'>>
 {
@@ -38,5 +44,15 @@ export class LoginUserDto
 
   constructor(loginUserDto: LoginUserDto) {
     Object.assign(this, loginUserDto);
+  }
+}
+
+@ObjectType('LoginResponse', { description: 'Login response' })
+export class LoginResponse {
+  @FilterableField(() => String)
+  token: string;
+
+  constructor(accessToken: string) {
+    this.token = accessToken;
   }
 }
