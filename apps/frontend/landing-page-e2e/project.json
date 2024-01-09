@@ -1,0 +1,26 @@
+{
+  "name": "landing-page-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/frontend/landing-page-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/frontend/landing-page-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "landing-page:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "landing-page:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["landing-page"]
+}
