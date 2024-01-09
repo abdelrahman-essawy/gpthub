@@ -23,7 +23,7 @@ export class UsersService
   ): Promise<UserEntity | null> {
     return await this.userRepository.findOne({
       where: [{ username }, { email }],
-      select: ['id', 'username', 'email', 'password', 'role'],
+      comment: 'Find user by username or email',
     });
   }
 }

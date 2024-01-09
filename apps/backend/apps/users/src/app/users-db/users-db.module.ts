@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '../users/entities/user.entity';
 import { HashingModule } from '@backend/hashing';
 
 @Module({

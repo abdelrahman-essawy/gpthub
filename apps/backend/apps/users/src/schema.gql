@@ -28,6 +28,7 @@ enum UserRole {
 """Login response"""
 type LoginResponse {
   token: String!
+  user: User!
 }
 
 type DeleteManyResponse {
@@ -191,7 +192,7 @@ enum SortNulls {
 }
 
 type Mutation {
-  """Login a user"""
+  """Login a user with username or email and password, returns JWT token."""
   login(credentials: Credentials!): LoginResponse!
   createOneUser(input: CreateOneUserInput!): User!
   createManyUsers(input: CreateManyUsersInput!): [User!]!
@@ -203,8 +204,8 @@ type Mutation {
 
 """Login user"""
 input Credentials {
-  email: String!
-  username: String!
+  email: String
+  username: String
   password: String!
 }
 

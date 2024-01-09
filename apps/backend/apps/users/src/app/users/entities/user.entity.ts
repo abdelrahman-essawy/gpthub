@@ -10,7 +10,13 @@ import {
 import { IUser, UserRole } from '@core';
 import * as bcrypt from 'bcrypt';
 
-@Entity('users')
+@Entity('users', {
+  name: 'users',
+  comment: 'Users table',
+  orderBy: {
+    createdAt: 'DESC',
+  },
+})
 export class UserEntity extends BaseEntity implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -24,7 +30,7 @@ export class UserEntity extends BaseEntity implements IUser {
   @Column({ unique: true })
   username: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column({ unique: true })

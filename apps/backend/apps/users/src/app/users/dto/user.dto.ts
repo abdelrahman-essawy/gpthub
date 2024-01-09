@@ -36,6 +36,10 @@ export class UserDto implements Omit<IUser, 'password'> {
 
   @FilterableField()
   updatedAt: Date;
+
+  constructor(user: UserDto) {
+    Object.assign(this, user);
+  }
 }
 
 registerEnumType(UserRole, {

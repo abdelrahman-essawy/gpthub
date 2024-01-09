@@ -5,7 +5,7 @@ import * as process from 'process';
 import { AuthService } from './auth.service';
 import { HashingModule } from '@backend/hashing';
 import { LocalStrategy } from './strategies/local.strategy';
-import { UsersModule } from '../users.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [

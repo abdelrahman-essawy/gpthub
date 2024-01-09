@@ -1,9 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { HashingService } from '@core';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { LoginUserDto } from './dto/login.dto';
-import { UsersService } from '../users.service';
+import { UsersService } from '../users/users.service';
+import { UserDto } from '../users/dto/user.dto';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class AuthService {
@@ -25,24 +27,38 @@ export class AuthService {
       credentials.email,
     );
 
-    const correctCredentials = await this.hashingService.compare(
+    if (!user) throw new BadRequestException({ message: 'User not found' });
+
+    const isCorrectCredentials = await this.hashingService.compare(
       credentials.password,
       user.password,
     );
 
-    if (!correctCredentials) {
+    if (!isCorrectCredentials)
       throw new BadRequestException({ message: 'Invalid credentials' });
-    }
 
-    return this.jwtService.sign({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-    });
+    return user;
   }
 
-  async parseToken(token: string) {
+  async generateToken(
+    payload: object,
+    options?: Omit<JwtSignOptions, keyof JwtSignOptions> | undefined,
+  ) {
+    return this.jwtService.sign(payload, options);
+  }
+
+  async parseUserFromToken(token: string) {
+    const tokenPayload = await this.parseToken(token);
+
+    const user = new UserDto(tokenPayload);
+    if (!user?.id) throw new Error('Invalid token payload, no id present');
+    if (!isUUID(user.id))
+      throw new Error('Invalid token payload, id is not a valid');
+
+    return user;
+  }
+
+  private parseToken(token: string) {
     return this.jwtService.decode(token);
   }
 }

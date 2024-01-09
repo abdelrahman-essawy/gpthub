@@ -8,20 +8,16 @@ import {
   MinLength,
   ValidateIf,
 } from 'class-validator';
-import {
-  FilterableField,
-  PagingStrategies,
-  QueryOptions,
-} from '@ptc-org/nestjs-query-graphql';
+import { FilterableField } from '@ptc-org/nestjs-query-graphql';
+import { UserDto } from '../../users/dto/user.dto';
 
 @InputType('Credentials', { description: 'Login user' })
-@QueryOptions({ pagingStrategy: PagingStrategies.NONE })
 export class LoginUserDto
   implements Partial<Pick<IUser, 'username' | 'email' | 'password'>>
 {
   @IsEmail()
   @IsNotEmpty()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @ValidateIf((o) => !o.username || o.email, {
     message: 'Email or username is required',
   })
@@ -31,7 +27,7 @@ export class LoginUserDto
   @IsNotEmpty()
   @MinLength(4)
   @MaxLength(20)
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @ValidateIf((o) => !o.email || o.username, {
     message: 'Email or username is required',
   })
@@ -52,7 +48,21 @@ export class LoginResponse {
   @FilterableField(() => String)
   token: string;
 
-  constructor(accessToken: string) {
-    this.token = accessToken;
+  @FilterableField(() => UserDto)
+  user: UserDto;
+
+  constructor(token: string, user: UserDto) {
+    Object.assign(this, { token, user });
+  }
+}
+
+export class TokenPayload {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+
+  constructor(tokenPayload: TokenPayload) {
+    Object.assign(this, tokenPayload);
   }
 }

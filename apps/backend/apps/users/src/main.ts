@@ -5,19 +5,17 @@
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { UsersModule } from './app/users.module';
 import cors from 'cors';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
-    UsersModule,
-    new FastifyAdapter({
-      logger: true,
-    }),
+    AppModule,
+    new FastifyAdapter(),
   );
 
   app.useGlobalPipes(new ValidationPipe());
