@@ -1,11 +1,11 @@
-// import styles from './page.module.css';
+import React from 'react';
 import Welcome from '../components/welcome/Welcome';
 import NavBar from '../components/Navbar/NavBar';
 import Card from '../components/card/Card';
 
 export default async function Index() {
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex flex-col text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex flex-col text-white">
       <NavBar />
       <div className="flex justify-center flex-col items-center mt-20">
         <Welcome />
