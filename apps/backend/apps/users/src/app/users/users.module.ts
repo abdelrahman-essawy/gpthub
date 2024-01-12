@@ -1,5 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { UsersDatabaseModule } from '../users-db/users-db.module';
+import { UsersDatabaseModule } from '../config/database.module';
 import { HashingModule } from '@backend/hashing';
 import {
   NestjsQueryGraphQLModule,
@@ -11,7 +11,6 @@ import { UsersService } from './users.service';
 import { AuthModule } from '../auth/auth.module';
 import { AuthResolver } from '../auth/auth.resolver';
 import { UserDto } from './dto/user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
 
 @Module({
   imports: [
@@ -25,7 +24,7 @@ import { CreateUserDto } from './dto/create-user.dto';
           DTOClass: UserDto,
           EntityClass: UserEntity,
           pagingStrategy: PagingStrategies.NONE,
-          CreateDTOClass: CreateUserDto,
+          create: { disabled: true },
         },
       ],
     }),

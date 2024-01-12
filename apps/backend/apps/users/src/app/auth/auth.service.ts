@@ -6,6 +6,7 @@ import { LoginUserDto } from './dto/login.dto';
 import { UsersService } from '../users/users.service';
 import { UserDto } from '../users/dto/user.dto';
 import { isUUID } from 'class-validator';
+import { RegisterUserDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -29,15 +30,23 @@ export class AuthService {
 
     if (!user) throw new BadRequestException({ message: 'User not found' });
 
-    const isCorrectCredentials = await this.hashingService.compare(
+    const isCredentialsCorrect = await this.hashingService.compare(
       credentials.password,
       user.password,
     );
 
-    if (!isCorrectCredentials)
+    if (!isCredentialsCorrect)
       throw new BadRequestException({ message: 'Invalid credentials' });
 
     return user;
+  }
+
+  /**
+   * Registers a user.
+   * @param UserInfo The user's information.
+   */
+  async register(UserInfo: RegisterUserDto) {
+    return await this.usersService.createOne(UserInfo);
   }
 
   async generateToken(
@@ -49,6 +58,7 @@ export class AuthService {
 
   async parseUserFromToken(token: string) {
     const tokenPayload = await this.parseToken(token);
+    console.log(tokenPayload);
 
     const user = new UserDto(tokenPayload);
     if (!user?.id) throw new Error('Invalid token payload, no id present');

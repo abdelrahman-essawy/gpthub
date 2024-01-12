@@ -56,13 +56,16 @@ export class LoginResponse {
   }
 }
 
-export class TokenPayload {
+export class userTokenPayload {
   id: string;
   username: string;
   email: string;
   role: string;
 
-  constructor(tokenPayload: TokenPayload) {
-    Object.assign(this, tokenPayload);
+  constructor(tokenPayload: userTokenPayload) {
+    this.id = tokenPayload.id;
+    this.username = tokenPayload.username;
+    this.email = tokenPayload.email;
+    this.role = tokenPayload.role;
   }
 }

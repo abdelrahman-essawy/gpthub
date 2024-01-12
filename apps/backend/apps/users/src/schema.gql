@@ -211,11 +211,11 @@ input Credentials {
 
 input CreateOneUserInput {
   """The record to create"""
-  user: CreateUserDto!
+  user: RegisterDto!
 }
 
 """Create new user"""
-input CreateUserDto {
+input RegisterDto {
   email: String!
   firstName: String!
   password: String!
@@ -226,7 +226,7 @@ input CreateUserDto {
 
 input CreateManyUsersInput {
   """Array of records to create"""
-  users: [CreateUserDto!]!
+  users: [RegisterDto!]!
 }
 
 input UpdateOneUserInput {

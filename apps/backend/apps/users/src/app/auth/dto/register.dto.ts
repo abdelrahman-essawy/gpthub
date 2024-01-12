@@ -10,9 +10,10 @@ import {
   MinLength,
 } from 'class-validator';
 import { IUser, IUserDatabaseEntity } from '@core';
+import { LoginResponse } from './login.dto';
 
 @InputType({ description: 'Create new user' })
-export class CreateUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
+export class RegisterUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
   @IsNotEmpty()
   @IsEmail()
   @Field(() => String)
@@ -54,7 +55,16 @@ export class CreateUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
   @Field(() => Date, { nullable: true })
   birthday: Date;
 
-  constructor(createUserInput: CreateUserDto) {
+  constructor(createUserInput: RegisterUserDto) {
     Object.assign(this, createUserInput);
+  }
+}
+
+export class RegisterResponse extends LoginResponse {
+  constructor(
+    public readonly token: string,
+    public readonly user: IUser,
+  ) {
+    super(token, user);
   }
 }
