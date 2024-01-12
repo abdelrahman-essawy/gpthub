@@ -53,7 +53,7 @@ export class AuthService {
     payload: object,
     options?: Omit<JwtSignOptions, keyof JwtSignOptions> | undefined,
   ) {
-    return this.jwtService.sign(payload, options);
+    return this.jwtService.sign({ ...payload }, options);
   }
 
   async parseUserFromToken(token: string) {
