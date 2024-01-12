@@ -23,7 +23,7 @@ export class AuthResolver {
     return new LoginResponse(token, user);
   }
 
-  @Mutation(() => RegisterResponse, {})
+  @Mutation(() => RegisterResponse)
   async register(@Args('userInfo') userInfo: RegisterUserDto) {
     const user = await this.authService.register(userInfo);
     const userPayload = new userTokenPayload(user);

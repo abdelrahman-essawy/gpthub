@@ -31,6 +31,12 @@ type LoginResponse {
   user: User!
 }
 
+"""Register response"""
+type RegisterResponse {
+  token: String!
+  user: User!
+}
+
 type DeleteManyResponse {
   """The number of records deleted."""
   deletedCount: Int!
@@ -47,11 +53,6 @@ type UserDeleteResponse {
   role: UserRole
   createdAt: DateTime
   updatedAt: DateTime
-}
-
-type UpdateManyResponse {
-  """The number of records updated."""
-  updatedCount: Int!
 }
 
 type Query {
@@ -194,10 +195,7 @@ enum SortNulls {
 type Mutation {
   """Login a user with username or email and password, returns JWT token."""
   login(credentials: Credentials!): LoginResponse!
-  createOneUser(input: CreateOneUserInput!): User!
-  createManyUsers(input: CreateManyUsersInput!): [User!]!
-  updateOneUser(input: UpdateOneUserInput!): User!
-  updateManyUsers(input: UpdateManyUsersInput!): UpdateManyResponse!
+  register(userInfo: RegisterUserDto!): RegisterResponse!
   deleteOneUser(input: DeleteOneUserInput!): UserDeleteResponse!
   deleteManyUsers(input: DeleteManyUsersInput!): DeleteManyResponse!
 }
@@ -209,68 +207,14 @@ input Credentials {
   password: String!
 }
 
-input CreateOneUserInput {
-  """The record to create"""
-  user: RegisterDto!
-}
-
 """Create new user"""
-input RegisterDto {
+input RegisterUserDto {
   email: String!
   firstName: String!
   password: String!
   lastName: String!
   username: String!
   birthday: DateTime
-}
-
-input CreateManyUsersInput {
-  """Array of records to create"""
-  users: [RegisterDto!]!
-}
-
-input UpdateOneUserInput {
-  """The id of the record to update"""
-  id: ID!
-
-  """The update to apply."""
-  update: UpdateUser!
-}
-
-input UpdateUser {
-  id: ID
-  firstName: String
-  lastName: String
-  username: String
-  email: String
-  verified: Boolean
-  birthday: DateTime
-  role: UserRole
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input UpdateManyUsersInput {
-  """Filter used to find fields to update"""
-  filter: UserUpdateFilter!
-
-  """The update to apply to all records found using the filter"""
-  update: UpdateUser!
-}
-
-input UserUpdateFilter {
-  and: [UserUpdateFilter!]
-  or: [UserUpdateFilter!]
-  id: IDFilterComparison
-  firstName: StringFieldComparison
-  lastName: StringFieldComparison
-  username: StringFieldComparison
-  email: StringFieldComparison
-  verified: BooleanFieldComparison
-  birthday: DateFieldComparison
-  role: UserRoleFilterComparison
-  createdAt: DateFieldComparison
-  updatedAt: DateFieldComparison
 }
 
 input DeleteOneUserInput {

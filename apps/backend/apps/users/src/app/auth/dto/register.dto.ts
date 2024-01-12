@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import {
   IsDate,
   IsEmail,
@@ -60,6 +60,7 @@ export class RegisterUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
   }
 }
 
+@ObjectType('RegisterResponse', { description: 'Register response' })
 export class RegisterResponse extends LoginResponse {
   constructor(
     public readonly token: string,

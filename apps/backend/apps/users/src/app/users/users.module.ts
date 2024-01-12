@@ -25,6 +25,7 @@ import { UserDto } from './dto/user.dto';
           EntityClass: UserEntity,
           pagingStrategy: PagingStrategies.NONE,
           create: { disabled: true },
+          update: { disabled: true },
         },
       ],
     }),
