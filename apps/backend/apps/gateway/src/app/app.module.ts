@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
-import { IntrospectAndCompose } from '@apollo/gateway';
+import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
@@ -16,6 +16,11 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         server: {
+          context: ({ req }) => ({ authorization: req.headers.authorization }),
+          cors: {
+            origin: '*',
+            credentials: true,
+          },
           autoTransformHttpErrors: true,
           sortSchema: true,
           // formatError: (err) => ({
@@ -27,6 +32,17 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
           playground: false,
         },
         gateway: {
+          buildService({ name, url }) {
+            return new RemoteGraphQLDataSource({
+              url,
+              willSendRequest({ request, context }) {
+                request.http.headers.set(
+                  'authorization',
+                  context.authorization,
+                );
+              },
+            });
+          },
           supergraphSdl: new IntrospectAndCompose({
             subgraphs: [
               {
@@ -43,11 +59,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
               },
             ],
             subgraphHealthCheck: true,
-            logger: console,
             pollIntervalInMs: 1000,
-            introspectionHeaders: {
-              'x-api-key': '123',
-            },
           }),
         },
       }),

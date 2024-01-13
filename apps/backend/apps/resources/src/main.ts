@@ -15,7 +15,7 @@ import { ResourcesModule } from './app/resources.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     ResourcesModule,
-    new FastifyAdapter(),
+    new FastifyAdapter({}),
   );
 
   app.useGlobalPipes(new ValidationPipe());

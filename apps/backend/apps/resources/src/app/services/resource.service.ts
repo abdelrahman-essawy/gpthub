@@ -8,7 +8,7 @@ import { CreateResourceDto } from '../dto/create-resource.dto';
 export class ResourceService {
   constructor(
     @InjectRepository(ResourceEntity)
-    private readonly resourceRepository: Repository<ResourceEntity>
+    private readonly resourceRepository: Repository<ResourceEntity>,
   ) {}
 
   async findOne(id: string): Promise<ResourceEntity> {
@@ -20,6 +20,10 @@ export class ResourceService {
   }
 
   async createOne(resource: CreateResourceDto) {
+    // const user = this.communicationService.internal.grpc.auth.me(token);
+    // const user = this.communicationService.internal.kafka.mailer.send(
+    //   user.email,
+    // );
     return this.resourceRepository.save(resource);
   }
 

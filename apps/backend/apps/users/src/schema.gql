@@ -56,7 +56,7 @@ type UserDeleteResponse {
 }
 
 type Query {
-  me(token: String!): User!
+  me: User!
   user(
     """The id of the record to find."""
     id: ID!

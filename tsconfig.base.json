@@ -18,7 +18,12 @@
       "@backend/database": ["libs/backend/database/src/index.ts"],
       "@backend/dtos": ["libs/backend/dtos/src/index.ts"],
       "@backend/hashing": ["libs/backend/hashing/src/index.ts"],
-      "@core": ["libs/core/src/index.ts"]
+      "@core": ["libs/core/src/index.ts"],
+      "@nx/communication": ["libs/backend/communication/src/index.ts"],
+      "@nx/external": ["libs/backend/communication/external/src/index.ts"],
+      "@nx/grpc": ["libs/backend/communication/internal/grpc/src/index.ts"],
+      "@nx/internal": ["libs/backend/communication/internal/src/index.ts"],
+      "@nx/kafka": ["libs/backend/communication/internal/kafka/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

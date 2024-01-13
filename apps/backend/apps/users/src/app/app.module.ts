@@ -15,17 +15,13 @@ import { GraphQLJSONObject } from 'graphql-type-json';
 
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
+      context: ({ req }) => ({ req }),
       resolvers: { JSON: GraphQLJSONObject },
       autoSchemaFile: {
         federation: 2,
         path: 'apps/backend/apps/users/src/schema.gql',
       },
       buildSchemaOptions: {},
-      playground: {
-        settings: {
-          'request.credentials': 'include', // Allow credentials in Playground
-        },
-      },
     }),
   ],
   controllers: [],

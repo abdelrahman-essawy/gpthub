@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 import { HashingService } from '@core';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
@@ -36,7 +40,7 @@ export class AuthService {
     );
 
     if (!isCredentialsCorrect)
-      throw new BadRequestException({ message: 'Invalid credentials' });
+      throw new UnauthorizedException({ message: 'Invalid credentials' });
 
     return user;
   }
@@ -58,7 +62,6 @@ export class AuthService {
 
   async parseUserFromToken(token: string) {
     const tokenPayload = await this.parseToken(token);
-    console.log(tokenPayload);
 
     const user = new UserDto(tokenPayload);
     if (!user?.id) throw new Error('Invalid token payload, no id present');
