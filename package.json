@@ -50,6 +50,7 @@
     "express": "^4.18.2",
     "fastest-levenshtein": "^1.0.16",
     "graphql": "^16.8.1",
+    "graphql-passport": "^0.6.7",
     "graphql-subscriptions": "^2.0.0",
     "graphql-type-json": "^0.3.2",
     "inlineTrace": "link:@apollo/server/dist/esm/plugin/inlineTrace",
