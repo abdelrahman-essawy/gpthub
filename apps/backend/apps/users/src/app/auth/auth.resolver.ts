@@ -7,11 +7,9 @@ import { RegisterResponse, RegisterUserDto } from './dto/register.dto';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../guards/auth.guard';
 import { User } from './decorators/ user.decorator';
-import { Roles } from './decorators/roles.decorator';
-import { UserRole } from '@core';
-import { RolesGuard } from '../guards/roles.guard';
 import { LocalStrategy } from './strategies/local.strategy';
 
+// @UseGuards(RolesGuard)
 @UseGuards(AuthGuard)
 @Resolver(() => UserDto)
 export class AuthResolver {
@@ -41,9 +39,7 @@ export class AuthResolver {
     return new RegisterResponse(token, user);
   }
 
-  @UseGuards(AuthGuard)
-  @Roles([UserRole.ADMIN, UserRole.USER])
-  @UseGuards(RolesGuard)
+  // @Roles([UserRole.ADMIN])
   @Query(() => UserDto)
   async me(@User() user: UserDto) {
     return this.usersService.findById(user.id);
