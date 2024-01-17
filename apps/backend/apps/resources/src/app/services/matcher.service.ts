@@ -1,5 +1,5 @@
-import { closest, distance } from 'fastest-levenshtein';
 import { Injectable } from '@nestjs/common';
+import { closest, distance } from 'fastest-levenshtein';
 
 @Injectable()
 export class StringMatcherService {

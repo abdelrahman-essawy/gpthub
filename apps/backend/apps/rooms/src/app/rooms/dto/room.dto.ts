@@ -7,7 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { IRoom, IRoomDatabaseEntity, ResourceFormat, RoomType } from '@core';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
-import { UserReferenceDTO } from '../../../../../resources/src/app/dto/user-refrence.dto';
+import { UserReferenceDTO } from '../../../../../../../../libs/backend/dtos/src/resource/user-refrence.dto';
 
 @ObjectType('Room')
 export class RoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {

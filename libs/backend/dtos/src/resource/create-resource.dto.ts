@@ -1,11 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
 import {
-  IResource,
-  IResourceContent,
-  ResourceFormat,
-  ResourceType,
-} from '@core';
-import {
   IsEnum,
   IsNotEmpty,
   IsOptional,
@@ -13,12 +7,11 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { IDatabaseEntity } from '../../../../../../../libs/core/src/interfaces/interface';
+
+import { ICreateResource, ResourceFormat, ResourceType } from '@core';
 
 @InputType({ description: 'Create new resource' })
-export class CreateResourceDto
-  implements Omit<IResource, keyof (IDatabaseEntity & IResourceContent)>
-{
+export class CreateResourceDto implements ICreateResource {
   @Field(() => String)
   @IsNotEmpty()
   @IsUUID()

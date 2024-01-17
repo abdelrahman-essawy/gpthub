@@ -5,8 +5,10 @@ import {
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
-import { IResource, ResourceFormat, ResourceType } from '@core';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
+
+import { IResource, ResourceFormat, ResourceType } from '@core';
+
 import { UserReferenceDTO } from './user-refrence.dto';
 
 @ObjectType('Resource', {

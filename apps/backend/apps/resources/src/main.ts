@@ -10,6 +10,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+
 import { ResourcesModule } from './app/resources.module';
 
 async function bootstrap() {

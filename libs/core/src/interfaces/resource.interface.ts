@@ -1,13 +1,18 @@
 import { IDatabaseEntity } from './interface';
 
-export interface IResource extends IDatabaseEntity, IResourceContent {
+export interface IResource extends IDatabaseEntity, IGeneratedResourceContent {
   title: string;
   description?: string;
   type: ResourceType;
   format: ResourceFormat;
 }
 
-export interface IResourceContent {
+export interface ICreateResource
+  extends Omit<IResource, keyof (IDatabaseEntity & IGeneratedResourceContent)> {
+  authorId: string;
+}
+
+export interface IGeneratedResourceContent {
   raw: string;
   indexed: string;
 }

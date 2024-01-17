@@ -4,12 +4,14 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
-import { ResourcesDatabaseModule } from './resources-db/resources-db.module';
-import { UserReferenceDTO } from './dto/user-refrence.dto';
-import { ResourceResolver } from './resolvers/resource.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { UserReferenceDTO } from '@backend/dtos';
+
+import { ResourceResolver } from './resolvers/resource.resolver';
 import { ResourceService } from './services/resource.service';
 import { ResourceEntity } from './entities/resource.entity';
+import { ResourcesDatabaseModule } from './resources-db/resources-db.module';
 import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
 
 @Module({

@@ -1,7 +1,8 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { UserReferenceDTO } from '../dto/user-refrence.dto';
+
+import { ResourceDto, UserReferenceDTO } from '@backend/dtos';
+
 import { ResourceService } from '../services/resource.service';
-import { ResourceDto } from '../dto/resource.dto';
 
 @Resolver(() => UserReferenceDTO)
 export class UserReferenceResolver {

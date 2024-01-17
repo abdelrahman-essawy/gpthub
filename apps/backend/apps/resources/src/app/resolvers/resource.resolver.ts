@@ -6,10 +6,14 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { ResourceDto } from '../dto/resource.dto';
+
+import {
+  CreateResourceDto,
+  ResourceDto,
+  UserReferenceDTO,
+} from '@backend/dtos';
+
 import { ResourceService } from '../services/resource.service';
-import { CreateResourceDto } from '../dto/create-resource.dto';
-import { UserReferenceDTO } from '../dto/user-refrence.dto';
 import { ResourceEntity } from '../entities/resource.entity';
 
 @Resolver(() => ResourceDto)
