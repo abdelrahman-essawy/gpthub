@@ -7,10 +7,10 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { RoomService } from '../services/room.service';
-import { UserReferenceDTO } from '@backend/dtos';
 import { RoomDto } from '../dto/room.dto';
 import { CreateRoomDto } from '../dto/create-room.dto';
 import { ResourceEntity } from '../../../../../resources/src/app/entities/resource.entity';
+import { UserReferenceDTO } from '@backend/dto/resource';
 
 @Resolver(() => RoomDto)
 export class RoomResolver {

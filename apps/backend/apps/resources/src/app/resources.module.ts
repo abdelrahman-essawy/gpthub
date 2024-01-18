@@ -6,7 +6,7 @@ import {
 } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UserReferenceDTO } from '@backend/dtos';
+import { UserReferenceDTO } from '@backend/dto/resource';
 
 import { ResourceResolver } from './resolvers/resource.resolver';
 import { ResourceService } from './services/resource.service';

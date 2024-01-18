@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { ICreateResource, ResourceFormat, ResourceType } from '@core';
+import { ICreateResource, ResourceFormat, ResourceType } from 'libs/core/src';
 
 @InputType({ description: 'Create new resource' })
 export class CreateResourceDto implements ICreateResource {

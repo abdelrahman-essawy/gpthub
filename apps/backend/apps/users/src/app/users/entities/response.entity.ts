@@ -1,7 +1,7 @@
 // src/scalars/json.scalar.ts
 import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSONObject } from 'graphql-type-json';
-import { UserDto } from '../dto/user.dto';
+import { UserDto } from '../../../../../../../../libs/backend/dto/user/user.dto';
 
 @ObjectType()
 export class ResponseEntity {

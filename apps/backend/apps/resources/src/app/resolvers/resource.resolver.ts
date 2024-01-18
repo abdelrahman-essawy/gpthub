@@ -11,7 +11,7 @@ import {
   CreateResourceDto,
   ResourceDto,
   UserReferenceDTO,
-} from '@backend/dtos';
+} from '@backend/dto/resource';
 
 import { ResourceService } from '../services/resource.service';
 import { ResourceEntity } from '../entities/resource.entity';

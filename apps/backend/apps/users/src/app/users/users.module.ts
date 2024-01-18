@@ -6,11 +6,13 @@ import {
   PagingStrategies,
 } from '@ptc-org/nestjs-query-graphql';
 import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
+
+import { UserDto } from '@backend/dto/user';
+
 import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { AuthModule } from '../auth/auth.module';
 import { AuthResolver } from '../auth/auth.resolver';
-import { UserDto } from './dto/user.dto';
 
 @Module({
   imports: [

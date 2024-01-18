@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { CreateResourceDto } from '@backend/dtos';
-
 import { ResourceEntity } from '../entities/resource.entity';
+import { CreateResourceDto } from '@backend/dto/resource';
 
 @Injectable()
 export class ResourceService {

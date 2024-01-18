@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from './entities/user.entity';
 import { TypeOrmQueryService } from '@ptc-org/nestjs-query-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { IUserRepository } from '@core';
+
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService

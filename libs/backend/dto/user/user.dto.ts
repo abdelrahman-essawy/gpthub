@@ -1,4 +1,4 @@
-import { IUser, UserRole } from '@core';
+import { IUser, UserRole } from 'libs/core/src';
 import { Directive, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
 

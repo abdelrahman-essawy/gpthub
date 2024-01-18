@@ -1,1 +1,1 @@
-export * from './resource';
+export * from '../../dto/resource';

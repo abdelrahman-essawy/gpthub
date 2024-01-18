@@ -1,10 +1,17 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserDto } from '../users/dto/user.dto';
-import { UsersService } from '../users/users.service';
-import { LoginResponse, LoginUserDto, userTokenPayload } from './dto/login.dto';
-import { AuthService } from './auth.service';
-import { RegisterResponse, RegisterUserDto } from './dto/register.dto';
 import { UseGuards } from '@nestjs/common';
+
+import { UserDto } from '@backend/dto/user';
+import {
+  LoginResponse,
+  LoginUserDto,
+  RegisterResponse,
+  RegisterUserDto,
+  UserTokenPayload,
+} from '@backend/dto/auth';
+
+import { UsersService } from '../users/users.service';
+import { AuthService } from './auth.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { User } from './decorators/ user.decorator';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -26,7 +33,7 @@ export class AuthResolver {
   async login(@Args('credentials') credentials: LoginUserDto) {
     console.log(credentials);
     const user = await this.authService.login(credentials);
-    const userPayload = new userTokenPayload(user);
+    const userPayload = new UserTokenPayload(user);
     const token = await this.authService.generateToken(userPayload);
     return new LoginResponse(token, user);
   }
@@ -34,7 +41,7 @@ export class AuthResolver {
   @Mutation(() => RegisterResponse)
   async register(@Args('userInfo') userInfo: RegisterUserDto) {
     const user = await this.authService.register(userInfo);
-    const userPayload = new userTokenPayload(user);
+    const userPayload = new UserTokenPayload(user);
     const token = await this.authService.generateToken(userPayload);
     return new RegisterResponse(token, user);
   }

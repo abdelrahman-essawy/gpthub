@@ -9,7 +9,7 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { FilterableField } from '@ptc-org/nestjs-query-graphql';
-import { UserDto } from '../../users/dto/user.dto';
+import { UserDto } from '../user';
 
 @InputType('Credentials', { description: 'Login user' })
 export class LoginUserDto
@@ -56,13 +56,13 @@ export class LoginResponse {
   }
 }
 
-export class userTokenPayload {
+export class UserTokenPayload {
   id: string;
   username: string;
   email: string;
   role: string;
 
-  constructor(tokenPayload: userTokenPayload) {
+  constructor(tokenPayload: UserTokenPayload) {
     this.id = tokenPayload.id;
     this.username = tokenPayload.username;
     this.email = tokenPayload.email;

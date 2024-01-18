@@ -1,5 +1,8 @@
-import { LoginResponse, LoginUserDto } from '../dto/login.dto';
-import { UserDto } from '../../users/dto/user.dto';
+import {
+  LoginResponse,
+  LoginUserDto,
+} from '../../../../../../../../libs/backend/dto/auth/login.dto';
+import { UserDto } from '../../../../../../../../libs/backend/dto/user/user.dto';
 import { UserRole } from '@core';
 import { AuthResolver } from '../auth.resolver';
 

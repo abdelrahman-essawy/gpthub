@@ -3,14 +3,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { isUUID } from 'class-validator';
+import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
 import { HashingService } from '@core';
-import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { LoginUserDto } from './dto/login.dto';
+import { UserDto } from '@backend/dto/user';
+import { LoginUserDto, RegisterUserDto } from '@backend/dto/auth';
+
 import { UsersService } from '../users/users.service';
-import { UserDto } from '../users/dto/user.dto';
-import { isUUID } from 'class-validator';
-import { RegisterUserDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
