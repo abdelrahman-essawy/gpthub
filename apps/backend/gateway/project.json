@@ -1,0 +1,55 @@
+{
+  "name": "gateway",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/gateway/src",
+  "projectType": "application",
+  "implicitDependencies": ["users", "resources"],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/backend/gateway",
+        "main": "apps/backend/gateway/src/main.ts",
+        "tsConfig": "apps/backend/gateway/tsconfig.app.json",
+        "assets": ["apps/backend/gateway/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/backend/gateway/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "gateway:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "gateway:build:development"
+        },
+        "production": {
+          "buildTarget": "gateway:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/backend/gateway/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

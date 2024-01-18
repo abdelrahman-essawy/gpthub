@@ -21,14 +21,17 @@
       "@backend/database": [
         "libs/backend/database/src/index.ts"
       ],
+      "@backend/dto/auth": [
+        "libs/backend/dto/auth/index.ts"
+      ],
       "@backend/dto/resource": [
         "libs/backend/dto/resource/index.ts"
       ],
       "@backend/dto/user": [
         "libs/backend/dto/user/index.ts"
       ],
-      "@backend/dto/auth": [
-        "libs/backend/dto/auth/index.ts"
+      "@backend/dto/room": [
+        "libs/backend/dto/room/index.ts"
       ],
       "@backend/hashing": [
         "libs/backend/hashing/src/index.ts"

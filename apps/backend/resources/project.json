@@ -1,0 +1,58 @@
+{
+  "name": "resources",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/resources/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/backend/resources",
+        "main": "apps/backend/resources/src/main.ts",
+        "tsConfig": "apps/backend/resources/tsconfig.app.json",
+        "assets": ["apps/backend/resources/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/backend/resources/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "resources:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "resources:build:development"
+        },
+        "production": {
+          "buildTarget": "resources:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/backend/resources/jest.config.ts"
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/backend/resources/Dockerfile . -t resources"
+    }
+  },
+  "tags": []
+}
