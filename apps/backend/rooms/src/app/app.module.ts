@@ -4,13 +4,20 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
+import { UserReferenceDTO } from '@backend/dto/room';
+import { RoomModule } from './rooms/rooms.module';
 
 @Module({
   imports: [
+    RoomModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: {
         federation: 2,
+        path: 'apps/backend/apps/rooms/src/schema.gql',
+      },
+      buildSchemaOptions: {
+        orphanedTypes: [UserReferenceDTO],
       },
       playground: {
         settings: {

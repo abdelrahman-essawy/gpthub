@@ -19,7 +19,11 @@ export class RoomEntity implements IRoom {
   @Column({ nullable: true })
   description?: string;
 
-  @Column({ type: 'enum', enum: RoomType, default: RoomType.PUBLIC })
+  @Column({
+    type: 'enum',
+    enum: RoomType,
+    default: RoomType.PUBLIC,
+  })
   roomType: RoomType;
 
   @CreateDateColumn()
@@ -34,15 +38,15 @@ export class RoomEntity implements IRoom {
   @Column('simple-array')
   resourceIds: string[];
 
-  @Column('simple-array')
+  @Column('simple-array', { nullable: true, default: [] })
   participantIds: string[];
 
   @Column('simple-array')
   ownerIds: string[];
 
-  @Column('simple-array')
+  @Column('simple-array', { nullable: true, default: [] })
   moderatorIds: string[];
 
-  @Column('simple-array')
+  @Column('simple-array', { nullable: true, default: [] })
   collaboratorIds: string[];
 }

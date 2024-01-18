@@ -7,7 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
 
-import { IResource, ResourceFormat, ResourceType } from 'libs/core/src';
+import { IResource, ResourceFormat, ResourceType } from '@core';
 
 import { UserReferenceDTO } from './user-refrence.dto';
 

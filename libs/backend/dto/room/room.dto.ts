@@ -5,12 +5,7 @@ import {
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
-import {
-  IRoom,
-  IRoomDatabaseEntity,
-  ResourceFormat,
-  RoomType,
-} from 'libs/core/src';
+import { IRoom, IRoomDatabaseEntity, RoomType } from '@core';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
 import { UserReferenceDTO } from './user-refrence.dto';
 
@@ -27,9 +22,6 @@ export class RoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {
 
   @FilterableField(() => RoomType) // Add explicit type here
   roomType: RoomType;
-
-  @FilterableField(() => ResourceFormat) // Add explicit type here
-  format: ResourceFormat;
 
   @FilterableField(() => GraphQLISODateTime)
   createdAt: Date;
