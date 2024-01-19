@@ -28,6 +28,8 @@ import { AuthResolver } from '../auth/auth.resolver';
           pagingStrategy: PagingStrategies.NONE,
           create: { disabled: true },
           update: { disabled: true },
+
+          referenceBy: { key: 'id' },
         },
       ],
     }),

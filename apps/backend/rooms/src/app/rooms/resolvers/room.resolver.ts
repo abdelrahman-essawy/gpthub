@@ -70,6 +70,7 @@ export class RoomResolver {
 
   @ResolveField(() => [UserReferenceDTO])
   async owners(@Parent() room: RoomEntity) {
+    console.log(room.ownerIds);
     return room.ownerIds.map((id) => ({
       __typename: 'User',
       id,
