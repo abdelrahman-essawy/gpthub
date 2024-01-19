@@ -1,9 +1,9 @@
 import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
 
-import { CreateResourceDto } from './create-resource.dto';
+import { CreateResourceInput } from './create-resource.input';
 
 @InputType()
-export class UpdateResourceDto extends PartialType(CreateResourceDto) {
+export class UpdateResourceDto extends PartialType(CreateResourceInput) {
   @Field(() => Int)
   id: number;
 }

@@ -8,13 +8,14 @@ import {
 } from '@nestjs/graphql';
 
 import {
-  CreateResourceDto,
+  CreateResourceInput,
   ResourceDto,
   UserReferenceDTO,
 } from '@backend/dto/resource';
 
 import { ResourceService } from '../services/resource.service';
 import { ResourceEntity } from '../entities/resource.entity';
+import { CatchToken } from '@backend/decorators';
 
 @Resolver(() => ResourceDto)
 export class ResourceResolver {
@@ -38,8 +39,14 @@ export class ResourceResolver {
   }
 
   @Mutation(() => ResourceDto)
-  async createResource(@Args('resource') resource: CreateResourceDto) {
-    return this.resourceService.createOne(resource);
+  async createResource(
+    @CatchToken() token: string,
+    @Args('resource') resource: CreateResourceInput,
+  ) {
+    return this.resourceService.createOne({
+      ...resource,
+      authorId: token,
+    });
   }
 
   // @Mutation(() => ResourceDto)

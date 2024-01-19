@@ -1,0 +1,31 @@
+{
+  "name": "decorators",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/decorators/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/backend/decorators",
+        "tsConfig": "libs/backend/decorators/tsconfig.lib.json",
+        "packageJson": "libs/backend/decorators/package.json",
+        "main": "libs/backend/decorators/src/index.ts",
+        "assets": ["libs/backend/decorators/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/backend/decorators/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

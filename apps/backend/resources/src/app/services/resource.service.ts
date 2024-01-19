@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ResourceEntity } from '../entities/resource.entity';
-import { CreateResourceDto } from '@backend/dto/resource';
+import { CreateResource } from '@backend/dto/resource';
 
 @Injectable()
 export class ResourceService {
@@ -20,7 +20,7 @@ export class ResourceService {
     return this.resourceRepository.find();
   }
 
-  async createOne(resource: CreateResourceDto) {
+  async createOne(resource: CreateResource) {
     // const user = this.communicationService.internal.grpc.auth.me(token);
     // const user = this.communicationService.internal.kafka.mailer.send(
     //   user.email,

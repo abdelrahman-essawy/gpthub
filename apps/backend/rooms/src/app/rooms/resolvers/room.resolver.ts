@@ -7,13 +7,13 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 
+import { CatchToken } from '@backend/decorators';
+import { JwtService } from '@nestjs/jwt';
+import { UserTokenPayload } from '@backend/dto/auth';
 import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dto/room';
 
 import { RoomService } from '../services/room.service';
 import { RoomEntity } from '../entities/room.entity';
-import { CatchToken } from '../../../../../users/src/app/auth/decorators/token.decorator';
-import { JwtService } from '@nestjs/jwt';
-import { UserTokenPayload } from '@backend/dto/auth';
 
 @Resolver(() => RoomDto)
 export class RoomResolver {
@@ -70,7 +70,6 @@ export class RoomResolver {
 
   @ResolveField(() => [UserReferenceDTO])
   async owners(@Parent() room: RoomEntity) {
-    console.log(room.ownerIds);
     return room.ownerIds.map((id) => ({
       __typename: 'User',
       id,

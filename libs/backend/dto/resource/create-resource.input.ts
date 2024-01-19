@@ -11,12 +11,7 @@ import {
 import { ICreateResource, ResourceFormat, ResourceType } from '@core';
 
 @InputType({ description: 'Create new resource' })
-export class CreateResourceDto implements ICreateResource {
-  @Field(() => String)
-  @IsNotEmpty()
-  @IsUUID()
-  authorId: string;
-
+export class CreateResourceInput {
   @Field(() => String)
   @IsOptional()
   @MinLength(3)
@@ -36,4 +31,14 @@ export class CreateResourceDto implements ICreateResource {
   @Field(() => String)
   @IsEnum(ResourceType)
   type: ResourceType;
+}
+
+export class CreateResource
+  extends CreateResourceInput
+  implements ICreateResource
+{
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsUUID()
+  authorId: string;
 }
