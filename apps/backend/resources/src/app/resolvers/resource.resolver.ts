@@ -6,16 +6,19 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import { UseInterceptors } from '@nestjs/common';
 
 import {
   CreateResourceInput,
   ResourceDto,
   UserReferenceDTO,
 } from '@backend/dto/resource';
+import { User } from '@backend/decorators';
+import { IUserTokenPayload } from '@core';
+import { ParseUserFromToken } from '@backend/interceptors';
 
 import { ResourceService } from '../services/resource.service';
 import { ResourceEntity } from '../entities/resource.entity';
-import { CatchToken } from '@backend/decorators';
 
 @Resolver(() => ResourceDto)
 export class ResourceResolver {
@@ -38,14 +41,16 @@ export class ResourceResolver {
     return resources.filter((r) => r.type === resource.type);
   }
 
+  @UseInterceptors(ParseUserFromToken)
   @Mutation(() => ResourceDto)
   async createResource(
-    @CatchToken() token: string,
-    @Args('resource') resource: CreateResourceInput,
+    @User() user: IUserTokenPayload,
+    @Args('resource')
+    resource: CreateResourceInput,
   ) {
     return this.resourceService.createOne({
       ...resource,
-      authorId: token,
+      authorId: user.id,
     });
   }
 

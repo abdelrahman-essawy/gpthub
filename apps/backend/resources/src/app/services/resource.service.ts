@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -41,7 +41,11 @@ export class ResourceService {
   }
 
   async deleteOne(id: string) {
-    return this.resourceRepository.delete({ id });
+    const resource = await this.resourceRepository.findOne({ where: { id } });
+    if (!resource) {
+      throw new NotFoundException("Resource doesn't exist");
+    }
+    return this.resourceRepository.remove(resource);
   }
 
   async deleteMany(resources: ResourceEntity[]): Promise<ResourceEntity[]> {

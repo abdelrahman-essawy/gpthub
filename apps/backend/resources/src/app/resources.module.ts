@@ -13,6 +13,7 @@ import { ResourceService } from './services/resource.service';
 import { ResourceEntity } from './entities/resource.entity';
 import { ResourcesDatabaseModule } from './resources-db/resources-db.module';
 import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
+import { JwtModule } from '@backend/jwt';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
     }),
     ResourcesDatabaseModule,
     TypeOrmModule.forFeature([ResourceEntity]),
+    JwtModule,
   ],
   providers: [ResourceResolver, ResourceService, UserReferenceResolver],
 })

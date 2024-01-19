@@ -6,10 +6,11 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import { UseInterceptors } from '@nestjs/common';
 
-import { CatchToken } from '@backend/decorators';
-import { JwtService } from '@nestjs/jwt';
-import { UserTokenPayload } from '@backend/dto/auth';
+import { User } from '@backend/decorators';
+import { ParseUserFromToken } from '@backend/interceptors';
+import { IUserTokenPayload } from '@core';
 import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dto/room';
 
 import { RoomService } from '../services/room.service';
@@ -17,10 +18,7 @@ import { RoomEntity } from '../entities/room.entity';
 
 @Resolver(() => RoomDto)
 export class RoomResolver {
-  constructor(
-    private roomService: RoomService,
-    private readonly JwtService: JwtService,
-  ) {}
+  constructor(private roomService: RoomService) {}
 
   @Query(() => RoomDto)
   async room(@Args('id') id: string) {
@@ -32,12 +30,12 @@ export class RoomResolver {
     return this.roomService.findAll();
   }
 
+  @UseInterceptors(ParseUserFromToken)
   @Mutation(() => RoomDto)
   async createRoom(
-    @CatchToken() token: string,
+    @User() user: IUserTokenPayload,
     @Args('room') roomData: CreateRoomInput,
   ) {
-    const user: UserTokenPayload = this.JwtService.decode(token);
     return this.roomService.createOne({
       ...roomData,
       authorId: user.id,
