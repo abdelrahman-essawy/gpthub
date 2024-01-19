@@ -12,6 +12,7 @@ type Room {
   title: String!
   description: String!
   roomType: RoomType!
+  resourceIds: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
   author: User!

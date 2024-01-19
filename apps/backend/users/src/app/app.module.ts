@@ -20,7 +20,6 @@ import { AuthModule } from './auth/auth.module';
       resolvers: { JSON: GraphQLJSONObject },
       autoSchemaFile: {
         federation: 2,
-        path: 'apps/backend/apps/users/src/schema.gql',
       },
       buildSchemaOptions: {},
     }),

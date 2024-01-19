@@ -20,7 +20,6 @@ import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
       driver: ApolloFederationDriver,
       autoSchemaFile: {
         federation: 2,
-        path: 'apps/backend/apps/resources/src/schema.gql',
       },
       buildSchemaOptions: {
         orphanedTypes: [UserReferenceDTO],

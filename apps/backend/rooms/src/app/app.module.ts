@@ -17,7 +17,6 @@ import { RoomModule } from './rooms/rooms.module';
       },
       autoSchemaFile: {
         federation: 2,
-        path: 'apps/backend/apps/rooms/src/schema.gql',
       },
       buildSchemaOptions: {
         orphanedTypes: [UserReferenceDTO],

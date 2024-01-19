@@ -23,6 +23,9 @@ export class RoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {
   @FilterableField(() => RoomType) // Add explicit type here
   roomType: RoomType;
 
+  @FilterableField(() => [String])
+  resourceIds: string[];
+
   @FilterableField(() => GraphQLISODateTime)
   createdAt: Date;
 
