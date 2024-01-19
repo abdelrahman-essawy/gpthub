@@ -18,6 +18,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@backend/jwt": [
+        "libs/backend/jwt/src/index.ts"
+      ],
       "@backend/database": [
         "libs/backend/database/src/index.ts"
       ],
@@ -27,11 +30,11 @@
       "@backend/dto/resource": [
         "libs/backend/dto/resource/index.ts"
       ],
-      "@backend/dto/user": [
-        "libs/backend/dto/user/index.ts"
-      ],
       "@backend/dto/room": [
         "libs/backend/dto/room/index.ts"
+      ],
+      "@backend/dto/user": [
+        "libs/backend/dto/user/index.ts"
       ],
       "@backend/hashing": [
         "libs/backend/hashing/src/index.ts"
@@ -61,6 +64,7 @@
   },
   "exclude": [
     "node_modules",
-    "tmp"
+    "tmp",
+    "dist"
   ]
 }

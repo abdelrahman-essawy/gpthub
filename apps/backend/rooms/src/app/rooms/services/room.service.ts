@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomEntity } from '../entities/room.entity';
-import { CreateRoomDto } from '@backend/dto/room';
+import { CreateRoom } from '@backend/dto/room';
 
 @Injectable()
 export class RoomService {
@@ -19,7 +19,7 @@ export class RoomService {
     return this.roomRepository.find();
   }
 
-  async createOne(resource: CreateRoomDto) {
+  async createOne(resource: CreateRoom) {
     return this.roomRepository.save(resource);
   }
 

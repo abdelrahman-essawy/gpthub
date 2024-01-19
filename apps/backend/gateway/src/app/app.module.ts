@@ -36,10 +36,13 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
             return new RemoteGraphQLDataSource({
               url,
               willSendRequest({ request, context }) {
-                request.http.headers.set(
-                  'authorization',
-                  context.authorization,
-                );
+                if (context.authorization) {
+                  request.http.headers.set(
+                    'authorization',
+                    context.authorization,
+                  );
+                  request.http.headers.set('microservice', name);
+                }
               },
             });
           },

@@ -12,6 +12,9 @@ import { RoomModule } from './rooms/rooms.module';
     RoomModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
+      context: ({ req }) => {
+        return { req };
+      },
       autoSchemaFile: {
         federation: 2,
         path: 'apps/backend/apps/rooms/src/schema.gql',

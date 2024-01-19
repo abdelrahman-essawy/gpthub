@@ -37,12 +37,12 @@ type Query {
 }
 
 type Mutation {
-  createRoom(room: CreateRoomDto!): Room!
+  createRoom(room: CreateRoomInput!): Room!
   deleteRoom(id: String!): Room!
 }
 
 """Input to create a new room"""
-input CreateRoomDto {
+input CreateRoomInput {
   description: String
   title: String!
   roomType: String

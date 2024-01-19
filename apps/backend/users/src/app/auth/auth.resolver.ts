@@ -13,7 +13,7 @@ import {
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '../guards/auth.guard';
-import { User } from './decorators/ user.decorator';
+import { User } from './decorators/user.decorator';
 import { LocalStrategy } from './strategies/local.strategy';
 
 // @UseGuards(RolesGuard)

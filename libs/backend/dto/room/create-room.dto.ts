@@ -10,7 +10,7 @@ import {
 import { IRoom, IRoomDatabaseEntity, RoomType } from '@core';
 
 @InputType({ description: 'Input to create a new room' })
-export class CreateRoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {
+export class CreateRoomInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @MinLength(3)
@@ -32,4 +32,19 @@ export class CreateRoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {
   @IsNotEmpty()
   @IsUUID('4', { each: true })
   resourceIds: string[];
+}
+
+export class CreateRoom
+  extends CreateRoomInput
+  implements Omit<IRoom, keyof IRoomDatabaseEntity>
+{
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsUUID('4')
+  authorId: string;
+
+  @Field(() => [String])
+  @IsNotEmpty()
+  @IsUUID('4', { each: true })
+  ownerIds: string[];
 }

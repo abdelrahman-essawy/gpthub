@@ -7,14 +7,20 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 
-import { CreateRoomDto, RoomDto, UserReferenceDTO } from '@backend/dto/room';
+import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dto/room';
 
 import { RoomService } from '../services/room.service';
 import { RoomEntity } from '../entities/room.entity';
+import { CatchToken } from '../../../../../users/src/app/auth/decorators/token.decorator';
+import { JwtService } from '@nestjs/jwt';
+import { UserTokenPayload } from '@backend/dto/auth';
 
 @Resolver(() => RoomDto)
 export class RoomResolver {
-  constructor(private roomService: RoomService) {}
+  constructor(
+    private roomService: RoomService,
+    private readonly JwtService: JwtService,
+  ) {}
 
   @Query(() => RoomDto)
   async room(@Args('id') id: string) {
@@ -27,13 +33,16 @@ export class RoomResolver {
   }
 
   @Mutation(() => RoomDto)
-  async createRoom(@Args('room') roomData: CreateRoomDto) {
-    const room = {
+  async createRoom(
+    @CatchToken() token: string,
+    @Args('room') roomData: CreateRoomInput,
+  ) {
+    const user: UserTokenPayload = this.JwtService.decode(token);
+    return this.roomService.createOne({
       ...roomData,
-      authorId: '6416378b-6305-4791-affa-1f016f2bfc9e',
-      ownerIds: ['6416378b-6305-4791-affa-1f016f2bfc9e'],
-    };
-    return this.roomService.createOne(room);
+      authorId: user.id,
+      ownerIds: [user.id],
+    });
   }
 
   // @Mutation(() => RoomDto)
