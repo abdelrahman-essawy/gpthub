@@ -1,10 +1,13 @@
+// 'use client'
 import React from 'react';
 import Welcome from '../components/welcome/Welcome';
 import Card from '../components/card/Card';
 import NewNavBar from '../components/new navbar/Navbar';
 import Footer from '../components/footer/Footer';
-import Image from 'next/image';
 import ListPowered from '../components/list powered/ListPowered';
+import Shapes from '../components/line/Shapes';
+import PoweredBy from '../components/PoweredBy/PoweredBy';
+
 export default async function Index() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
@@ -42,8 +45,11 @@ Elevate your online experience with our Gemini AI-powered website. Merging cutti
         className="mt-2 mb-10 text-center font-Dela_Gothic_One sm:text-xl md:text-2xl lg:text-4xl bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 inline-block text-transparent bg-clip-text">
         Used Technologies
       </p>
-      <ListPowered />
-      <div className="mt-auto mt-10">
+      <div className="mb-10">
+        <ListPowered />
+      </div>
+      {/*<PoweredBy/>*/}
+      <div className="mt-auto">
         <hr className="border-amber-50/30" />
         <Footer />
       </div>
