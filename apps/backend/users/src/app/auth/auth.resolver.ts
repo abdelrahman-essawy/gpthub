@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UseInterceptors } from '@nestjs/common';
 
 import { UserDto } from '@backend/dto/user';
 import {
@@ -12,12 +12,13 @@ import {
 
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
-import { AuthGuard } from '../guards/auth.guard';
-import { User } from './decorators/user.decorator';
 import { LocalStrategy } from './strategies/local.strategy';
+import { ParseUserFromToken } from '@backend/interceptors';
+import { User } from '@backend/decorators';
+import { IUserTokenPayload } from '@core';
 
 // @UseGuards(RolesGuard)
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Resolver(() => UserDto)
 export class AuthResolver {
   constructor(
@@ -31,7 +32,6 @@ export class AuthResolver {
   })
   @UseGuards(LocalStrategy)
   async login(@Args('credentials') credentials: LoginUserDto) {
-    console.log(credentials);
     const user = await this.authService.login(credentials);
     const userPayload = new UserTokenPayload(user);
     const token = await this.authService.generateToken(userPayload);
@@ -47,8 +47,9 @@ export class AuthResolver {
   }
 
   // @Roles([UserRole.ADMIN])
+  @UseInterceptors(ParseUserFromToken)
   @Query(() => UserDto)
-  async me(@User() user: UserDto) {
+  async me(@User() user: IUserTokenPayload) {
     return this.usersService.findById(user.id);
   }
 }

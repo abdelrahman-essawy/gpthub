@@ -9,8 +9,10 @@ import { Observable } from 'rxjs';
 
 import {
   extractTokenFromRequest,
+  isUserTokenPayloadValid,
   setHeadersInRequest,
 } from '@backend/utilities';
+import { IUserTokenPayload } from '@core';
 
 @Injectable()
 export class ParseUserFromToken implements NestInterceptor {
@@ -20,7 +22,9 @@ export class ParseUserFromToken implements NestInterceptor {
     const token = extractTokenFromRequest(context);
 
     if (token) {
-      const user = this.jwtService.decode(token);
+      const user: IUserTokenPayload = this.jwtService.decode(token);
+      console.log(user);
+      isUserTokenPayloadValid(user);
       setHeadersInRequest(context, { user });
     }
 

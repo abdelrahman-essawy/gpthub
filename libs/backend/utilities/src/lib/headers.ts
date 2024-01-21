@@ -7,7 +7,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 
 export const setHeadersInRequest = (
   ctx: ExecutionContext,
-  headersObject: Record<string, string>,
+  headersObject: Record<string, unknown>,
 ): void => {
   const ctxGql = GqlExecutionContext.create(ctx);
   const request = ctxGql.getContext().req;
@@ -35,7 +35,7 @@ export const extractTokenFromRequest = (ctx: ExecutionContext): string => {
     throw new UnauthorizedException();
   }
 
-  return authorizationHeader.replace('Bearer ', '');
+  return authorizationHeader.replace(/bearer /gi, '');
 };
 
 export const extractHeaderFromRequest = (

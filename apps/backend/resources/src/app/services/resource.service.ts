@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { ResourceEntity } from '../entities/resource.entity';
 import { CreateResource } from '@backend/dto/resource';
+import { HttpStatusCode } from 'axios';
 
 @Injectable()
 export class ResourceService {
@@ -45,7 +46,8 @@ export class ResourceService {
     if (!resource) {
       throw new NotFoundException("Resource doesn't exist");
     }
-    return this.resourceRepository.remove(resource);
+    await this.resourceRepository.remove(resource);
+    return HttpStatusCode.Ok;
   }
 
   async deleteMany(resources: ResourceEntity[]): Promise<ResourceEntity[]> {

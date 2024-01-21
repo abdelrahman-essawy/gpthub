@@ -59,7 +59,7 @@ export class ResourceResolver {
   //   return this.resourceService.updateOne(resource);
   // }
 
-  @Mutation(() => ResourceDto)
+  @Mutation(() => String)
   async deleteResource(@Args('id') id: string) {
     return this.resourceService.deleteOne(id);
   }

@@ -3,4 +3,7 @@ export interface IUserTokenPayload {
   username: string;
   email: string;
   role: string;
+
+  iat: number;
+  exp: number;
 }
