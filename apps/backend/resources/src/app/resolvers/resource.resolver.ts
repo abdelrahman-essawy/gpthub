@@ -25,20 +25,13 @@ export class ResourceResolver {
   constructor(private resourceService: ResourceService) {}
 
   @Query(() => ResourceDto)
-  async getResource(@Args('id') id: string) {
+  async getOneResource(@Args('id') id: string) {
     return this.resourceService.findOne(id);
   }
 
   @Query(() => [ResourceDto])
-  async getResources() {
+  async getAllResources() {
     return this.resourceService.findAll();
-  }
-
-  @Query(() => [ResourceDto])
-  async similarResources(@Args('id') id: string) {
-    const resource = await this.resourceService.findOne(id);
-    const resources = await this.resourceService.findAll();
-    return resources.filter((r) => r.type === resource.type);
   }
 
   @UseInterceptors(ParseUserFromToken)
@@ -59,8 +52,16 @@ export class ResourceResolver {
   //   return this.resourceService.updateOne(resource);
   // }
 
+  @UseInterceptors(ParseUserFromToken)
   @Mutation(() => String)
-  async deleteResource(@Args('id') id: string) {
+  async deleteResource(
+    @User() user: IUserTokenPayload,
+    @Args('id') id: string,
+  ) {
+    const resource = await this.resourceService.findOne(id);
+    if (resource.authorId !== user.id) {
+      throw new Error('You are not the author of this resource');
+    }
     return this.resourceService.deleteOne(id);
   }
 
