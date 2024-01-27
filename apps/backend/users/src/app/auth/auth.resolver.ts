@@ -8,12 +8,13 @@ import {
   RegisterUserDto,
 } from '@backend/dto/auth';
 import { AuthService } from './auth.service';
-import { UseGuards } from '@nestjs/common';
+import { Res, UseGuards } from '@nestjs/common';
 import { User } from './decorators/user.decorator';
 import { LocalGuard } from './guards/local.guard';
 import { IUser } from '@core';
 import { JwtGuard } from './guards/jwt.guard';
 import { RefreshJwtGuard } from './guards/refresh-jwt.guard';
+import { Request } from 'express';
 
 // @UseGuards(RolesGuard)
 // @UseGuards(AuthGuard)
@@ -29,20 +30,18 @@ export class AuthResolver {
   async login(
     @Args('credentials') credentials: LoginUserDto,
     @User() user: IUser,
-    // @Res({ passthrough: true }) res: Response,
+    @Res({ passthrough: true }) res: Request,
   ): Promise<LoginResponse> {
     const { accessToken, refreshToken } = await this.authService.login(user);
-    // console.log('res', res.cookie('accessToken', accessToken));
-    // res.cookie('accessToken', accessToken, {
-    //   httpOnly: true,
-    //   sameSite: 'none',
-    //   secure: true,
-    // });
-    // res.cookie('refreshToken', refreshToken, {
-    //   httpOnly: true,
-    //   sameSite: 'none',
-    //   secure: true,
-    // });
+    res.cookies('accessToken', accessToken, {
+      httpOnly: true,
+      sameSite: 'none',
+    });
+    res.cookies('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+    });
+
     return new LoginResponse(user, accessToken, refreshToken);
   }
 

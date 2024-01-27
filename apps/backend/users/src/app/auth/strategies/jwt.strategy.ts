@@ -5,11 +5,11 @@ import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../../users/users.service';
 import { IUserTokenPayload } from '@core';
 import { Request } from 'express';
-import { cookieRefreshExtractor } from './refresh-jwt.strategy';
 
 export const cookieAccessExtractor = (req: Request): string | null => {
-  if (req && req.cookies) {
-    return req.cookies['accessToken'];
+  if (req.cookies['accessToken']) {
+    console.log('req.cookies', req.cookies['accessToken']);
+    return req.cookies['accessToken'].replace('Bearer ', '').trim();
   }
   return null;
 };
@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        cookieRefreshExtractor,
+        cookieAccessExtractor,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       ignoreExpiration: true, // TODO: set to false

@@ -43,6 +43,13 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
                   );
                   request.http.headers.set('microservice', name);
                 }
+                request.http.headers.set('microservice', name);
+
+                // pass cookie
+                request.http.headers.set(
+                  'cookie',
+                  context.req?.headers?.cookie,
+                );
               },
             });
           },
