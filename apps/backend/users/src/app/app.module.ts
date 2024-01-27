@@ -24,7 +24,5 @@ import { AuthModule } from './auth/auth.module';
       buildSchemaOptions: {},
     }),
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

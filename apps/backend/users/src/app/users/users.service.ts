@@ -27,4 +27,10 @@ export class UsersService
       comment: 'Find user by username or email',
     });
   }
+
+  async updateRefreshToken(id: string, refreshToken: string) {
+    await this.userRepository.update(id, {
+      hashedRefreshToken: refreshToken,
+    });
+  }
 }

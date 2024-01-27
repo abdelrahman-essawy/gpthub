@@ -46,26 +46,23 @@ export class LoginUserDto
 @ObjectType('LoginResponse', { description: 'Login response' })
 export class LoginResponse {
   @FilterableField(() => String)
-  token: string;
+  accessToken: string;
+
+  @FilterableField(() => String)
+  refreshToken: string;
 
   @FilterableField(() => UserDto)
   user: UserDto;
 
-  constructor(token: string, user: UserDto) {
-    Object.assign(this, { token, user });
+  constructor(user: IUser, accessToken: string, refreshToken: string) {
+    Object.assign(this, { user, accessToken, refreshToken });
   }
 }
 
 export class UserTokenPayload {
   id: string;
-  username: string;
-  email: string;
-  role: string;
 
   constructor(tokenPayload: UserTokenPayload) {
     this.id = tokenPayload.id;
-    this.username = tokenPayload.username;
-    this.email = tokenPayload.email;
-    this.role = tokenPayload.role;
   }
 }

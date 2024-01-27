@@ -16,7 +16,7 @@ describe('AuthController', () => {
       imports: [
         DatabaseModule,
         JwtModule.register({
-          secret: process.env.JWT_SECRET,
+          secret: process.env.JWT_ACCESS_SECRET,
           signOptions: { expiresIn: '3600s' },
         }),
         HashingModule,
@@ -49,7 +49,7 @@ describe('AuthController', () => {
         expect.objectContaining({
           message: 'User has been created successfully',
           userId: expect.any(String),
-        })
+        }),
       );
     });
   });
@@ -65,7 +65,7 @@ describe('AuthController', () => {
       expect(result).toEqual(
         expect.objectContaining({
           token: expect.any(String),
-        })
+        }),
       );
     });
   });
@@ -77,11 +77,11 @@ describe('AuthController', () => {
         await authController.login({
           usernameOrEmail: mockUser.email,
           password: mockUser.password,
-        })
+        }),
       ).toEqual(
         expect.objectContaining({
           token: expect.any(String),
-        })
+        }),
       );
     });
   });

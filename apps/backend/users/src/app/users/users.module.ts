@@ -13,14 +13,12 @@ import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { AuthModule } from '../auth/auth.module';
 import { AuthResolver } from '../auth/auth.resolver';
-import { JwtModule } from '@backend/jwt';
 
 @Module({
   imports: [
     forwardRef(() => AuthModule),
     UsersDatabaseModule,
     HashingModule,
-    JwtModule,
     NestjsQueryGraphQLModule.forFeature({
       imports: [NestjsQueryTypeOrmModule.forFeature([UserEntity])],
       resolvers: [

@@ -3,12 +3,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { isUUID } from 'class-validator';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
-import { HashingService } from '@core';
-import { UserDto } from '@backend/dto/user';
-import { LoginUserDto, RegisterUserDto } from '@backend/dto/auth';
+import { HashingService, IUser } from '@core';
+import {
+  LoginUserDto,
+  RegisterUserDto,
+  UserTokenPayload,
+} from '@backend/dto/auth';
 
 import { UsersService } from '../users/users.service';
 
@@ -26,7 +28,7 @@ export class AuthService {
    * @throws NotAcceptableException if the email or username already exists.
    * @param credentials
    */
-  async login(credentials: LoginUserDto) {
+  async validateUser(credentials: LoginUserDto) {
     const user = await this.usersService.findByUsernameOrEmail(
       credentials.username,
       credentials.email,
@@ -45,6 +47,24 @@ export class AuthService {
     return user;
   }
 
+  async login(user: IUser) {
+    const tokens = await this.generateTokens(user);
+    await this.usersService.updateRefreshToken(user.id, tokens.refreshToken);
+    return tokens;
+  }
+
+  async refreshToken(user: IUser, refreshToken: string) {
+    const isRefreshTokenValid = await this.hashingService.compare(
+      refreshToken,
+      user.hashedRefreshToken,
+    );
+
+    if (!isRefreshTokenValid)
+      throw new UnauthorizedException({ message: 'Invalid refresh token' });
+
+    return this.login(user);
+  }
+
   /**
    * Registers a user.
    * @param UserInfo The user's information.
@@ -53,25 +73,18 @@ export class AuthService {
     return await this.usersService.createOne(UserInfo);
   }
 
-  async generateToken(
-    payload: object,
-    options?: Omit<JwtSignOptions, keyof JwtSignOptions> | undefined,
-  ) {
+  private async generateTokens(user: IUser) {
+    const tokenPayload = new UserTokenPayload(user);
+    const accessToken = await this.generateToken(tokenPayload, {
+      expiresIn: '15m',
+    });
+    const refreshToken = await this.generateToken(tokenPayload, {
+      expiresIn: '7d',
+    });
+    return { accessToken, refreshToken };
+  }
+
+  private async generateToken(payload: object, options?: JwtSignOptions) {
     return this.jwtService.sign({ ...payload }, options);
-  }
-
-  async parseUserFromToken(token: string) {
-    const tokenPayload = await this.parseToken(token);
-
-    const user = new UserDto(tokenPayload);
-    if (!user?.id) throw new Error('Invalid token payload, no id present');
-    if (!isUUID(user.id))
-      throw new Error('Invalid token payload, id is not a valid');
-
-    return user;
-  }
-
-  private parseToken(token: string) {
-    return this.jwtService.decode(token);
   }
 }

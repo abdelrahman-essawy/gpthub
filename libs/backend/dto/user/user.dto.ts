@@ -4,7 +4,7 @@ import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
 
 @ObjectType('User')
 @Directive('@key(fields: "id")')
-export class UserDto implements Omit<IUser, 'password'> {
+export class UserDto implements Omit<IUser, 'password' | 'hashedRefreshToken'> {
   @IDField(() => ID)
   id: string;
 

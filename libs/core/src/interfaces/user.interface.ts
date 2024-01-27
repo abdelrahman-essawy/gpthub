@@ -12,6 +12,7 @@ export interface IUser extends IUserDatabaseEntity {
 export interface IUserDatabaseEntity extends IDatabaseEntity {
   verified: boolean;
   role: UserRole;
+  hashedRefreshToken?: string;
 }
 
 export enum UserRole {

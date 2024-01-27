@@ -1,5 +1,4 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UseGuards, UseInterceptors } from '@nestjs/common';
 
 import { UserDto } from '@backend/dto/user';
 import {
@@ -7,49 +6,70 @@ import {
   LoginUserDto,
   RegisterResponse,
   RegisterUserDto,
-  UserTokenPayload,
 } from '@backend/dto/auth';
-
-import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
-import { LocalStrategy } from './strategies/local.strategy';
-import { ParseUserFromToken } from '@backend/interceptors';
-import { User } from '@backend/decorators';
-import { IUserTokenPayload } from '@core';
+import { UseGuards } from '@nestjs/common';
+import { User } from './decorators/user.decorator';
+import { LocalGuard } from './guards/local.guard';
+import { IUser } from '@core';
+import { JwtGuard } from './guards/jwt.guard';
+import { RefreshJwtGuard } from './guards/refresh-jwt.guard';
 
 // @UseGuards(RolesGuard)
 // @UseGuards(AuthGuard)
 @Resolver(() => UserDto)
 export class AuthResolver {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Mutation(() => LoginResponse, {
     description:
       'Login a user with username or email and password, returns JWT token.',
   })
-  @UseGuards(LocalStrategy)
-  async login(@Args('credentials') credentials: LoginUserDto) {
-    const user = await this.authService.login(credentials);
-    const userPayload = new UserTokenPayload(user);
-    const token = await this.authService.generateToken(userPayload);
-    return new LoginResponse(token, user);
+  @UseGuards(LocalGuard)
+  async login(
+    @Args('credentials') credentials: LoginUserDto,
+    @User() user: IUser,
+    // @Res({ passthrough: true }) res: Response,
+  ): Promise<LoginResponse> {
+    const { accessToken, refreshToken } = await this.authService.login(user);
+    // console.log('res', res.cookie('accessToken', accessToken));
+    // res.cookie('accessToken', accessToken, {
+    //   httpOnly: true,
+    //   sameSite: 'none',
+    //   secure: true,
+    // });
+    // res.cookie('refreshToken', refreshToken, {
+    //   httpOnly: true,
+    //   sameSite: 'none',
+    //   secure: true,
+    // });
+    return new LoginResponse(user, accessToken, refreshToken);
   }
 
   @Mutation(() => RegisterResponse)
   async register(@Args('userInfo') userInfo: RegisterUserDto) {
     const user = await this.authService.register(userInfo);
-    const userPayload = new UserTokenPayload(user);
-    const token = await this.authService.generateToken(userPayload);
-    return new RegisterResponse(token, user);
+    const { accessToken, refreshToken } = await this.authService.login(user);
+    return new RegisterResponse(user, accessToken, refreshToken);
+  }
+
+  @Mutation(() => LoginResponse)
+  @UseGuards(RefreshJwtGuard)
+  async refreshToken(
+    @User()
+    user: IUser & {
+      refreshToken: string;
+    },
+  ) {
+    return this.authService.refreshToken(user, user.refreshToken);
   }
 
   // @Roles([UserRole.ADMIN])
-  @UseInterceptors(ParseUserFromToken)
+  // @UseInterceptors(ParseUserFromToken)
+  // @UseGuards(LocalGuard)
   @Query(() => UserDto)
-  async me(@User() user: IUserTokenPayload) {
-    return this.usersService.findById(user.id);
+  @UseGuards(JwtGuard)
+  async me(@User() user: UserDto) {
+    return user;
   }
 }

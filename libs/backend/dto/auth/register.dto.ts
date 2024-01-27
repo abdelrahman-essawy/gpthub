@@ -63,9 +63,10 @@ export class RegisterUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
 @ObjectType('RegisterResponse', { description: 'Register response' })
 export class RegisterResponse extends LoginResponse {
   constructor(
-    public readonly token: string,
     public readonly user: IUser,
+    public readonly accessToken: string,
+    public readonly refreshToken: string,
   ) {
-    super(token, user);
+    super(user, accessToken, refreshToken);
   }
 }
