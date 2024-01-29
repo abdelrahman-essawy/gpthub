@@ -6,8 +6,6 @@ import { MailDto } from '../dto/mail.dto';
 
 @Injectable()
 export class AppService {
-  private transporter;
-
   constructor(private readonly mailerService: MailerService) {}
   getData(): { message: string } {
     return { message: 'Hello API' };
