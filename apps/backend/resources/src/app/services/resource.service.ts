@@ -1,10 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ResourceEntity } from '../entities/resource.entity';
 import { CreateResource } from '@backend/dto/resource';
-import { HttpStatusCode } from 'axios';
 
 @Injectable()
 export class ResourceService {
@@ -15,6 +14,12 @@ export class ResourceService {
 
   async findOne(id: string): Promise<ResourceEntity> {
     return this.resourceRepository.findOne({ where: { id } });
+  }
+
+  async findOneByOrFail(
+    where: FindOptionsWhere<ResourceEntity>,
+  ): Promise<ResourceEntity> {
+    return await this.resourceRepository.findOneByOrFail(where);
   }
 
   async findAll(): Promise<ResourceEntity[]> {
@@ -41,13 +46,8 @@ export class ResourceService {
     return this.resourceRepository.save(resources);
   }
 
-  async deleteOne(id: string) {
-    const resource = await this.resourceRepository.findOne({ where: { id } });
-    if (!resource) {
-      throw new NotFoundException("Resource doesn't exist");
-    }
-    await this.resourceRepository.remove(resource);
-    return HttpStatusCode.Ok;
+  async removeOne(resource: ResourceEntity): Promise<ResourceEntity> {
+    return await this.resourceRepository.remove(resource);
   }
 
   async deleteMany(resources: ResourceEntity[]): Promise<ResourceEntity[]> {

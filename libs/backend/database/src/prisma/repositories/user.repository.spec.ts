@@ -12,7 +12,7 @@ describe('PrismaUserRepository', () => {
     findByUsername: jest.fn(),
     isEmailExists: jest.fn(),
     isUsernameExists: jest.fn(),
-    findByUsernameOrEmail: jest.fn(),
+    findByUsernameOrEmailOrFail: jest.fn(),
   };
 
   beforeEach(async () => {

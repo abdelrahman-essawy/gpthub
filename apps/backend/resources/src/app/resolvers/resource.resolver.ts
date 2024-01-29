@@ -6,7 +6,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { ForbiddenException, UseGuards } from '@nestjs/common';
 
 import {
   CreateResourceInput,
@@ -16,10 +16,12 @@ import {
 import { IUserTokenPayload } from '@core';
 import { UserTokenPayload } from '@backend/decorators';
 import { JwtGuard } from '@backend/guards';
+import { DeleteResponse } from '@backend/dto/shared';
 
 import { ResourceService } from '../services/resource.service';
 import { ResourceEntity } from '../entities/resource.entity';
 
+@UseGuards(JwtGuard)
 @Resolver(() => ResourceDto)
 export class ResourceResolver {
   constructor(private resourceService: ResourceService) {}
@@ -34,7 +36,6 @@ export class ResourceResolver {
     return this.resourceService.findAll();
   }
 
-  @UseGuards(JwtGuard)
   @Mutation(() => ResourceDto)
   async createResource(
     @UserTokenPayload() user: IUserTokenPayload,
@@ -52,16 +53,20 @@ export class ResourceResolver {
   //   return this.resourceService.updateOne(resource);
   // }
 
-  @Mutation(() => String)
+  @Mutation(() => DeleteResponse)
   async deleteResource(
     @UserTokenPayload() user: IUserTokenPayload,
     @Args('id') id: string,
   ) {
-    const resource = await this.resourceService.findOne(id);
-    if (resource.authorId !== user.id) {
-      throw new Error('You are not the author of this resource');
-    }
-    return this.resourceService.deleteOne(id);
+    const resource = await this.resourceService.findOneByOrFail({ id });
+    if (resource.authorId !== user.id)
+      throw new ForbiddenException('You are not the author of this resource');
+
+    await this.resourceService.removeOne(resource);
+    return {
+      message: 'Resource deleted successfully',
+      success: true,
+    };
   }
 
   @ResolveField(() => UserReferenceDTO)

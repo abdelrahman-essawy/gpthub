@@ -10,7 +10,7 @@ export class PrismaUserRepository
     super(repository);
   }
 
-  findByUsernameOrEmail(
+  findByUsernameOrEmailOrFail(
     username: string,
     email: string,
     options?: OptionsForFind | undefined,

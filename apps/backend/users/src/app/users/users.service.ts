@@ -18,11 +18,11 @@ export class UsersService
     super(userRepository);
   }
 
-  async findByUsernameOrEmail(
+  async findByUsernameOrEmailOrFail(
     username?: string,
     email?: string,
   ): Promise<UserEntity | null> {
-    return await this.userRepository.findOne({
+    return await this.userRepository.findOneOrFail({
       where: [{ username }, { email }],
       comment: 'Find user by username or email',
     });

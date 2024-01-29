@@ -11,6 +11,8 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 
+import { TypeORMExceptionFilter } from '@backend/filters';
+
 import { ResourcesModule } from './app/resources.module';
 
 async function bootstrap() {
@@ -22,6 +24,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   const globalPrefix = 'graphql';
   app.setGlobalPrefix(globalPrefix);
+  app.useGlobalFilters(new TypeORMExceptionFilter());
 
   const port = process.env.PORT || 3002;
 

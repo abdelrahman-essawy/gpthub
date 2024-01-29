@@ -25,5 +25,8 @@ export interface IUserRepository {
 
   // isNameExists(name: string): Promise<boolean>;
 
-  findByUsernameOrEmail(name?: string, email?: string): Promise<IUser | null>;
+  findByUsernameOrEmailOrFail(
+    name?: string,
+    email?: string,
+  ): Promise<IUser | null>;
 }

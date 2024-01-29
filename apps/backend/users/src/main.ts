@@ -9,6 +9,7 @@ import cors from 'cors';
 import { AppModule } from './app/app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
+import { TypeORMExceptionFilter } from '@backend/filters';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,6 +18,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   const globalPrefix = 'graphql';
   app.setGlobalPrefix(globalPrefix);
+  app.useGlobalFilters(new TypeORMExceptionFilter());
+
   const port = process.env.PORT || 3001;
 
   // CORS configuration

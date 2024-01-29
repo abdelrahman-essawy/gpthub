@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
 import { HashingService, IUser } from '@core';
@@ -29,12 +25,10 @@ export class AuthService {
    * @param credentials
    */
   async validateUser(credentials: LoginUserDto) {
-    const user = await this.usersService.findByUsernameOrEmail(
+    const user = await this.usersService.findByUsernameOrEmailOrFail(
       credentials.username,
       credentials.email,
     );
-
-    if (!user) throw new BadRequestException({ message: 'User not found' });
 
     const isCredentialsCorrect = await this.hashingService.compare(
       credentials.password,

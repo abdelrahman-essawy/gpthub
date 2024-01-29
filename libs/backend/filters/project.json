@@ -1,0 +1,31 @@
+{
+  "name": "filters",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/filters/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/backend/filters",
+        "tsConfig": "libs/backend/filters/tsconfig.lib.json",
+        "packageJson": "libs/backend/filters/package.json",
+        "main": "libs/backend/filters/src/index.ts",
+        "assets": ["libs/backend/filters/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/backend/filters/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
