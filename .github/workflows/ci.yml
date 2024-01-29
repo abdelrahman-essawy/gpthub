@@ -4,7 +4,7 @@ on:
   push:
     branches:
       # Change this if your primary branch is not main
-      - dev-v3-graphql
+      - main
   pull_request:
 
 # Needed for nx-set-shas when run on the main branch
@@ -34,8 +34,7 @@ jobs:
       
       - uses: nrwl/nx-set-shas@v3
       
-      # Remove the unnecessary branch creation line
-      # - run: git branch --track dev-v3-graphql origin/dev-v3-graphql
+      - run: git branch --track main origin/main
 
       - run: pnpx nx-cloud record -- nx format:check
       - run: pnpx nx affected -t lint,test,build --parallel=3
