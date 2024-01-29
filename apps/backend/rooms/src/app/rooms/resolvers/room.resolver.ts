@@ -6,11 +6,11 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { UseInterceptors } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 
-import { ParseUserFromToken } from '@backend/interceptors';
 import { IUserTokenPayload } from '@core';
 import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dto/room';
+import { JwtGuard } from '@backend/guards';
 import { UserTokenPayload } from '@backend/decorators';
 
 import { RoomService } from '../services/room.service';
@@ -30,7 +30,7 @@ export class RoomResolver {
     return this.roomService.findAll();
   }
 
-  @UseInterceptors(ParseUserFromToken)
+  @UseGuards(JwtGuard)
   @Mutation(() => RoomDto)
   async createRoom(
     @UserTokenPayload() user: IUserTokenPayload,

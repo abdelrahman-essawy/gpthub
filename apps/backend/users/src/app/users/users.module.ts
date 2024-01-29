@@ -1,5 +1,4 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { UsersDatabaseModule } from '../config/database.module';
 import { HashingModule } from '@backend/hashing';
 import {
   NestjsQueryGraphQLModule,
@@ -13,12 +12,10 @@ import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { AuthModule } from '../auth/auth.module';
 import { AuthResolver } from '../auth/auth.resolver';
+import { UsersDatabaseModule } from '../config/database.module';
 
 @Module({
   imports: [
-    forwardRef(() => AuthModule),
-    UsersDatabaseModule,
-    HashingModule,
     NestjsQueryGraphQLModule.forFeature({
       imports: [NestjsQueryTypeOrmModule.forFeature([UserEntity])],
       resolvers: [
@@ -33,6 +30,11 @@ import { AuthResolver } from '../auth/auth.resolver';
         },
       ],
     }),
+
+    HashingModule,
+
+    forwardRef(() => AuthModule),
+    UsersDatabaseModule,
   ],
   providers: [UsersService, AuthResolver],
   exports: [UsersService],

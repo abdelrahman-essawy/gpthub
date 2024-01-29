@@ -4,7 +4,9 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
+
 import { UserReferenceDTO } from '@backend/dto/room';
+
 import { RoomModule } from './rooms/rooms.module';
 
 @Module({
