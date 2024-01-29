@@ -8,10 +8,10 @@ import {
 } from '@nestjs/graphql';
 import { UseInterceptors } from '@nestjs/common';
 
-import { User } from '@backend/decorators';
 import { ParseUserFromToken } from '@backend/interceptors';
 import { IUserTokenPayload } from '@core';
 import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dto/room';
+import { UserTokenPayload } from '@backend/decorators';
 
 import { RoomService } from '../services/room.service';
 import { RoomEntity } from '../entities/room.entity';
@@ -33,7 +33,7 @@ export class RoomResolver {
   @UseInterceptors(ParseUserFromToken)
   @Mutation(() => RoomDto)
   async createRoom(
-    @User() user: IUserTokenPayload,
+    @UserTokenPayload() user: IUserTokenPayload,
     @Args('room') roomData: CreateRoomInput,
   ) {
     return this.roomService.createOne({

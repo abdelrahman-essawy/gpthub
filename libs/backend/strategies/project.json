@@ -1,0 +1,31 @@
+{
+  "name": "strategies",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/strategies/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/backend/strategies",
+        "tsConfig": "libs/backend/strategies/tsconfig.lib.json",
+        "packageJson": "libs/backend/strategies/package.json",
+        "main": "libs/backend/strategies/src/index.ts",
+        "assets": ["libs/backend/strategies/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/backend/strategies/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

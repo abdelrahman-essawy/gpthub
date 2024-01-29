@@ -9,18 +9,22 @@ import {
 } from '@backend/dto/auth';
 import { AuthService } from './auth.service';
 import { Res, UseGuards } from '@nestjs/common';
-import { User } from './decorators/user.decorator';
+import { UserTokenPayload } from '../../../../../../libs/backend/decorators/src/lib/user.decorator';
 import { LocalGuard } from './guards/local.guard';
 import { IUser } from '@core';
-import { JwtGuard } from './guards/jwt.guard';
-import { RefreshJwtGuard } from './guards/refresh-jwt.guard';
+import { JwtGuard } from '@backend/guards';
+import { RefreshJwtGuard } from '@backend/guards';
 import { Request } from 'express';
+import { UsersService } from '../users/users.service';
 
 // @UseGuards(RolesGuard)
 // @UseGuards(AuthGuard)
 @Resolver(() => UserDto)
 export class AuthResolver {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Mutation(() => LoginResponse, {
     description:
@@ -29,18 +33,10 @@ export class AuthResolver {
   @UseGuards(LocalGuard)
   async login(
     @Args('credentials') credentials: LoginUserDto,
-    @User() user: IUser,
+    @UserTokenPayload() user: IUser,
     @Res({ passthrough: true }) res: Request,
   ): Promise<LoginResponse> {
     const { accessToken, refreshToken } = await this.authService.login(user);
-    res.cookies('accessToken', accessToken, {
-      httpOnly: true,
-      sameSite: 'none',
-    });
-    res.cookies('refreshToken', refreshToken, {
-      httpOnly: true,
-      sameSite: 'none',
-    });
 
     return new LoginResponse(user, accessToken, refreshToken);
   }
@@ -55,7 +51,7 @@ export class AuthResolver {
   @Mutation(() => LoginResponse)
   @UseGuards(RefreshJwtGuard)
   async refreshToken(
-    @User()
+    @UserTokenPayload()
     user: IUser & {
       refreshToken: string;
     },
@@ -68,7 +64,7 @@ export class AuthResolver {
   // @UseGuards(LocalGuard)
   @Query(() => UserDto)
   @UseGuards(JwtGuard)
-  async me(@User() user: UserDto) {
-    return user;
+  async me(@UserTokenPayload() user: UserDto) {
+    return this.usersService.findById(user.id);
   }
 }

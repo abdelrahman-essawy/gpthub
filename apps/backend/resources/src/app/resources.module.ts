@@ -6,14 +6,15 @@ import {
 } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { JwtModule } from '@backend/jwt';
 import { UserReferenceDTO } from '@backend/dto/resource';
+import { StrategiesModule } from '@backend/strategies';
 
 import { ResourceResolver } from './resolvers/resource.resolver';
 import { ResourceService } from './services/resource.service';
 import { ResourceEntity } from './entities/resource.entity';
 import { ResourcesDatabaseModule } from './resources-db/resources-db.module';
 import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
-import { JwtModule } from '@backend/jwt';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { JwtModule } from '@backend/jwt';
     ResourcesDatabaseModule,
     TypeOrmModule.forFeature([ResourceEntity]),
     JwtModule,
+    StrategiesModule,
   ],
   providers: [ResourceResolver, ResourceService, UserReferenceResolver],
 })

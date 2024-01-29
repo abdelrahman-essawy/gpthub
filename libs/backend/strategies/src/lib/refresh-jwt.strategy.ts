@@ -2,7 +2,6 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { UsersService } from '../../users/users.service';
 import { IUserTokenPayload } from '@core';
 import { Request } from 'express';
 
@@ -19,10 +18,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
   Strategy,
   'refresh-jwt',
 ) {
-  constructor(
-    private readonly usersService: UsersService,
-    readonly configService: ConfigService,
-  ) {
+  constructor(readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         cookieRefreshExtractor,

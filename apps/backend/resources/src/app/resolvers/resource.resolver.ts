@@ -6,16 +6,16 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { UseInterceptors } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 
 import {
   CreateResourceInput,
   ResourceDto,
   UserReferenceDTO,
 } from '@backend/dto/resource';
-import { User } from '@backend/decorators';
 import { IUserTokenPayload } from '@core';
-import { ParseUserFromToken } from '@backend/interceptors';
+import { UserTokenPayload } from '@backend/decorators';
+import { JwtGuard } from '@backend/guards';
 
 import { ResourceService } from '../services/resource.service';
 import { ResourceEntity } from '../entities/resource.entity';
@@ -34,10 +34,10 @@ export class ResourceResolver {
     return this.resourceService.findAll();
   }
 
-  @UseInterceptors(ParseUserFromToken)
+  @UseGuards(JwtGuard)
   @Mutation(() => ResourceDto)
   async createResource(
-    @User() user: IUserTokenPayload,
+    @UserTokenPayload() user: IUserTokenPayload,
     @Args('resource')
     resource: CreateResourceInput,
   ) {
@@ -52,10 +52,9 @@ export class ResourceResolver {
   //   return this.resourceService.updateOne(resource);
   // }
 
-  @UseInterceptors(ParseUserFromToken)
   @Mutation(() => String)
   async deleteResource(
-    @User() user: IUserTokenPayload,
+    @UserTokenPayload() user: IUserTokenPayload,
     @Args('id') id: string,
   ) {
     const resource = await this.resourceService.findOne(id);
