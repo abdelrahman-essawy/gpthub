@@ -23,11 +23,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'npm'
-      - run: npm ci
+          cache: 'pnpm'
+          cache-dependency-path: ./pnpm-lock.yaml
+      - run: pnpm ci
       - uses: nrwl/nx-set-shas@v3
       # This line is needed for nx affected to work when CI is running on a PR
       - run: git branch --track main origin/main
 
-      - run: npx nx-cloud record -- nx format:check
-      - run: npx nx affected -t lint,test,build --parallel=3
+      - run: pnpx nx-cloud record -- nx format:check
+      - run: pnpx nx affected -t lint,test,build --parallel=3
