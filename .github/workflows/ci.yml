@@ -34,7 +34,7 @@ jobs:
       
       - uses: nrwl/nx-set-shas@v3
       # This line is needed for nx affected to work when CI is running on a PR
-      - run: git branch --track main origin/main
+      - run: git branch --track dev-v3-graphql origin/dev-v3-graphql
 
       - run: pnpx nx-cloud record -- nx format:check
       - run: pnpx nx affected -t lint,test,build --parallel=3
