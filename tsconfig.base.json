@@ -10,82 +10,33 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@backend/database": [
-        "libs/backend/database/src/index.ts"
-      ],
-      "@backend/decorators": [
-        "libs/backend/decorators/src/index.ts"
-      ],
-      "@backend/dto/auth": [
-        "libs/backend/dto/auth/index.ts"
-      ],
-      "@backend/dto/resource": [
-        "libs/backend/dto/resource/index.ts"
-      ],
-      "@backend/dto/shared": [
-        "libs/backend/dto/shared/index.ts"
-      ],
-      "@backend/dto/room": [
-        "libs/backend/dto/room/index.ts"
-      ],
-      "@backend/dto/user": [
-        "libs/backend/dto/user/index.ts"
-      ],
-      "@backend/hashing": [
-        "libs/backend/hashing/src/index.ts"
-      ],
-      "@backend/utilities": [
-        "libs/backend/utilities/src/index.ts"
-      ],
-      "@backend/strategies": [
-        "libs/backend/strategies/src/index.ts"
-      ],
-      "@backend/filters": [
-        "libs/backend/filters/src/index.ts"
-      ],
-      "@backend/guards": [
-        "libs/backend/guards/src/index.ts"
-      ],
-      "@backend/interceptors": [
-        "libs/backend/interceptors/src/index.ts"
-      ],
-      "@backend/jwt": [
-        "libs/backend/jwt/src/index.ts"
-      ],
-      "@core": [
-        "libs/core/src/index.ts"
-      ],
-      "@nx/communication": [
-        "libs/backend/communication/src/index.ts"
-      ],
-      "@nx/dto": [
-        "libs/backend/dto/src/index.ts"
-      ],
-      "@nx/external": [
-        "libs/backend/communication/external/src/index.ts"
-      ],
-      "@nx/grpc": [
-        "libs/backend/communication/internal/grpc/src/index.ts"
-      ],
-      "@nx/internal": [
-        "libs/backend/communication/internal/src/index.ts"
-      ],
-      "@nx/kafka": [
-        "libs/backend/communication/internal/kafka/src/index.ts"
-      ]
+      "@backend/database": ["libs/backend/database/src/index.ts"],
+      "@backend/decorators": ["libs/backend/decorators/src/index.ts"],
+      "@backend/dto/auth": ["libs/backend/dto/auth/index.ts"],
+      "@backend/dto/resource": ["libs/backend/dto/resource/index.ts"],
+      "@backend/dto/room": ["libs/backend/dto/room/index.ts"],
+      "@backend/dto/shared": ["libs/backend/dto/shared/index.ts"],
+      "@backend/dto/user": ["libs/backend/dto/user/index.ts"],
+      "@backend/filters": ["libs/backend/filters/src/index.ts"],
+      "@backend/guards": ["libs/backend/guards/src/index.ts"],
+      "@backend/hashing": ["libs/backend/hashing/src/index.ts"],
+      "@backend/interceptors": ["libs/backend/interceptors/src/index.ts"],
+      "@backend/jwt": ["libs/backend/jwt/src/index.ts"],
+      "@backend/strategies": ["libs/backend/strategies/src/index.ts"],
+      "@backend/utilities": ["libs/backend/utilities/src/index.ts"],
+      "@core": ["libs/core/src/index.ts"],
+      "@nx/communication": ["libs/backend/communication/src/index.ts"],
+      "@nx/dto": ["libs/backend/dto/src/index.ts"],
+      "@nx/external": ["libs/backend/communication/external/src/index.ts"],
+      "@nx/grpc": ["libs/backend/communication/internal/grpc/src/index.ts"],
+      "@nx/internal": ["libs/backend/communication/internal/src/index.ts"],
+      "@nx/kafka": ["libs/backend/communication/internal/kafka/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp",
-    "dist"
-  ]
+  "exclude": ["node_modules", "tmp", "dist"]
 }

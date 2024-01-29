@@ -1,5 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { IUser } from '@core';
+import { JwtGuard, RefreshJwtGuard } from '@backend/guards';
 import { UserDto } from '@backend/dto/user';
 import {
   LoginResponse,
@@ -7,14 +9,11 @@ import {
   RegisterResponse,
   RegisterUserDto,
 } from '@backend/dto/auth';
+import { UseGuards } from '@nestjs/common';
+import { UserTokenPayload } from '@backend/decorators';
+
 import { AuthService } from './auth.service';
-import { Res, UseGuards } from '@nestjs/common';
-import { UserTokenPayload } from '../../../../../../libs/backend/decorators/src/lib/user.decorator';
 import { LocalGuard } from './guards/local.guard';
-import { IUser } from '@core';
-import { JwtGuard } from '@backend/guards';
-import { RefreshJwtGuard } from '@backend/guards';
-import { Request } from 'express';
 import { UsersService } from '../users/users.service';
 
 // @UseGuards(RolesGuard)
@@ -34,7 +33,7 @@ export class AuthResolver {
   async login(
     @Args('credentials') credentials: LoginUserDto,
     @UserTokenPayload() user: IUser,
-    @Res({ passthrough: true }) res: Request,
+    // @Res({ passthrough: true }) res: Request,
   ): Promise<LoginResponse> {
     const { accessToken, refreshToken } = await this.authService.login(user);
 
