@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import {
   IsDate,
   IsEmail,
@@ -9,8 +9,9 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+
+// eslint-disable-next-line sort-imports
 import { IUser, IUserDatabaseEntity } from '@core';
-import { LoginResponse } from './login.dto';
 
 @InputType({ description: 'Create new user' })
 export class RegisterUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
@@ -57,16 +58,5 @@ export class RegisterUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
 
   constructor(createUserInput: RegisterUserDto) {
     Object.assign(this, createUserInput);
-  }
-}
-
-@ObjectType('RegisterResponse', { description: 'Register response' })
-export class RegisterResponse extends LoginResponse {
-  constructor(
-    public readonly user: IUser,
-    public readonly accessToken: string,
-    public readonly refreshToken: string,
-  ) {
-    super(user, accessToken, refreshToken);
   }
 }

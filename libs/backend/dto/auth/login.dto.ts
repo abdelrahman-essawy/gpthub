@@ -1,5 +1,4 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IUser } from '@core';
+import { Field, InputType } from '@nestjs/graphql';
 import {
   IsEmail,
   IsNotEmpty,
@@ -8,8 +7,8 @@ import {
   MinLength,
   ValidateIf,
 } from 'class-validator';
-import { FilterableField } from '@ptc-org/nestjs-query-graphql';
-import { UserDto } from '../user';
+
+import { IUser } from '@core';
 
 @InputType('Credentials', { description: 'Login user' })
 export class LoginUserDto
@@ -40,22 +39,6 @@ export class LoginUserDto
 
   constructor(loginUserDto: LoginUserDto) {
     Object.assign(this, loginUserDto);
-  }
-}
-
-@ObjectType('LoginResponse', { description: 'Login response' })
-export class LoginResponse {
-  @FilterableField(() => String)
-  accessToken: string;
-
-  @FilterableField(() => String)
-  refreshToken: string;
-
-  @FilterableField(() => UserDto)
-  user: UserDto;
-
-  constructor(user: IUser, accessToken: string, refreshToken: string) {
-    Object.assign(this, { user, accessToken, refreshToken });
   }
 }
 

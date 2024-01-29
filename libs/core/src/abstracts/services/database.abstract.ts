@@ -10,9 +10,9 @@ export abstract class DatabaseService {
 }
 
 export abstract class ISQLDatabaseService {
-  abstract user: IRepository<any>;
+  abstract user: IRepository<unknown>;
 }
 
 export abstract class IMongoDatabaseService {
-  abstract user: IRepository<any>;
+  abstract user: IRepository<unknown>;
 }

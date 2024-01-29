@@ -4,7 +4,7 @@ import { IUser } from '@core';
 import { JwtGuard, RefreshJwtGuard } from '@backend/guards';
 import { UserDto } from '@backend/dto/user';
 import {
-  LoginResponse,
+  LoginResponseDto,
   LoginUserDto,
   RegisterResponse,
   RegisterUserDto,
@@ -25,7 +25,7 @@ export class AuthResolver {
     private readonly usersService: UsersService,
   ) {}
 
-  @Mutation(() => LoginResponse, {
+  @Mutation(() => LoginResponseDto, {
     description:
       'Login a user with username or email and password, returns JWT token.',
   })
@@ -34,10 +34,10 @@ export class AuthResolver {
     @Args('credentials') credentials: LoginUserDto,
     @UserTokenPayload() user: IUser,
     // @Res({ passthrough: true }) res: Request,
-  ): Promise<LoginResponse> {
+  ): Promise<LoginResponseDto> {
     const { accessToken, refreshToken } = await this.authService.login(user);
 
-    return new LoginResponse(user, accessToken, refreshToken);
+    return new LoginResponseDto(user, accessToken, refreshToken);
   }
 
   @Mutation(() => RegisterResponse)
@@ -47,7 +47,7 @@ export class AuthResolver {
     return new RegisterResponse(user, accessToken, refreshToken);
   }
 
-  @Mutation(() => LoginResponse)
+  @Mutation(() => LoginResponseDto)
   @UseGuards(RefreshJwtGuard)
   async refreshToken(
     @UserTokenPayload()
