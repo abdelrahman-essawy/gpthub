@@ -45,13 +45,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install nx globally
-        run: pnpm install -g nx
-
-      # Set PATH to include the directory where nx is installed
-      - name: Set PATH
-        run: echo "::add-path::$(npm bin -g)"
-
   lint:
     needs: setup
     runs-on: ubuntu-latest
@@ -62,7 +55,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run lint
-        run: nx affected:lint --fix --parallel
+        run: pnpx nx affected:lint --fix --parallel
 
   format:
     needs: setup
@@ -74,7 +67,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run format
-        run: nx affected:format:write --parallel
+        run: pnpx nx affected:format:write --parallel
 
   test:
     needs: setup
@@ -86,7 +79,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run test
-        run: nx affected:test --parallel
+        run: pnpx nx affected:test --parallel
 
   build:
     needs: setup
@@ -98,4 +91,4 @@ jobs:
           fetch-depth: 0
 
       - name: Run build
-        run: nx affected:build --parallel
+        run: pnpx nx affected:build --parallel
