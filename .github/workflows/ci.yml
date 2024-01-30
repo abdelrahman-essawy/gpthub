@@ -35,7 +35,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v3
       
       - run: |
-          if [ ! -d ".git/refs/heads/main" ]; then
+          if [ ! -n "$(git show-ref refs/heads/main)" ]; then
             git branch --track main origin/main
           else
             echo "Branch 'main' already exists. Skipping branch creation."
