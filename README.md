@@ -20,6 +20,9 @@
 ![Dependabot](https://img.shields.io/badge/dependabot-025E8C?style=for-the-badge&logo=dependabot&logoColor=white)
 ![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
 
+[![JavaScript Style Guide: Good Parts](https://img.shields.io/badge/code%20style-goodparts-brightgreen.svg?style=flat)](https://github.com/dwyl/goodparts "JavaScript The Good Parts")
+![](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/LintTestBuild-CI.yml/badge.svg)
+
 ## Description
 
 This project is designed to empower users in effortlessly creating and training new language processing models. Users can contribute content to train a new Language Processing Model (LPM) instance, and the platform automatically generates a dedicated room for the user, appointing them as the room manager. In these rooms, users can participate in conversations with the LPM, either in group chat or privately. Room owners have the flexibility to modify the content fed to the model and can designate room moderators for assistance. Users can also establish new rooms without initially providing content, with the option to merge or combine existing rooms into a new one.
