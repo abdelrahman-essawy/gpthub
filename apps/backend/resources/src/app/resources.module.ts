@@ -5,8 +5,6 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { JwtModule } from '@backend/jwt';
 import { StrategiesModule } from '@backend/strategies';
 import { UserReferenceDTO } from '@backend/dtos/resource';
 
@@ -33,7 +31,6 @@ import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
       },
     }),
 
-    JwtModule,
     StrategiesModule,
 
     ResourcesDatabaseModule,
