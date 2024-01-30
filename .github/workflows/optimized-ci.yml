@@ -67,7 +67,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run format
-        run: pnpx nx affected:format:write --parallel
+        run: npx nx affected:format:write --parallel
 
   test:
     needs: setup
@@ -79,7 +79,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run test
-        run: pnpx nx affected:test --parallel
+        run: npx nx affected:test --parallel
 
   build:
     needs: setup
@@ -91,4 +91,4 @@ jobs:
           fetch-depth: 0
 
       - name: Run build
-        run: pnpx nx affected:build --parallel
+        run: npx nx affected:build --parallel
