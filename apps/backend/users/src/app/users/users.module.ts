@@ -5,7 +5,7 @@ import {
 } from '@ptc-org/nestjs-query-graphql';
 import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
 
-import { UserDto } from '@backend/dto/user';
+import { UserDto } from '@backend/dtos/user';
 import { HashingModule } from '@backend/hashing';
 
 import { UserEntity } from './entities/user.entity';

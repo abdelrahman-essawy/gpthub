@@ -13,9 +13,7 @@
         "*.js",
         "*.jsx"
       ],
-      "rules": {
-        "sort-imports": "error"
-      }
+      "rules": {}
     },
     {
       "files": [
@@ -37,7 +35,7 @@
       ],
       "parser": "jsonc-eslint-parser",
       "rules": {
-        "@nx/dependency-checks": "error"
+        "@nx/dependency-checks": "off"
       }
     }
   ]

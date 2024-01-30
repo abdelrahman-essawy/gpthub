@@ -3,7 +3,7 @@ import { FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ResourceEntity } from '../entities/resource.entity';
-import { CreateResource } from '@backend/dto/resource';
+import { CreateResource } from '@backend/dtos/resource';
 
 @Injectable()
 export class ResourceService {

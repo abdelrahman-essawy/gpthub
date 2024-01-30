@@ -1,8 +1,8 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { UserReferenceDTO } from '@backend/dto/room';
-import { ResourceDto } from '@backend/dto/resource';
-import { UserDto } from '@backend/dto/user';
+import { UserReferenceDTO } from '@backend/dtos/room';
+import { ResourceDto } from '@backend/dtos/resource';
+import { UserDto } from '@backend/dtos/user';
 
 import { RoomService } from '../services/room.service';
 

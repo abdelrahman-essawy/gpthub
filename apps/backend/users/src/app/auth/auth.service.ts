@@ -6,7 +6,7 @@ import {
   LoginUserDto,
   RegisterUserDto,
   UserTokenPayload,
-} from '@backend/dto/auth';
+} from '@backend/dtos/auth';
 
 import { UsersService } from '../users/users.service';
 
