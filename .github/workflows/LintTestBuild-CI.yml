@@ -19,11 +19,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      
+
       # Cache node_modules
       - uses: actions/setup-node@v3
         with:
@@ -31,9 +31,9 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: ./pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
-      
+
       - uses: nrwl/nx-set-shas@v3
-      
+
       - run: |
           if [ ! -n "$(git show-ref refs/heads/main)" ]; then
             git branch --track main origin/main
@@ -41,4 +41,8 @@ jobs:
             echo "Branch 'main' already exists. Skipping branch creation."
           fi
 
-      - run: pnpx nx affected -t lint,test,build --parallel=6
+      - run: pnpm i nx -g
+      - run: nx affected:lint --fix --parallel
+      - run: nx format:write
+      - run: nx affected:test --parallel
+      - run: nx affected:build --parallel

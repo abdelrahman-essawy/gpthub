@@ -9,7 +9,22 @@
     "prisma:migrate": "scripts/prisma/prisma-migrate.sh",
     "prisma:migrate:dev": "scripts/prisma/prisma-migrate.sh dev",
     "docker:bootstrap": "scripts/docker/bootstrap.dev.sh",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prepush": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,scss,md}": [
+      "pnpm i nx -g",
+      "nx affected:lint --fix --parallel",
+      "nx format:write",
+      "nx affected:test --parallel",
+      "nx affected:build --parallel"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run prepush"
+    }
   },
   "private": true,
   "dependencies": {
@@ -132,6 +147,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
+    "lint-staged": "^15.2.0",
     "nx": "17.2.8",
     "prettier": "^3.1.1",
     "prisma": "5.7.1",
