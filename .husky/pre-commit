@@ -1,1 +1,1 @@
-pnpx nx affected -t lint,test,build --parallel=6
+pnpx nx affected -t "lint --fix",format:write,lint,test,build --parallel=6
