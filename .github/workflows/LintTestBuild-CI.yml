@@ -1,5 +1,5 @@
 # Run Only Tasks Affected by a PR
-name: CI
+name: LintTestBuild-CI
 on:
   push:
     branches:
