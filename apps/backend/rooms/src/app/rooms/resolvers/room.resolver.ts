@@ -9,7 +9,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 
 import { IUserTokenPayload } from '@core';
-import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dto/room';
+import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dtos/room';
 import { JwtGuard } from '@backend/guards';
 import { UserTokenPayload } from '@backend/decorators';
 

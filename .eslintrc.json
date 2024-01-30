@@ -4,7 +4,8 @@
     "**/*"
   ],
   "plugins": [
-    "@nx"
+    "@nx",
+    "simple-import-sort"
   ],
   "overrides": [
     {
@@ -35,8 +36,7 @@
     {
       "files": [
         "*.ts",
-        "*.tsx",
-        "simple-import-sort"
+        "*.tsx"
       ],
       "extends": [
         "plugin:@nx/typescript"

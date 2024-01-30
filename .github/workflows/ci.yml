@@ -1,0 +1,39 @@
+# Run Only Tasks Affected by a PR
+name: CI
+on:
+  push:
+    branches:
+      # Change this if your primary branch is not main
+      - main
+  pull_request:
+
+# Needed for nx-set-shas when run on the main branch
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      # Cache node_modules
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: ./pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      
+      - uses: nrwl/nx-set-shas@v3
+      
+      - run: git branch --track main origin/main
+
+      - run: pnpx nx affected -t lint,test,build --parallel=6

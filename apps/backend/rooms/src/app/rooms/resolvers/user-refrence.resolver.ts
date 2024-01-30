@@ -1,7 +1,7 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { RoomService } from '../services/room.service';
-import { RoomDto, UserReferenceDTO } from '@backend/dto/room';
+import { RoomDto, UserReferenceDTO } from '@backend/dtos/room';
 
 @Resolver(() => UserReferenceDTO)
 export class UserReferenceResolver {

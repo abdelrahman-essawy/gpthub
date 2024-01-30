@@ -12,11 +12,11 @@ import {
   CreateResourceInput,
   ResourceDto,
   UserReferenceDTO,
-} from '@backend/dto/resource';
+} from '@backend/dtos/resource';
 import { IUserTokenPayload } from '@core';
 import { UserTokenPayload } from '@backend/decorators';
 import { JwtGuard } from '@backend/guards';
-import { DeleteResponse } from '@backend/dto/shared';
+import { DeleteResponse } from '@backend/dtos/shared';
 
 import { ResourceService } from '../services/resource.service';
 import { ResourceEntity } from '../entities/resource.entity';

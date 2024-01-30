@@ -1,6 +1,6 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { ResourceDto, UserReferenceDTO } from '@backend/dto/resource';
+import { ResourceDto, UserReferenceDTO } from '@backend/dtos/resource';
 
 import { ResourceService } from '../services/resource.service';
 
