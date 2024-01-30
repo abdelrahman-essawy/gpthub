@@ -49,23 +49,13 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Run lint
-        run: pnpx nx affected:lint --fix --parallel
+        run: npx nx affected:lint --fix --parallel
 
   format:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Run format
         run: npx nx affected:format:write --parallel
 
@@ -73,11 +63,6 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Run test
         run: npx nx affected:test --parallel
 
@@ -85,10 +70,5 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Run build
         run: npx nx affected:build --parallel
