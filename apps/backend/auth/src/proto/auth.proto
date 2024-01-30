@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  rpc Me (UserId) returns (User) {}
+}
+
+message UserId {
+  int32 id = 1;
+}
+
+message User {
+  int32 id = 1;
+}
