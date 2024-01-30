@@ -46,9 +46,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install nx globally
-        run: |
-          pnpm install -g nx
-          nx -v
+        run: pnpm install -g nx
+
 
   lint:
     needs: setup
