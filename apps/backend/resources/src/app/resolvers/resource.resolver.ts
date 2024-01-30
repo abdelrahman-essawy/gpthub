@@ -58,7 +58,7 @@ export class ResourceResolver {
     @UserTokenPayload() user: IUserTokenPayload,
     @Args('id') id: string,
   ) {
-    const resource = await this.resourceService.findOneByOrFail(id);
+    const resource = await this.resourceService.findOneByOrFail({ id });
     if (resource.authorId === user.id || user.role === UserRole.ADMIN) {
       await this.resourceService.removeOne(resource);
       return new DeleteResponse('Resource deleted successfully.');
