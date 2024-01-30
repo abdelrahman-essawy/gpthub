@@ -34,6 +34,11 @@ jobs:
       
       - uses: nrwl/nx-set-shas@v3
       
-      - run: git branch --track main origin/main
+      - run: |
+          if [ ! -d ".git/refs/heads/main" ]; then
+            git branch --track main origin/main
+          else
+            echo "Branch 'main' already exists. Skipping branch creation."
+          fi
 
       - run: pnpx nx affected -t lint,test,build --parallel=6
