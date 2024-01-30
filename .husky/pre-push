@@ -1,0 +1,2 @@
+pnpm prepush
+exit 1
