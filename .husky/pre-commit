@@ -1,0 +1,1 @@
+pnpx nx affected -t lint,test,build --parallel=6
