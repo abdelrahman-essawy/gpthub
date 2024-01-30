@@ -6,31 +6,32 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { ForbiddenException, UseGuards } from '@nestjs/common';
 
-import { IUserTokenPayload } from '@core';
+import { IUserTokenPayload, UserRole } from '@core';
 import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dtos/room';
 import { JwtGuard } from '@backend/guards';
 import { UserTokenPayload } from '@backend/decorators';
 
 import { RoomService } from '../services/room.service';
 import { RoomEntity } from '../entities/room.entity';
+import { DeleteResponse } from '@backend/dtos/shared';
 
+@UseGuards(JwtGuard)
 @Resolver(() => RoomDto)
 export class RoomResolver {
   constructor(private roomService: RoomService) {}
 
   @Query(() => RoomDto)
   async room(@Args('id') id: string) {
-    return this.roomService.findOne(id);
+    return this.roomService.findOneByOrFail({ id });
   }
 
   @Query(() => [RoomDto])
   async rooms() {
-    return this.roomService.findAll();
+    return this.roomService.find();
   }
 
-  @UseGuards(JwtGuard)
   @Mutation(() => RoomDto)
   async createRoom(
     @UserTokenPayload() user: IUserTokenPayload,
@@ -39,18 +40,20 @@ export class RoomResolver {
     return this.roomService.createOne({
       ...roomData,
       authorId: user.id,
-      ownerIds: [user.id],
     });
   }
 
-  // @Mutation(() => RoomDto)
-  // async updateResource(@Args('resource') resource: RoomDto) {
-  //   return this.roomService.updateOne(resource);
-  // }
-
-  @Mutation(() => RoomDto)
-  async deleteRoom(@Args('id') id: string) {
-    return this.roomService.deleteOne(id);
+  @Mutation(() => DeleteResponse)
+  async deleteRoom(
+    @UserTokenPayload() user: IUserTokenPayload,
+    @Args('id') id: string,
+  ) {
+    const room = await this.roomService.findOneByOrFail({ id });
+    if (room.authorId === user.id || user.role === UserRole.ADMIN) {
+      await this.roomService.removeOne(room);
+      return new DeleteResponse('Room deleted successfully.');
+    }
+    throw new ForbiddenException('You are not the author of this room');
   }
 
   @ResolveField(() => UserReferenceDTO)

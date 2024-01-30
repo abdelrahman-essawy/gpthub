@@ -17,13 +17,13 @@ export class RoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {
   @FilterableField()
   title: string;
 
-  @FilterableField({ nullable: true })
+  @FilterableField(() => String, { nullable: true })
   description?: string;
 
   @FilterableField(() => RoomType) // Add explicit type here
   roomType: RoomType;
 
-  @FilterableField(() => [String])
+  @Field(() => [String])
   resourceIds: string[];
 
   @FilterableField(() => GraphQLISODateTime)
@@ -35,16 +35,16 @@ export class RoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {
   @Field(() => UserReferenceDTO)
   author: UserReferenceDTO;
 
-  @FilterableField(() => [UserReferenceDTO])
+  @Field(() => [UserReferenceDTO])
   participants: UserReferenceDTO[];
 
-  @FilterableField(() => [UserReferenceDTO])
+  @Field(() => [UserReferenceDTO])
   owners: UserReferenceDTO[];
 
-  @FilterableField(() => [UserReferenceDTO])
+  @Field(() => [UserReferenceDTO])
   moderators: UserReferenceDTO[];
 
-  @FilterableField(() => [UserReferenceDTO])
+  @Field(() => [UserReferenceDTO])
   collaborators: UserReferenceDTO[];
 }
 

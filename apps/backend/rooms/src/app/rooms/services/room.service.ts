@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FindManyOptions, Repository } from 'typeorm';
+import { FindManyOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomEntity } from '../entities/room.entity';
 import { CreateRoom } from '@backend/dtos/room';
@@ -15,44 +15,26 @@ export class RoomService {
     return this.roomRepository.find(options);
   }
 
-  async findOne(id: string): Promise<RoomEntity> {
-    return this.roomRepository.findOne({ where: { id } });
+  async createOne(room: CreateRoom): Promise<RoomEntity> {
+    const newRoom = this.roomRepository.create(room);
+    return this.roomRepository.save(newRoom);
   }
 
-  async findAll(): Promise<RoomEntity[]> {
-    return this.roomRepository.find();
+  async findOne(options?: FindManyOptions<RoomEntity>): Promise<RoomEntity> {
+    return this.roomRepository.findOne(options);
   }
 
-  async createOne(resource: CreateRoom) {
-    const room = this.roomRepository.create(resource);
-    return this.roomRepository.save(room);
-  }
-
-  async createMany(resources: RoomEntity[]): Promise<RoomEntity[]> {
-    return this.roomRepository.save(resources);
-  }
-
-  // async updateOne(resource: UpdateResourceDto): Promise<RoomEntity> {
-  //   return this.roomRepository.save(resource);
-  // }
-
-  async updateMany(resources: RoomEntity[]): Promise<RoomEntity[]> {
-    return this.roomRepository.save(resources);
-  }
-
-  async deleteOne(id: string) {
-    return this.roomRepository.delete({ id });
-  }
-
-  async deleteMany(resources: RoomEntity[]): Promise<RoomEntity[]> {
-    return this.roomRepository.remove(resources);
+  async findOneByOrFail(
+    where: FindOptionsWhere<RoomEntity> | FindOptionsWhere<RoomEntity>[],
+  ): Promise<RoomEntity> {
+    return this.roomRepository.findOneByOrFail(where);
   }
 
   async findAllByAuthorId(userId: string) {
     return this.roomRepository.find({ where: { authorId: userId } });
   }
 
-  async findAllByModeratorId(userId: string) {
-    return this.roomRepository.find({ where: { moderatorIds: userId } });
+  async removeOne(resource: RoomEntity) {
+    return this.roomRepository.remove(resource);
   }
 }

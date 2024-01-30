@@ -8,6 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import cors from 'cors';
 import { AppModule } from './app/app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { TypeORMExceptionFilter } from '@backend/filters';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+  app.useGlobalFilters(new TypeORMExceptionFilter());
 
   const port = process.env.PORT || 3003;
 

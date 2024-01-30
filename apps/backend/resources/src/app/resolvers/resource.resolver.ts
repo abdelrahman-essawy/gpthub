@@ -13,7 +13,7 @@ import {
   ResourceDto,
   UserReferenceDTO,
 } from '@backend/dtos/resource';
-import { IUserTokenPayload } from '@core';
+import { IUserTokenPayload, UserRole } from '@core';
 import { UserTokenPayload } from '@backend/decorators';
 import { JwtGuard } from '@backend/guards';
 import { DeleteResponse } from '@backend/dtos/shared';
@@ -58,15 +58,12 @@ export class ResourceResolver {
     @UserTokenPayload() user: IUserTokenPayload,
     @Args('id') id: string,
   ) {
-    const resource = await this.resourceService.findOneByOrFail({ id });
-    if (resource.authorId !== user.id)
-      throw new ForbiddenException('You are not the author of this resource');
-
-    await this.resourceService.removeOne(resource);
-    return {
-      message: 'Resource deleted successfully',
-      success: true,
-    };
+    const resource = await this.resourceService.findOneByOrFail(id);
+    if (resource.authorId === user.id || user.role === UserRole.ADMIN) {
+      await this.resourceService.removeOne(resource);
+      return new DeleteResponse('Resource deleted successfully.');
+    }
+    throw new ForbiddenException('You are not the author of this resource');
   }
 
   @ResolveField(() => UserReferenceDTO)
