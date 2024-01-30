@@ -39,7 +39,7 @@
     "@nrwl/nx-cloud": "^16.5.2",
     "@prisma/client": "5.7.1",
     "@ptc-org/nestjs-query-core": "5.0.0",
-    "@ptc-org/nestjs-query-graphql": "5.0.0-alpha.0",
+    "@ptc-org/nestjs-query-graphql": "5.0.0",
     "@ptc-org/nestjs-query-typeorm": "5.0.0-alpha.0",
     "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
