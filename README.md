@@ -21,7 +21,7 @@
 ![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
 
 [![JavaScript Style Guide: Good Parts](https://img.shields.io/badge/code%20style-goodparts-brightgreen.svg?style=flat)](https://github.com/dwyl/goodparts "JavaScript The Good Parts")
-![](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/LintTestBuild-CI.yml/badge.svg)
+[![CI Badge](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/LintTestBuild-CI.yml/badge.svg)](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/LintTestBuild-CI.yml)
 
 ## Description
 
