@@ -84,6 +84,7 @@ export class RoomResolver {
 
   @ResolveField(() => [UserReferenceDTO])
   async moderators(@Parent() room: RoomEntity) {
+    console.log(room.moderatorIds);
     return room.moderatorIds.map((id) => ({
       __typename: 'User',
       id,

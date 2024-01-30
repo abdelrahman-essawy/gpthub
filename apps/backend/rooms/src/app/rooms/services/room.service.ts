@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomEntity } from '../entities/room.entity';
 import { CreateRoom } from '@backend/dtos/room';
@@ -11,6 +11,10 @@ export class RoomService {
     private readonly roomRepository: Repository<RoomEntity>,
   ) {}
 
+  async find(options?: FindManyOptions<RoomEntity>): Promise<RoomEntity[]> {
+    return this.roomRepository.find(options);
+  }
+
   async findOne(id: string): Promise<RoomEntity> {
     return this.roomRepository.findOne({ where: { id } });
   }
@@ -20,7 +24,8 @@ export class RoomService {
   }
 
   async createOne(resource: CreateRoom) {
-    return this.roomRepository.save(resource);
+    const room = this.roomRepository.create(resource);
+    return this.roomRepository.save(room);
   }
 
   async createMany(resources: RoomEntity[]): Promise<RoomEntity[]> {
@@ -45,5 +50,9 @@ export class RoomService {
 
   async findAllByAuthorId(userId: string) {
     return this.roomRepository.find({ where: { authorId: userId } });
+  }
+
+  async findAllByModeratorId(userId: string) {
+    return this.roomRepository.find({ where: { moderatorIds: userId } });
   }
 }

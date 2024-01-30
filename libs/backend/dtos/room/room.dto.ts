@@ -17,7 +17,7 @@ export class RoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {
   @FilterableField()
   title: string;
 
-  @FilterableField()
+  @FilterableField({ nullable: true })
   description?: string;
 
   @FilterableField(() => RoomType) // Add explicit type here
