@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from './jwt.strategy';
 import { RefreshJwtStrategy } from './refresh-jwt.strategy';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -14,11 +14,22 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           package: 'auth',
           protoPath: 'apps/backend/auth/src/proto/auth.proto',
+          url: `localhost:${process.env.GRPC_AUTH_PORT ?? 50005}`,
         },
       },
     ]),
   ],
-  providers: [JwtStrategy, RefreshJwtStrategy],
+  providers: [
+    JwtStrategy,
+    RefreshJwtStrategy,
+    {
+      provide: 'AUTH_SERVICE',
+      useFactory: async (client: ClientGrpc) => {
+        return await client.getClientByServiceName('AuthService');
+      },
+      inject: ['AUTH_PACKAGE'],
+    },
+  ],
   exports: [JwtStrategy, RefreshJwtStrategy],
 })
 export class StrategiesModule {}

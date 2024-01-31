@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
 import { HashingService, IUser, IUserTokenPayload } from '@core';
@@ -8,18 +8,15 @@ import {
   UserTokenPayload,
 } from '@backend/dtos/auth';
 
-import { UsersService } from '../../../../users/src/app/users/users.service';
-import { Query } from '@nestjs/graphql';
-import { UserDto } from '@backend/dtos/user';
-import { GrpcMethod } from '@nestjs/microservices';
-
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly hashingService: HashingService,
-    private readonly usersService: UsersService,
-  ) {}
+    @Inject('USERS_SERVICE') private readonly usersService: any,
+  ) {
+    console.log('this.usersService', this.usersService);
+  }
 
   /**
    * Authenticates a user.
@@ -70,10 +67,8 @@ export class AuthService {
     return await this.usersService.createOne(UserInfo);
   }
 
-  @Query(() => UserDto)
-  @GrpcMethod('AuthService', 'me')
-  async me(userPayload: IUserTokenPayload) {
-    return this.usersService.findById(userPayload.id);
+  async me(userPayload: IUserTokenPayload): Promise<IUser> {
+    return await this.usersService.findOne(userPayload).toPromise();
   }
 
   private async generateTokens(user: IUser) {

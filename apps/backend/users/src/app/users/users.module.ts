@@ -4,7 +4,6 @@ import { HashingModule } from '@backend/hashing';
 import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { UsersDatabaseModule } from '../config/database.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersResolver } from './resolvers/users.resolver';
 import { GuardsModule } from '@backend/guards';
@@ -27,17 +26,6 @@ import { UsersController } from './users.controller';
     //   ],
     // }),
     TypeOrmModule.forFeature([UserEntity]),
-
-    ClientsModule.register([
-      {
-        name: 'AUTH_PACKAGE',
-        transport: Transport.GRPC,
-        options: {
-          package: 'auth',
-          protoPath: 'apps/backend/auth/src/proto/auth.proto',
-        },
-      },
-    ]),
 
     HashingModule,
     GuardsModule,

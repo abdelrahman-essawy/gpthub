@@ -1,21 +1,9 @@
 syntax = "proto3";
 
-package auth;
+package users;
 
-service AuthService {
-  rpc me(Payload) returns (UserEntity) {}
-}
-
-message Payload {
-  string id = 1;
-  int32 exp = 2;
-  int32 iat = 3;
-}
-
-
-enum UserRole {
-  USER = 0;
-  ADMIN = 1;
+service UsersService {
+  rpc findOne (userId) returns (UserEntity) {}
 }
 
 message UserEntity {
@@ -27,4 +15,8 @@ message UserEntity {
   bool verified = 7;
   string role = 8;
   string hashedRefreshToken = 9;
+}
+
+message userId {
+  string id = 1;
 }

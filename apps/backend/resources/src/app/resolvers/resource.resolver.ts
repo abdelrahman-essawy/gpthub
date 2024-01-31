@@ -14,7 +14,7 @@ import {
   UserReferenceDTO,
 } from '@backend/dtos/resource';
 import { IUserTokenPayload } from '@core';
-import { UserTokenPayload } from '@backend/decorators';
+import { CurrentUser } from '@backend/decorators';
 import { JwtGuard } from '@backend/guards';
 import { DeleteResponse } from '@backend/dtos/shared';
 
@@ -38,7 +38,7 @@ export class ResourceResolver {
 
   @Mutation(() => ResourceDto)
   async createResource(
-    @UserTokenPayload() user: IUserTokenPayload,
+    @CurrentUser() user: IUserTokenPayload,
     @Args('resource')
     resource: CreateResourceInput,
   ) {
@@ -55,7 +55,7 @@ export class ResourceResolver {
 
   @Mutation(() => DeleteResponse)
   async deleteResource(
-    @UserTokenPayload() user: IUserTokenPayload,
+    @CurrentUser() user: IUserTokenPayload,
     @Args('id') id: string,
   ) {
     const resource = await this.resourceService.findOneByOrFail({ id });

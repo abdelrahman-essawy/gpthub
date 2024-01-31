@@ -1,15 +1,14 @@
-import { Controller, UseGuards } from '@nestjs/common';
-import { UserDto } from '@backend/dtos/user';
-import { JwtGuard } from '@backend/guards';
-import { UserTokenPayload } from '@backend/decorators';
+import { Controller } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { GrpcMethod } from '@nestjs/microservices';
+import { IUserTokenPayload } from '@core';
 
 @Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(JwtGuard)
-  async me(@UserTokenPayload() user: UserDto) {
-    return this.usersService.findById(user.id);
+  @GrpcMethod('UsersService', 'findOne')
+  async findOne(userPayload: IUserTokenPayload) {
+    return await this.usersService.findById(userPayload.id);
   }
 }

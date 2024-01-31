@@ -2,10 +2,9 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { IUser, IUserTokenPayload } from '@core';
+import { IUserTokenPayload } from '@core';
 import { Request } from 'express';
 import { ClientGrpc } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
 
 export const cookieAccessExtractor = (req: Request): string | null => {
   if (!req.cookies) return null;
@@ -43,8 +42,6 @@ export class JwtStrategy
   }
 
   async validate(payload: IUserTokenPayload) {
-    const userObservable: Observable<IUser> = this.authService.me(payload);
-    userObservable.subscribe((user) => console.log(user));
-    return payload;
+    return this.authService.me(payload).toPromise();
   }
 }

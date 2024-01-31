@@ -1,15 +1,15 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt/dist/jwt.module';
 
 import { StrategiesModule } from '@backend/strategies';
 import { HashingModule } from '@backend/hashing';
-
-import { UsersModule } from '../../../../users/src/app/users/users.module';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { AuthController } from './auth.controller';
+import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
+import { AuthResolver } from './auth.resolver';
 
 @Module({
   imports: [
@@ -23,14 +23,31 @@ import { AuthController } from './auth.controller';
       }),
     }),
 
+    ClientsModule.register([
+      {
+        name: 'USERS_PACKAGE',
+        transport: Transport.GRPC,
+        options: {
+          package: 'users',
+          protoPath: 'apps/backend/users/src/proto/users.proto',
+        },
+      },
+    ]),
+
     ConfigModule,
     HashingModule,
     StrategiesModule,
-
-    forwardRef(() => UsersModule),
   ],
-  exports: [AuthService],
-  providers: [AuthService, LocalStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    {
+      provide: 'USERS_SERVICE',
+      useFactory: (client: ClientGrpc) => client.getService('UsersService'),
+      inject: ['USERS_PACKAGE'],
+    },
+    AuthResolver,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}
