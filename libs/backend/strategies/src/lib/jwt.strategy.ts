@@ -1,10 +1,10 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { IUserTokenPayload } from '@core';
 import { Request } from 'express';
-import { ClientGrpc } from '@nestjs/microservices';
+import { InternalCommunicationsService } from '@backend/internal-communications';
 
 export const cookieAccessExtractor = (req: Request): string | null => {
   if (!req.cookies) return null;
@@ -17,14 +17,9 @@ export const cookieAccessExtractor = (req: Request): string | null => {
 };
 
 @Injectable()
-export class JwtStrategy
-  extends PassportStrategy(Strategy)
-  implements OnModuleInit
-{
-  private authService: any;
-
+export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject('AUTH_PACKAGE') private client: ClientGrpc,
+    readonly internalCommunicationsService: InternalCommunicationsService,
     readonly configService: ConfigService,
   ) {
     super({
@@ -37,11 +32,9 @@ export class JwtStrategy
     });
   }
 
-  onModuleInit() {
-    this.authService = this.client.getService('AuthService');
-  }
-
   async validate(payload: IUserTokenPayload) {
-    return this.authService.me(payload).toPromise();
+    return await this.internalCommunicationsService.grpc.authService
+      .me(payload)
+      .toPromise();
   }
 }
