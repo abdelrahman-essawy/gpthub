@@ -33,8 +33,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IUserTokenPayload) {
-    return await this.internalCommunicationsService.grpc.authService
-      .me(payload)
-      .toPromise();
+    return await this.internalCommunicationsService.grpc.authService.me(
+      payload,
+    );
   }
 }
