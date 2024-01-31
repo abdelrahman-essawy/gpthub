@@ -6,9 +6,10 @@ import { JwtModule } from '@nestjs/jwt/dist/jwt.module';
 import { StrategiesModule } from '@backend/strategies';
 import { HashingModule } from '@backend/hashing';
 
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '../../../../users/src/app/users/users.module';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './strategies/local.strategy';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -30,5 +31,6 @@ import { LocalStrategy } from './strategies/local.strategy';
   ],
   exports: [AuthService],
   providers: [AuthService, LocalStrategy],
+  controllers: [AuthController],
 })
 export class AuthModule {}

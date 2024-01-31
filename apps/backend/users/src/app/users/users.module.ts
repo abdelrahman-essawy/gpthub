@@ -1,42 +1,51 @@
-import { forwardRef, Module } from '@nestjs/common';
-import {
-  NestjsQueryGraphQLModule,
-  PagingStrategies,
-} from '@ptc-org/nestjs-query-graphql';
-import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
-
-import { UserDto } from '@backend/dtos/user';
+import { Module } from '@nestjs/common';
 import { HashingModule } from '@backend/hashing';
 
 import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { AuthModule } from '../auth/auth.module';
-import { AuthResolver } from '../auth/auth.resolver';
 import { UsersDatabaseModule } from '../config/database.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersResolver } from './resolvers/users.resolver';
+import { GuardsModule } from '@backend/guards';
+import { UsersController } from './users.controller';
 
 @Module({
   imports: [
-    NestjsQueryGraphQLModule.forFeature({
-      imports: [NestjsQueryTypeOrmModule.forFeature([UserEntity])],
-      resolvers: [
-        {
-          DTOClass: UserDto,
-          EntityClass: UserEntity,
-          pagingStrategy: PagingStrategies.NONE,
-          create: { disabled: true },
-          update: { disabled: true },
+    // NestjsQueryGraphQLModule.forFeature({
+    //   imports: [NestjsQueryTypeOrmModule.forFeature([UserEntity])],
+    //   resolvers: [
+    //     {
+    //       DTOClass: UserDto,
+    //       EntityClass: UserEntity,
+    //       pagingStrategy: PagingStrategies.NONE,
+    //       create: { disabled: true },
+    //       update: { disabled: true },
+    //
+    //       referenceBy: { key: 'id' },
+    //     },
+    //   ],
+    // }),
+    TypeOrmModule.forFeature([UserEntity]),
 
-          referenceBy: { key: 'id' },
+    ClientsModule.register([
+      {
+        name: 'AUTH_PACKAGE',
+        transport: Transport.GRPC,
+        options: {
+          package: 'auth',
+          protoPath: 'apps/backend/auth/src/proto/auth.proto',
         },
-      ],
-    }),
+      },
+    ]),
 
     HashingModule,
+    GuardsModule,
 
-    forwardRef(() => AuthModule),
     UsersDatabaseModule,
   ],
-  providers: [UsersService, AuthResolver],
+  controllers: [UsersController],
+  providers: [UsersService, UsersResolver],
   exports: [UsersService],
 })
 export class UsersModule {}

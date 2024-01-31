@@ -1,14 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
-import { HashingService, IUser } from '@core';
+import { HashingService, IUser, IUserTokenPayload } from '@core';
 import {
   LoginUserDto,
   RegisterUserDto,
   UserTokenPayload,
 } from '@backend/dtos/auth';
 
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../../../../users/src/app/users/users.service';
+import { Query } from '@nestjs/graphql';
+import { UserDto } from '@backend/dtos/user';
+import { GrpcMethod } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
@@ -65,6 +68,12 @@ export class AuthService {
    */
   async register(UserInfo: RegisterUserDto) {
     return await this.usersService.createOne(UserInfo);
+  }
+
+  @Query(() => UserDto)
+  @GrpcMethod('AuthService', 'me')
+  async me(userPayload: IUserTokenPayload) {
+    return this.usersService.findById(userPayload.id);
   }
 
   private async generateTokens(user: IUser) {

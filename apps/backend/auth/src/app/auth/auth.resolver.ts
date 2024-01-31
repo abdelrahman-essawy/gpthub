@@ -14,7 +14,8 @@ import { UserTokenPayload } from '@backend/decorators';
 
 import { AuthService } from './auth.service';
 import { LocalGuard } from './guards/local.guard';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../../../../users/src/app/users/users.service';
+import { GrpcMethod } from '@nestjs/microservices';
 
 // @UseGuards(RolesGuard)
 // @UseGuards(AuthGuard)
@@ -62,8 +63,10 @@ export class AuthResolver {
   // @UseInterceptors(ParseUserFromToken)
   // @UseGuards(LocalGuard)
   @Query(() => UserDto)
+  @GrpcMethod('AuthService', 'Me')
   @UseGuards(JwtGuard)
   async me(@UserTokenPayload() user: UserDto) {
+    console.log('me', user);
     return this.usersService.findById(user.id);
   }
 }
