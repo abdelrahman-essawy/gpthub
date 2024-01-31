@@ -18,6 +18,8 @@ export const cookieAccessExtractor = (req: Request): string | null => {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+  private readonly authService = this.internalCommunicationsService.grpc.authService
+
   constructor(
     readonly internalCommunicationsService: InternalCommunicationsService,
     readonly configService: ConfigService,
@@ -33,7 +35,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IUserTokenPayload) {
-    return await this.internalCommunicationsService.grpc.authService.me(
+    return this.authService.me(
       payload,
     );
   }

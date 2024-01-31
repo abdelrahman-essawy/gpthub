@@ -7,10 +7,10 @@ ROOT_DIR=$(git rev-parse --show-toplevel)
 PROTOC_GEN_TS_PATH="${ROOT_DIR}/node_modules/.bin/protoc-gen-ts_proto.cmd"
 
 # Directory holding all .proto files
-SRC_DIR="${ROOT_DIR}/libs/core/src/"
+SRC_DIR="${ROOT_DIR}/apps"
 
 # Directory to write generated code (.d.ts files)
-OUT_DIR="${ROOT_DIR}/libs/core/src/proto/generated"
+OUT_DIR="${ROOT_DIR}/libs/backend/proto/gen"
 
 # Clean all existing generated files
 rm -rf "${OUT_DIR}"

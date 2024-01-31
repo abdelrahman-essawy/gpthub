@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
 import { HashingService, IUser, IUserTokenPayload } from '@core';
@@ -7,15 +7,18 @@ import {
   RegisterUserDto,
   UserTokenPayload,
 } from '@backend/dtos/auth';
+import { InternalCommunicationsService } from '@backend/internal-communications';
 
 @Injectable()
 export class AuthService {
+  private readonly usersService = this.internalCommunicationsService.grpc.usersService
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly hashingService: HashingService,
-    @Inject('USERS_SERVICE') private readonly usersService: any,
+    private readonly internalCommunicationsService: InternalCommunicationsService,
   ) {
-    console.log('this.usersService', this.usersService);
+
   }
 
   /**

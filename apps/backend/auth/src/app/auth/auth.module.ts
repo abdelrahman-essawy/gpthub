@@ -8,8 +8,11 @@ import { HashingModule } from '@backend/hashing';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { AuthController } from './auth.controller';
-import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthResolver } from './auth.resolver';
+import {
+  InternalCommunicationsModule,
+  InternalCommunicationsService,
+} from '@backend/internal-communications';
 
 @Module({
   imports: [
@@ -23,29 +26,17 @@ import { AuthResolver } from './auth.resolver';
       }),
     }),
 
-    ClientsModule.register([
-      {
-        name: 'USERS_PACKAGE',
-        transport: Transport.GRPC,
-        options: {
-          package: 'users',
-          protoPath: 'apps/backend/users/src/proto/users.proto',
-        },
-      },
-    ]),
+    InternalCommunicationsModule,
 
     ConfigModule,
     HashingModule,
     StrategiesModule,
   ],
   providers: [
+    InternalCommunicationsService,
+
     AuthService,
     LocalStrategy,
-    {
-      provide: 'USERS_SERVICE',
-      useFactory: (client: ClientGrpc) => client.getService('UsersService'),
-      inject: ['USERS_PACKAGE'],
-    },
     AuthResolver,
   ],
   controllers: [AuthController],

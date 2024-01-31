@@ -2,7 +2,7 @@ version: v1
 plugins:
   - name: es
     opt: target=ts
-    out: .
+    out: libs/backend/proto/src
   - name: nestjs
     opt: target=ts
-    out: .
+    out: libs/backend/proto/src
