@@ -2,9 +2,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
 import { HashingService, IUser } from '@core';
+import { PassableUserEntity, PassableUserTokenPayload } from '@backend/proto';
+
 import { LoginUserDto, RegisterUserDto, UserTokenPayload } from './dto';
 import { UsersService } from '../users/users.service';
-import { PassableUserEntity, PassableUserTokenPayload } from '@backend/proto';
 import { UserEntity } from '../users/entities/user.entity';
 
 @Injectable()
