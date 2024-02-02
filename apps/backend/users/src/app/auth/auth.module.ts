@@ -1,14 +1,15 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt/dist/jwt.module';
 
 import { StrategiesModule } from '@backend/strategies';
 import { HashingModule } from '@backend/hashing';
-
-import { UsersModule } from '../users/users.module';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './strategies/local.strategy';
+import { AuthController } from './auth.controller';
+import { AuthResolver } from './auth.resolver';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -22,13 +23,13 @@ import { LocalStrategy } from './strategies/local.strategy';
       }),
     }),
 
+    UsersModule,
+
     ConfigModule,
     HashingModule,
     StrategiesModule,
-
-    forwardRef(() => UsersModule),
   ],
-  exports: [AuthService],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, AuthResolver],
+  controllers: [AuthController],
 })
 export class AuthModule {}

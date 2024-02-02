@@ -1,7 +1,11 @@
 {
   "root": true,
   "ignorePatterns": [
-    "**/*"
+    "**/*.js",
+    "**/*.d.ts",
+    "**/*.json",
+    "**/*.md",
+    "**/*.spec.ts"
   ],
   "plugins": [
     "@nx",

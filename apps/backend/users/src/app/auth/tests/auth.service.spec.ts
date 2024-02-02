@@ -4,7 +4,9 @@ import { JwtService } from '@nestjs/jwt';
 import { HashingService, IUser, UserRole } from '@core';
 import { LoginUserDto, RegisterUserDto } from '@backend/dtos/auth';
 import { AuthService } from '../auth.service';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { UsersService } from '../../users/users.service';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { UserEntity } from '../../users/entities/user.entity';
 
 describe('AuthService', () => {
