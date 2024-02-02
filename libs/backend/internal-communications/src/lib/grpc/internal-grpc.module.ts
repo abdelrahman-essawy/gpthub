@@ -10,18 +10,7 @@ import { InternalGrpcService } from './internal-grpc.service';
         transport: Transport.GRPC,
         options: {
           package: 'auth',
-          protoPath: 'apps/backend/auth/src/proto/auth.proto',
-          url: `localhost:${process.env['GRPC_AUTH_PORT'] ?? 50005}`,
-        },
-      },
-    ]),
-    ClientsModule.register([
-      {
-        name: 'USERS_PACKAGE',
-        transport: Transport.GRPC,
-        options: {
-          package: 'users',
-          protoPath: 'apps/backend/users/src/proto/users.proto',
+          protoPath: 'apps/backend/users/src/proto/auth.proto',
         },
       },
     ]),
@@ -34,13 +23,7 @@ import { InternalGrpcService } from './internal-grpc.service';
         await client.getService('AuthService'),
       inject: ['AUTH_PACKAGE'],
     },
-    {
-      provide: 'USERS_SERVICE',
-      useFactory: async (client: ClientGrpc) =>
-        await client.getService('UsersService'),
-      inject: ['USERS_PACKAGE'],
-    },
   ],
-  exports: ['AUTH_SERVICE', 'USERS_SERVICE'],
+  exports: ['AUTH_SERVICE'],
 })
 export class InternalGrpcModule {}

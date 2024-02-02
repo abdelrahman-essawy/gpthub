@@ -3,10 +3,10 @@ syntax = "proto3";
 package auth;
 
 service AuthService {
-  rpc me(Payload) returns (UserEntity) {}
+  rpc me(UserTokenPayload) returns (UserEntity) {}
 }
 
-message Payload {
+message UserTokenPayload {
   string id = 1;
   int32 exp = 2;
   int32 iat = 3;

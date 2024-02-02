@@ -45,8 +45,8 @@ export class UserEntity extends BaseEntity implements IUser {
   @Column({ enum: UserRole, default: UserRole.USER, type: 'enum' })
   role: UserRole;
 
-  @Column({ nullable: true })
-  hashedRefreshToken?: string;
+  @Column({ default: null, nullable: true })
+  hashedRefreshToken: string;
 
   @CreateDateColumn()
   createdAt: Date;

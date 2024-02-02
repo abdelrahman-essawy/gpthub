@@ -33,7 +33,7 @@
       "@backend/proto": ["libs/backend/proto/gen/index.ts"],
       "@backend/strategies": ["libs/backend/strategies/src/index.ts"],
       "@backend/utilities": ["libs/backend/utilities/src/index.ts"],
-      "@core": ["libs/core/src/index.ts"],
+      "@core": ["libs/core/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist"]

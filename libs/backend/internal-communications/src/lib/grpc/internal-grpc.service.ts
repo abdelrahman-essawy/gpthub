@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AuthServiceController } from '@backend/proto';
+import { AuthServiceClient } from '@backend/proto';
 
 @Injectable()
 export class InternalGrpcService {
   constructor(
-    @Inject('AUTH_SERVICE') public readonly authService: AuthServiceController,
-    @Inject('USERS_SERVICE')
-    public readonly usersService: any,
+    @Inject('AUTH_SERVICE') public readonly authService: AuthServiceClient,
+    // @Inject('USERS_SERVICE')
+    // public readonly usersService: any,
   ) {}
 }

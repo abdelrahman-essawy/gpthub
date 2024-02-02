@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { IUserTokenPayload } from '@core';
 import { Request } from 'express';
 import { InternalCommunicationsService } from '@backend/internal-communications';
+import { lastValueFrom } from 'rxjs';
 
 export const cookieAccessExtractor = (req: Request): string | null => {
   if (!req.cookies) return null;
@@ -18,7 +19,8 @@ export const cookieAccessExtractor = (req: Request): string | null => {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  private readonly authService = this.internalCommunicationsService.grpc.authService
+  private readonly authService =
+    this.internalCommunicationsService.grpc.authService;
 
   constructor(
     readonly internalCommunicationsService: InternalCommunicationsService,
@@ -35,8 +37,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IUserTokenPayload) {
-    return this.authService.me(
-      payload,
-    );
+    return lastValueFrom(this.authService.me(payload));
   }
 }

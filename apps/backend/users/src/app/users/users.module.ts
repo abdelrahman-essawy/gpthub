@@ -7,7 +7,6 @@ import { UsersDatabaseModule } from '../config/database.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersResolver } from './resolvers/users.resolver';
 import { GuardsModule } from '@backend/guards';
-import { UsersController } from './users.controller';
 
 @Module({
   imports: [
@@ -32,7 +31,7 @@ import { UsersController } from './users.controller';
 
     UsersDatabaseModule,
   ],
-  controllers: [UsersController],
+  controllers: [],
   providers: [UsersService, UsersResolver],
   exports: [UsersService],
 })

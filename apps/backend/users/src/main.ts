@@ -18,8 +18,8 @@ async function bootstrap() {
     {
       transport: Transport.GRPC,
       options: {
-        package: 'users',
-        protoPath: 'apps/backend/users/src/proto/users.proto',
+        package: 'auth',
+        protoPath: 'apps/backend/users/src/proto/auth.proto',
       },
     },
   );
