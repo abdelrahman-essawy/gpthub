@@ -10,7 +10,6 @@ import {
   MinLength,
 } from 'class-validator';
 
-// eslint-disable-next-line sort-imports
 import { IUser, IUserDatabaseEntity } from '@core';
 
 @InputType({ description: 'Create new user' })

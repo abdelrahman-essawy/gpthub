@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { HashingService, IUser, UserRole } from '@core';
-import { LoginUserDto, RegisterUserDto } from '@backend/dtos/auth';
+import { LoginUserDto, RegisterUserDto } from '../dto';
 import { AuthService } from '../auth.service';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { UsersService } from '../../users/users.service';

@@ -3,7 +3,7 @@ import { ObjectType } from '@nestjs/graphql';
 
 import { IUser } from '@core';
 
-import { UserDto } from '../user';
+import { UserDto } from '../../users/dto';
 
 @ObjectType('LoginResponseDto', { description: 'Login response' })
 export class LoginResponseDto {

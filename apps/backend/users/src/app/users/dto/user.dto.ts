@@ -1,6 +1,7 @@
-import { IUser, UserRole } from '@core';
 import { Directive, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
+
+import { IUser, UserRole } from '@core';
 
 @ObjectType('User')
 @Directive('@key(fields: "id")')
