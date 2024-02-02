@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "base:build": "docker build . -t base-image",
-    "proto:build": "scripts/protoc-generate.sh",
+    "proto:generate": "node scripts/v2protoc-generate.js",
     "prisma:generate": "scripts/prisma/prisma-generate.sh",
     "prisma:migrate": "scripts/prisma/prisma-migrate.sh",
     "prisma:migrate:dev": "scripts/prisma/prisma-migrate.sh dev",
