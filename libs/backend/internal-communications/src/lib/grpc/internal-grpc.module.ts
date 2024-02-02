@@ -11,8 +11,7 @@ import { InternalGrpcService } from './internal-grpc.service';
         options: {
           package: 'auth',
           protoPath: 'apps/backend/auth/src/proto/auth.proto',
-          // @ts-ignore
-          url: `localhost:${process.env.GRPC_AUTH_PORT ?? 50005}`,
+          url: `localhost:${process.env['GRPC_AUTH_PORT'] ?? 50005}`,
         },
       },
     ]),

@@ -1,7 +1,7 @@
 {
   "name": "proto",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/backend/proto/src",
+  "sourceRoot": "libs/backend/proto/gen",
   "projectType": "library",
   "targets": {
     "build": {
@@ -11,7 +11,7 @@
         "outputPath": "dist/libs/backend/proto",
         "tsConfig": "libs/backend/proto/tsconfig.lib.json",
         "packageJson": "libs/backend/proto/package.json",
-        "main": "libs/backend/proto/src/index.ts",
+        "main": "libs/backend/proto/gen/index.ts",
         "assets": ["libs/backend/proto/*.md"]
       }
     }

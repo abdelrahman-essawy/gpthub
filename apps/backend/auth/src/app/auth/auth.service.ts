@@ -11,15 +11,14 @@ import { InternalCommunicationsService } from '@backend/internal-communications'
 
 @Injectable()
 export class AuthService {
-  private readonly usersService = this.internalCommunicationsService.grpc.usersService
+  private readonly usersService =
+    this.internalCommunicationsService.grpc.usersService;
 
   constructor(
     private readonly jwtService: JwtService,
     private readonly hashingService: HashingService,
     private readonly internalCommunicationsService: InternalCommunicationsService,
-  ) {
-
-  }
+  ) {}
 
   /**
    * Authenticates a user.
@@ -70,8 +69,8 @@ export class AuthService {
     return await this.usersService.createOne(UserInfo);
   }
 
-  async me(userPayload: IUserTokenPayload): Promise<IUser> {
-    return await this.usersService.findOne(userPayload).toPromise();
+  async me(userPayload: IUserTokenPayload) {
+    return this.usersService.findOne(userPayload);
   }
 
   private async generateTokens(user: IUser) {

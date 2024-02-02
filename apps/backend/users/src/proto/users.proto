@@ -4,6 +4,8 @@ package users;
 
 service UsersService {
   rpc findOne (userId) returns (UserEntity) {}
+  rpc findByUsernameOrEmailOrFail (UserEntity) returns (UserEntity) {}
+  rpc updateRefreshToken (UserEntity) returns (UserEntity) {}
 }
 
 message UserEntity {
