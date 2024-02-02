@@ -45,7 +45,7 @@ export class RoomResolver {
 
   @Mutation(() => DeleteResponse)
   async deleteRoom(
-    @UserTokenPayload() user: IUserTokenPayload,
+    @CurrentUser() user: IUserTokenPayload,
     @Args('id') id: string,
   ) {
     const room = await this.roomService.findOneByOrFail({ id });
