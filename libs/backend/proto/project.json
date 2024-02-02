@@ -18,7 +18,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/backend/proto",
+        "outputPath": "dist/libs/backend/proto/gen",
         "tsConfig": "libs/backend/proto/tsconfig.lib.json",
         "packageJson": "libs/backend/proto/package.json",
         "main": "libs/backend/proto/gen/index.ts",
