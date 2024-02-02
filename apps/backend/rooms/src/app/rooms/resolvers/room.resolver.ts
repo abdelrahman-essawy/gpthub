@@ -11,7 +11,7 @@ import { UseGuards } from '@nestjs/common';
 import { IUserTokenPayload } from '@core';
 import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dtos/room';
 import { JwtGuard } from '@backend/guards';
-import { UserTokenPayload } from '@backend/decorators';
+import { CurrentUser } from '@backend/decorators';
 
 import { RoomService } from '../services/room.service';
 import { RoomEntity } from '../entities/room.entity';
@@ -33,7 +33,7 @@ export class RoomResolver {
   @UseGuards(JwtGuard)
   @Mutation(() => RoomDto)
   async createRoom(
-    @UserTokenPayload() user: IUserTokenPayload,
+    @CurrentUser() user: IUserTokenPayload,
     @Args('room') roomData: CreateRoomInput,
   ) {
     return this.roomService.createOne({

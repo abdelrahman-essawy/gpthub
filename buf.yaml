@@ -1,0 +1,30 @@
+version: v1
+
+build:
+  excludes:
+    - vendor/
+    - generated/
+    - node_modules/
+
+lint:
+  use:
+    - DEFAULT
+  except:
+    - ENUM_NO_ALLOW_ALIAS
+  ignore:
+    - generated/  # Ignore linting for generated code
+  ignore_only:
+    PACKAGE_VERSION_SUFFIX:
+      - proto/api/v1alpha1
+
+
+
+breaking:
+  use:
+    - FILE
+    - WIRE
+  except:
+    - FILE_NO_DELETE
+  ignore:
+    - deprecated/  # Ignore breaking changes in deprecated code
+

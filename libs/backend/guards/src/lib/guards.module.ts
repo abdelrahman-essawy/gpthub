@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { StrategiesModule } from '@backend/strategies';
 
 @Module({
-  controllers: [],
+  imports: [StrategiesModule],
   providers: [],
   exports: [],
 })

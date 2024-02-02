@@ -4,6 +4,8 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { IUserTokenPayload } from '@core';
 import { Request } from 'express';
+import { InternalCommunicationsService } from '@backend/internal-communications';
+import { lastValueFrom } from 'rxjs';
 
 export const cookieAccessExtractor = (req: Request): string | null => {
   if (!req.cookies) return null;
@@ -17,7 +19,13 @@ export const cookieAccessExtractor = (req: Request): string | null => {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(readonly configService: ConfigService) {
+  private readonly authService =
+    this.internalCommunicationsService.grpc.authService;
+
+  constructor(
+    readonly internalCommunicationsService: InternalCommunicationsService,
+    readonly configService: ConfigService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         cookieAccessExtractor,
@@ -29,6 +37,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IUserTokenPayload) {
-    return payload;
+    return lastValueFrom(this.authService.me(payload));
   }
 }

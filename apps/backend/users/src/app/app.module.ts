@@ -11,9 +11,6 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    UsersModule,
-    AuthModule,
-
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       context: ({ req }) => ({ req }),
@@ -23,6 +20,11 @@ import { AuthModule } from './auth/auth.module';
       },
       buildSchemaOptions: {},
     }),
+
+    UsersModule,
+    AuthModule,
   ],
+
+  providers: [],
 })
 export class AppModule {}
