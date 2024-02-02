@@ -158,6 +158,9 @@ dependencies:
   pg:
     specifier: ^8.11.3
     version: 8.11.3
+  protobufjs:
+    specifier: ^7.2.6
+    version: 7.2.6
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -2710,7 +2713,7 @@ packages:
     dependencies:
       lodash.camelcase: 4.3.0
       long: 5.2.3
-      protobufjs: 7.2.5
+      protobufjs: 7.2.6
       yargs: 17.7.2
 
   /@hapi/hoek@9.3.0:
@@ -15314,8 +15317,8 @@ packages:
       react-is: 16.13.1
     dev: true
 
-  /protobufjs@7.2.5:
-    resolution: {integrity: sha512-gGXRSXvxQ7UiPgfw8gevrfRWcTlSbOFg+p/N+JVJEK5VhueL2miT6qTymqAmjr1Q5WbOCyJbyrk6JfWKwlFn6A==}
+  /protobufjs@7.2.6:
+    resolution: {integrity: sha512-dgJaEDDL6x8ASUZ1YqWciTRrdOuYNzoOf27oHNfdyvKqHr5i0FV7FSLU+aIeFjyFgVxrpTOtQUi0BLLBymZaBw==}
     engines: {node: '>=12.0.0'}
     requiresBuild: true
     dependencies:
@@ -17356,7 +17359,7 @@ packages:
     resolution: {integrity: sha512-TYyJ7+H+7Jsqawdv+mfsEpZPTIj9siDHS6EMCzG/z3b/PZiphsX+mWtqFfFVe5/N0Th6V3elK9lQqjnrgTOfrg==}
     dependencies:
       long: 5.2.3
-      protobufjs: 7.2.5
+      protobufjs: 7.2.6
     dev: true
 
   /ts-proto@1.167.2:
@@ -17364,7 +17367,7 @@ packages:
     hasBin: true
     dependencies:
       case-anything: 2.1.13
-      protobufjs: 7.2.5
+      protobufjs: 7.2.6
       ts-poet: 6.6.0
       ts-proto-descriptors: 1.15.0
     dev: true

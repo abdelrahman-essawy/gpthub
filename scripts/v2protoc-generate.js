@@ -82,7 +82,7 @@ for (const PROTO_FILE of PROTO_FILES) {
   console.log(`${GREEN}Processing ${FILENAME}...${NC} `);
 
   // Generate code for the current .proto file with various options
-  const protocCommand = `pnpx protoc --plugin="${PROTOC_GEN_TS_PATH}" --ts_proto_out="${OUT_DIR}" --ts_proto_opt=nestJs=true --proto_path="${SRC_DIR}" "${PROTO_FILE}"`;
+  const protocCommand = `pnpx protoc --plugin="${PROTOC_GEN_TS_PATH}" --ts_proto_out="${OUT_DIR}" --ts_proto_opt=nestJs=true,useDate=true --proto_path="${SRC_DIR}" "${PROTO_FILE}"`;
 
   execSync(protocCommand);
 
@@ -107,6 +107,10 @@ const findGeneratedFiles = (dir) => {
     const filePath = join(dir, file);
 
     if (statSync(filePath).isDirectory()) {
+      // if the dir belongs to google, skip it
+      if (file === 'google') {
+        continue;
+      }
       generatedFiles = generatedFiles.concat(findGeneratedFiles(filePath));
     } else if (file.endsWith('.ts')) {
       generatedFiles.push(filePath);

@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import {
   AuthServiceController,
   AuthServiceControllerMethods,
-  UserTokenPayload,
+  PassableUserTokenPayload,
 } from '@backend/proto';
 
 @Controller()
@@ -11,7 +11,7 @@ import {
 export class AuthController implements AuthServiceController {
   constructor(private readonly authService: AuthService) {}
 
-  async me(request: UserTokenPayload) {
+  async me(request: PassableUserTokenPayload) {
     return await this.authService.me(request);
   }
 }

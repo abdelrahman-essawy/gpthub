@@ -1,22 +1,17 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
 
 export const protobufPackage = "auth";
 
-export enum UserRole {
-  USER = 0,
-  ADMIN = 1,
-  UNRECOGNIZED = -1,
-}
-
-export interface UserTokenPayload {
+export interface PassableUserTokenPayload {
   id: string;
   exp: number;
   iat: number;
 }
 
-export interface UserEntity {
+export interface PassableUserEntity {
   id: string;
   firstName: string;
   lastName: string;
@@ -25,16 +20,29 @@ export interface UserEntity {
   verified: boolean;
   role: string;
   hashedRefreshToken: string;
+  createdAt: Date | undefined;
+  updatedAt: Date | undefined;
 }
 
 export const AUTH_PACKAGE_NAME = "auth";
 
+wrappers[".google.protobuf.Timestamp"] = {
+  fromObject(value: Date) {
+    return { seconds: value.getTime() / 1000, nanos: (value.getTime() % 1000) * 1e6 };
+  },
+  toObject(message: { seconds: number; nanos: number }) {
+    return new Date(message.seconds * 1000 + message.nanos / 1e6);
+  },
+} as any;
+
 export interface AuthServiceClient {
-  me(request: UserTokenPayload): Observable<UserEntity>;
+  me(request: PassableUserTokenPayload): Observable<PassableUserEntity>;
 }
 
 export interface AuthServiceController {
-  me(request: UserTokenPayload): Promise<UserEntity> | Observable<UserEntity> | UserEntity;
+  me(
+    request: PassableUserTokenPayload,
+  ): Promise<PassableUserEntity> | Observable<PassableUserEntity> | PassableUserEntity;
 }
 
 export function AuthServiceControllerMethods() {

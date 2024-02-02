@@ -8,6 +8,8 @@ import {
   UserTokenPayload,
 } from '@backend/dtos/auth';
 import { UsersService } from '../users/users.service';
+import { PassableUserEntity, PassableUserTokenPayload } from '@backend/proto';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -66,7 +68,9 @@ export class AuthService {
     return await this.usersService.createOne(UserInfo);
   }
 
-  async me(userPayload: UserTokenPayload) {
+  async me(
+    userPayload: UserTokenPayload | PassableUserTokenPayload,
+  ): Promise<UserEntity | PassableUserEntity> {
     return await this.usersService.findById(userPayload.id);
   }
 
