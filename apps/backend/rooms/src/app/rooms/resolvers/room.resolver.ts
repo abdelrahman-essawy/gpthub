@@ -9,13 +9,13 @@ import {
 import { ForbiddenException, UseGuards } from '@nestjs/common';
 
 import { IUserTokenPayload, UserRole } from '@core';
-import { CreateRoomInput, RoomDto, UserReferenceDTO } from '@backend/dtos/room';
 import { JwtGuard } from '@backend/guards';
 import { CurrentUser } from '@backend/decorators';
+import { DeleteResponse } from '@backend/dtos/shared';
 
 import { RoomService } from '../services/room.service';
 import { RoomEntity } from '../entities/room.entity';
-import { DeleteResponse } from '@backend/dtos/shared';
+import { CreateRoomInput, RoomDto, UserReferenceDTO } from '../dto';
 
 @UseGuards(JwtGuard)
 @Resolver(() => RoomDto)

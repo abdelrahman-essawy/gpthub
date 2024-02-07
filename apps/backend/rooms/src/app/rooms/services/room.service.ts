@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { FindManyOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { RoomEntity } from '../entities/room.entity';
-import { CreateRoom } from '@backend/dtos/room';
+import { CreateRoom } from '../dto';
 
 @Injectable()
 export class RoomService {
