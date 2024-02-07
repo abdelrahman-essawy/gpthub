@@ -5,7 +5,7 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 
-import { UserReferenceDTO } from './rooms/dto';
+import { UserDto } from './rooms/dto';
 
 import { RoomModule } from './rooms/rooms.module';
 
@@ -21,7 +21,7 @@ import { RoomModule } from './rooms/rooms.module';
         federation: 2,
       },
       buildSchemaOptions: {
-        orphanedTypes: [UserReferenceDTO],
+        orphanedTypes: [UserDto],
       },
       playground: {
         settings: {

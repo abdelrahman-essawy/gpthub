@@ -15,7 +15,7 @@ import { DeleteResponse } from '@backend/dtos/shared';
 
 import { RoomService } from '../services/room.service';
 import { RoomEntity } from '../entities/room.entity';
-import { CreateRoomInput, RoomDto, UserReferenceDTO } from '../dto';
+import { CreateRoomInput, RoomDto, UserDto } from '../dto';
 
 @UseGuards(JwtGuard)
 @Resolver(() => RoomDto)
@@ -56,12 +56,12 @@ export class RoomResolver {
     throw new ForbiddenException('You are not the author of this room');
   }
 
-  @ResolveField(() => UserReferenceDTO)
+  @ResolveField(() => UserDto)
   async author(@Parent() room: RoomEntity) {
     return { __typename: 'User', id: room.authorId };
   }
 
-  @ResolveField(() => [UserReferenceDTO])
+  @ResolveField(() => [UserDto])
   async participants(@Parent() room: RoomDto) {
     return room.participants.map((id) => ({
       __typename: 'User',
@@ -69,7 +69,7 @@ export class RoomResolver {
     }));
   }
 
-  @ResolveField(() => [UserReferenceDTO])
+  @ResolveField(() => [UserDto])
   async owners(@Parent() room: RoomEntity) {
     return room.ownerIds.map((id) => ({
       __typename: 'User',
@@ -77,7 +77,7 @@ export class RoomResolver {
     }));
   }
 
-  @ResolveField(() => [UserReferenceDTO])
+  @ResolveField(() => [UserDto])
   async collaborators(@Parent() room: RoomEntity) {
     return room.collaboratorIds.map((id) => ({
       __typename: 'User',
@@ -85,7 +85,7 @@ export class RoomResolver {
     }));
   }
 
-  @ResolveField(() => [UserReferenceDTO])
+  @ResolveField(() => [UserDto])
   async moderators(@Parent() room: RoomEntity) {
     console.log(room.moderatorIds);
     return room.moderatorIds.map((id) => ({

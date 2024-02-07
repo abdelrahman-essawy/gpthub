@@ -3,14 +3,14 @@ import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { ResourceDto } from '@backend/dtos/resource';
 
 import { RoomService } from '../services/room.service';
-import { UserReferenceDTO } from '../dto';
+import { UserDto } from '../dto';
 
-@Resolver(() => UserReferenceDTO)
+@Resolver(() => UserDto)
 export class UserReferenceResolver {
   constructor(private readonly roomService: RoomService) {}
 
   @ResolveField(() => [ResourceDto])
-  async resources(@Parent() user: UserReferenceDTO) {
+  async resources(@Parent() user: UserDto) {
     return await this.roomService.findAllByAuthorId(user.id);
   }
 }

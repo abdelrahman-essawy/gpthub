@@ -1,11 +1,9 @@
 import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 import { RoomDto } from './room.dto';
 
-@ObjectType('User')
+@ObjectType()
 @Directive('@key(fields: "id")')
-@Directive('@extends')
-export class UserReferenceDTO {
-  @Directive('@external')
+export class UserDto {
   @Field(() => ID)
   id!: string;
 
