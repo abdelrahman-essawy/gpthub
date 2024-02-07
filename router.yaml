@@ -20,16 +20,29 @@ telemetry:
       protocol: grpc
       timeout: 42s
 
+headers:
+  all: # Header rules for all subgraphs
+    request:
+      - propagate:
+          matching: "authorization"
+      - remove:
+          named: "x-legacy-account-id"
+#  subgraphs:
+#    products: # Header rules for just the products subgraph
+#      request:
+#        - insert:
+#            name: "router-subgraph-name"
+#            value: "products"
 # --------------------
 # note: `router --dev` has these default settings and enables the --hot-reload flag
 # --------------------
 # supergraph:
 #   introspection: true
-# sandbox:
-#   enabled: true
+#sandbox:
+#  enabled: true
 # homepage:
 #   enabled: false
 # include_subgraph_errors:
 #   all: true # Propagate errors from all subgraphs
-# plugins:
-#   experimental.expose_query_plan: true
+#plugins:
+#  experimental.expose_query_plan: true

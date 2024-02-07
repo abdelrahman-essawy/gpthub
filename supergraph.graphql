@@ -1,100 +1,260 @@
 schema
-  @core(feature: "https://specs.apollo.dev/core/v0.2"),
-  @core(feature: "https://specs.apollo.dev/join/v0.1", for: EXECUTION)
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
 {
   query: Query
   mutation: Mutation
 }
 
-directive @core(as: String, feature: String!, for: core__Purpose) repeatable on SCHEMA
+directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
 
-directive @join__field(graph: join__Graph, provides: join__FieldSet, requires: join__FieldSet) on FIELD_DEFINITION
+directive @join__field(graph: join__Graph, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
 
 directive @join__graph(name: String!, url: String!) on ENUM_VALUE
 
-directive @join__owner(graph: join__Graph!) on INTERFACE | OBJECT
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
 
-directive @join__type(graph: join__Graph!, key: join__FieldSet) repeatable on INTERFACE | OBJECT
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true, isInterfaceObject: Boolean! = false) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on UNION
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+"""Create new resource"""
+input CreateResourceInput
+  @join__type(graph: RESOURCES)
+{
+  description: String!
+  format: String!
+  title: String!
+  type: String!
+}
+
+"""Input to create a new room"""
+input CreateRoomInput
+  @join__type(graph: ROOMS)
+{
+  description: String
+  title: String!
+  roomType: String
+  resourceIds: [String!]!
+}
 
 """Login user"""
-input Credentials {
+input Credentials
+  @join__type(graph: USERS)
+{
   email: String
-  password: String!
   username: String
+  password: String!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+  @join__type(graph: RESOURCES)
+  @join__type(graph: ROOMS)
+  @join__type(graph: USERS)
+
+type DeleteResponse
+  @join__type(graph: RESOURCES)
+  @join__type(graph: ROOMS)
+{
+  message: String!
+  success: Boolean!
+}
+
+scalar join__FieldSet
+
+enum join__Graph {
+  RESOURCES @join__graph(name: "resources", url: "http://host.docker.internal:3002/graphql")
+  ROOMS @join__graph(name: "rooms", url: "http://host.docker.internal:3003/graphql")
+  USERS @join__graph(name: "users", url: "http://host.docker.internal:3001/graphql")
+}
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
 
 """Login response"""
-type LoginResponseDto {
+type LoginResponseDto
+  @join__type(graph: USERS)
+{
   accessToken: String!
   refreshToken: String!
   user: User!
 }
 
-type Mutation {
+type Mutation
+  @join__type(graph: RESOURCES)
+  @join__type(graph: ROOMS)
+  @join__type(graph: USERS)
+{
+  createResource(resource: CreateResourceInput!): Resource! @join__field(graph: RESOURCES)
+  deleteResource(id: String!): DeleteResponse! @join__field(graph: RESOURCES)
+  createRoom(room: CreateRoomInput!): Room! @join__field(graph: ROOMS)
+  deleteRoom(id: String!): DeleteResponse! @join__field(graph: ROOMS)
+
   """Login a user with username or email and password, returns JWT token."""
   login(credentials: Credentials!): LoginResponseDto! @join__field(graph: USERS)
-  refreshToken: LoginResponseDto! @join__field(graph: USERS)
   register(userInfo: RegisterUserDto!): RegisterResponse! @join__field(graph: USERS)
+  refreshToken: LoginResponseDto! @join__field(graph: USERS)
 }
 
-type Query {
+type Query
+  @join__type(graph: RESOURCES)
+  @join__type(graph: ROOMS)
+  @join__type(graph: USERS)
+{
+  getOneResource(id: String!): Resource! @join__field(graph: RESOURCES)
+  getAllResources: [Resource!]! @join__field(graph: RESOURCES)
+  room(id: String!): Room! @join__field(graph: ROOMS)
+  rooms: [Room!]! @join__field(graph: ROOMS)
   me: User! @join__field(graph: USERS)
 }
 
 """Register response"""
-type RegisterResponse {
+type RegisterResponse
+  @join__type(graph: USERS)
+{
   accessToken: String!
   refreshToken: String!
   user: User!
 }
 
 """Create new user"""
-input RegisterUserDto {
-  birthday: DateTime
+input RegisterUserDto
+  @join__type(graph: USERS)
+{
   email: String!
   firstName: String!
-  lastName: String!
   password: String!
-  username: String!
-}
-
-type User {
-  birthday: DateTime
-  createdAt: DateTime!
-  email: String!
-  firstName: String!
-  id: ID!
   lastName: String!
-  role: UserRole!
-  updatedAt: DateTime!
   username: String!
+  birthday: DateTime
+}
+
+"""Resources uploaded by users"""
+type Resource
+  @join__type(graph: RESOURCES)
+{
+  id: ID!
+  title: String!
+  description: String!
+  type: ResourceType!
+  format: ResourceFormat!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  author: ResourceUserReferenceDto!
+  indexed: String
+  raw: String
+}
+
+enum ResourceFormat
+  @join__type(graph: RESOURCES)
+{
+  PDF @join__enumValue(graph: RESOURCES)
+  DOC @join__enumValue(graph: RESOURCES)
+  DOCX @join__enumValue(graph: RESOURCES)
+  XLS @join__enumValue(graph: RESOURCES)
+  XLSX @join__enumValue(graph: RESOURCES)
+  PPT @join__enumValue(graph: RESOURCES)
+  PPTX @join__enumValue(graph: RESOURCES)
+  MP3 @join__enumValue(graph: RESOURCES)
+  MP4 @join__enumValue(graph: RESOURCES)
+  WAV @join__enumValue(graph: RESOURCES)
+  AVI @join__enumValue(graph: RESOURCES)
+  MKV @join__enumValue(graph: RESOURCES)
+  JPG @join__enumValue(graph: RESOURCES)
+  JPEG @join__enumValue(graph: RESOURCES)
+  PNG @join__enumValue(graph: RESOURCES)
+  GIF @join__enumValue(graph: RESOURCES)
+  OTHER @join__enumValue(graph: RESOURCES)
+}
+
+enum ResourceType
+  @join__type(graph: RESOURCES)
+{
+  BOOK @join__enumValue(graph: RESOURCES)
+  VIDEO @join__enumValue(graph: RESOURCES)
+  AUDIO @join__enumValue(graph: RESOURCES)
+  IMAGE @join__enumValue(graph: RESOURCES)
+  DOCUMENT @join__enumValue(graph: RESOURCES)
+  ARTICLE @join__enumValue(graph: RESOURCES)
+  CODE @join__enumValue(graph: RESOURCES)
+  OTHER @join__enumValue(graph: RESOURCES)
+}
+
+type ResourceUserReferenceDto
+  @join__type(graph: RESOURCES)
+{
+  id: ID!
+  resources: [Resource!]!
+}
+
+type Room
+  @join__type(graph: ROOMS)
+{
+  id: ID!
+  title: String!
+  description: String
+  roomType: RoomType!
+  resourceIds: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  author: RoomUser!
+  participants: [RoomUser!]!
+  owners: [RoomUser!]!
+  moderators: [RoomUser!]!
+  collaborators: [RoomUser!]!
+}
+
+enum RoomType
+  @join__type(graph: ROOMS)
+{
+  PUBLIC @join__enumValue(graph: ROOMS)
+  PRIVATE @join__enumValue(graph: ROOMS)
+}
+
+type RoomUser
+  @join__type(graph: ROOMS)
+{
+  id: ID!
+  rooms: [Room!]!
+  moderatedRooms: [Room!]!
+  participatedRooms: [Room!]!
+  collaboratedRooms: [Room!]!
+}
+
+type User
+  @join__type(graph: USERS)
+{
+  id: ID!
+  firstName: String!
+  lastName: String!
+  username: String!
+  email: String!
   verified: Boolean!
+  birthday: DateTime
+  role: UserRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
-enum UserRole {
-  ADMIN
-  USER
-}
-
-enum core__Purpose {
-  """
-  `EXECUTION` features provide metadata necessary to for operation execution.
-  """
-  EXECUTION
-
-  """
-  `SECURITY` features provide metadata necessary to securely resolve fields.
-  """
-  SECURITY
-}
-
-scalar join__FieldSet
-
-enum join__Graph {
-  USERS @join__graph(name: "users" url: "http://host.docker.internal:3001/graphql")
+enum UserRole
+  @join__type(graph: USERS)
+{
+  ADMIN @join__enumValue(graph: USERS)
+  USER @join__enumValue(graph: USERS)
 }

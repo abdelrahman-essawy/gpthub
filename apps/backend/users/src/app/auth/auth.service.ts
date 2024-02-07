@@ -71,6 +71,10 @@ export class AuthService {
     return await this.usersService.findById(userPayload.id);
   }
 
+  async findById(id: string) {
+    return await this.usersService.findById(id);
+  }
+
   private async generateTokens(user: IUser) {
     const tokenPayload = new UserTokenPayload(user);
     const accessToken = await this.generateToken(tokenPayload, {

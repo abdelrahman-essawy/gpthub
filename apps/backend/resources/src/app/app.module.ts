@@ -6,13 +6,14 @@ import {
 } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StrategiesModule } from '@backend/strategies';
-import { UserReferenceDTO } from '@backend/dtos/resource';
 
 import { ResourceResolver } from './resolvers/resource.resolver';
 import { ResourceService } from './services/resource.service';
 import { ResourceEntity } from './entities/resource.entity';
 import { ResourcesDatabaseModule } from './resources-db/resources-db.module';
 import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
+import { join } from 'path';
+import { ResourceUserReferenceDto } from '@backend/dtos/resource';
 
 @Module({
   imports: [
@@ -20,9 +21,13 @@ import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
       driver: ApolloFederationDriver,
       autoSchemaFile: {
         federation: 2,
+        path: join(
+          process.cwd(),
+          'apps/backend/resources/src/resources.schema.graphql',
+        ),
       },
       buildSchemaOptions: {
-        orphanedTypes: [UserReferenceDTO],
+        orphanedTypes: [ResourceUserReferenceDto],
       },
       playground: {
         settings: {
@@ -38,4 +43,4 @@ import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
   ],
   providers: [ResourceResolver, ResourceService, UserReferenceResolver],
 })
-export class ResourcesModule {}
+export class AppModule {}
