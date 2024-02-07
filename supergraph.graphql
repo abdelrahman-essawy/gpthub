@@ -156,7 +156,7 @@ type Resource
   format: ResourceFormat!
   createdAt: DateTime!
   updatedAt: DateTime!
-  author: ResourceUserReferenceDto!
+  author: UserDto!
   indexed: String
   raw: String
 }
@@ -194,13 +194,6 @@ enum ResourceType
   ARTICLE @join__enumValue(graph: RESOURCES)
   CODE @join__enumValue(graph: RESOURCES)
   OTHER @join__enumValue(graph: RESOURCES)
-}
-
-type ResourceUserReferenceDto
-  @join__type(graph: RESOURCES)
-{
-  id: ID!
-  resources: [Resource!]!
 }
 
 type Room
@@ -250,6 +243,13 @@ type User
   role: UserRole!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type UserDto
+  @join__type(graph: RESOURCES)
+{
+  id: ID!
+  resources: [Resource!]!
 }
 
 enum UserRole

@@ -3,9 +3,7 @@ import { ResourceDto } from './resource.dto';
 
 @ObjectType()
 @Directive('@key(fields: "id")')
-@Directive('@extends')
-export class ResourceUserReferenceDto {
-  @Directive('@external')
+export class UserDto {
   @Field(() => ID)
   id!: string;
 

@@ -12,7 +12,7 @@ import { IUserTokenPayload, UserRole } from '@core';
 import {
   CreateResourceInput,
   ResourceDto,
-  ResourceUserReferenceDto,
+  UserDto,
 } from '@backend/dtos/resource';
 import { CurrentUser } from '@backend/decorators';
 import { JwtGuard } from '@backend/guards';
@@ -66,7 +66,7 @@ export class ResourceResolver {
     throw new ForbiddenException('You are not the author of this resource');
   }
 
-  @ResolveField(() => ResourceUserReferenceDto)
+  @ResolveField(() => UserDto)
   async author(@Parent() resource: ResourceEntity) {
     return { __typename: 'ResourceUserReferenceDto', id: resource.authorId };
   }

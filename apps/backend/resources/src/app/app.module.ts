@@ -13,7 +13,7 @@ import { ResourceEntity } from './entities/resource.entity';
 import { ResourcesDatabaseModule } from './resources-db/resources-db.module';
 import { UserReferenceResolver } from './resolvers/user-refrence.resolver';
 import { join } from 'path';
-import { ResourceUserReferenceDto } from '@backend/dtos/resource';
+import { UserDto } from '@backend/dtos/resource';
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { ResourceUserReferenceDto } from '@backend/dtos/resource';
         ),
       },
       buildSchemaOptions: {
-        orphanedTypes: [ResourceUserReferenceDto],
+        orphanedTypes: [UserDto],
       },
       playground: {
         settings: {

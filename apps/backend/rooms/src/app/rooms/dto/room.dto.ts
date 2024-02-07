@@ -1,4 +1,5 @@
 import {
+  Directive,
   Field,
   GraphQLISODateTime,
   ID,
@@ -7,9 +8,10 @@ import {
 } from '@nestjs/graphql';
 import { IRoom, IRoomDatabaseEntity, RoomType } from '@core';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
-import { UserReferenceDTO } from './user-reference.dto';
+import { UserDto } from './user-dto.directive';
 
-@ObjectType('Room')
+@ObjectType()
+@Directive('@key(fields: "id")')
 export class RoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {
   @IDField(() => ID)
   id: string;
@@ -32,20 +34,20 @@ export class RoomDto implements Omit<IRoom, keyof IRoomDatabaseEntity> {
   @FilterableField(() => GraphQLISODateTime)
   updatedAt: Date;
 
-  @Field(() => UserReferenceDTO)
-  author: UserReferenceDTO;
+  @Field(() => UserDto)
+  author: UserDto;
 
-  @Field(() => [UserReferenceDTO])
-  participants: UserReferenceDTO[];
+  @Field(() => [UserDto])
+  participants: UserDto[];
 
-  @Field(() => [UserReferenceDTO])
-  owners: UserReferenceDTO[];
+  @Field(() => [UserDto])
+  owners: UserDto[];
 
-  @Field(() => [UserReferenceDTO])
-  moderators: UserReferenceDTO[];
+  @Field(() => [UserDto])
+  moderators: UserDto[];
 
-  @Field(() => [UserReferenceDTO])
-  collaborators: UserReferenceDTO[];
+  @Field(() => [UserDto])
+  collaborators: UserDto[];
 }
 
 registerEnumType(RoomType, {

@@ -2,15 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type RoomUser {
+type UserDto {
   id: ID!
-  rooms: [Room!]!
-  moderatedRooms: [Room!]!
-  participatedRooms: [Room!]!
-  collaboratedRooms: [Room!]!
+  rooms: [RoomDto!]!
+  moderatedRooms: [RoomDto!]!
+  participatedRooms: [RoomDto!]!
+  collaboratedRooms: [RoomDto!]!
 }
 
-type Room {
+type RoomDto {
   id: ID!
   title: String!
   description: String
@@ -18,11 +18,11 @@ type Room {
   resourceIds: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
-  author: RoomUser!
-  participants: [RoomUser!]!
-  owners: [RoomUser!]!
-  moderators: [RoomUser!]!
-  collaborators: [RoomUser!]!
+  author: UserDto!
+  participants: [UserDto!]!
+  owners: [UserDto!]!
+  moderators: [UserDto!]!
+  collaborators: [UserDto!]!
 }
 
 enum RoomType {
@@ -41,12 +41,12 @@ type DeleteResponse {
 }
 
 type Query {
-  room(id: String!): Room!
-  rooms: [Room!]!
+  room(id: String!): RoomDto!
+  rooms: [RoomDto!]!
 }
 
 type Mutation {
-  createRoom(room: CreateRoomInput!): Room!
+  createRoom(room: CreateRoomInput!): RoomDto!
   deleteRoom(id: String!): DeleteResponse!
 }
 

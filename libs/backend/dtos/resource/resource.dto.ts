@@ -10,7 +10,7 @@ import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
 
 import { IResource, ResourceFormat, ResourceType } from '@core';
 
-import { ResourceUserReferenceDto } from './user-refrence.dto';
+import { UserDto } from './user-refrence.dto';
 
 @ObjectType('Resource', {
   description: 'Resources uploaded by users',
@@ -38,8 +38,8 @@ export class ResourceDto implements IResource {
   @FilterableField(() => GraphQLISODateTime)
   updatedAt: Date;
 
-  @Field(() => ResourceUserReferenceDto)
-  author: ResourceUserReferenceDto;
+  @Field(() => UserDto)
+  author: UserDto;
 
   @Field(() => String, {
     nullable: true,

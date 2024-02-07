@@ -1,9 +1,10 @@
-import { ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Directive, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { FilterableField, IDField } from '@ptc-org/nestjs-query-graphql';
 
 import { IUser, UserRole } from '@core';
 
-@ObjectType('User')
+@ObjectType()
+@Directive('@key(fields: "id")')
 export class UserDto implements Omit<IUser, 'password' | 'hashedRefreshToken'> {
   @IDField(() => ID)
   id: string;

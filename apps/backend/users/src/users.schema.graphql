@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type UserDto {
   id: ID!
   firstName: String!
   lastName: String!
@@ -29,18 +29,18 @@ enum UserRole {
 type LoginResponseDto {
   accessToken: String!
   refreshToken: String!
-  user: User!
+  user: UserDto!
 }
 
 """Register response"""
 type RegisterResponse {
   accessToken: String!
   refreshToken: String!
-  user: User!
+  user: UserDto!
 }
 
 type Query {
-  me: User!
+  me: UserDto!
 }
 
 type Mutation {
