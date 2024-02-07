@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="backend/libs" pattern="file[gpthub]:libs/backend//*" />
+</component>
