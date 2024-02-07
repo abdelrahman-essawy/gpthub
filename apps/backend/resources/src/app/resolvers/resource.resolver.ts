@@ -8,12 +8,12 @@ import {
 } from '@nestjs/graphql';
 import { ForbiddenException, UseGuards } from '@nestjs/common';
 
+import { IUserTokenPayload, UserRole } from '@core';
 import {
   CreateResourceInput,
   ResourceDto,
   UserReferenceDTO,
 } from '@backend/dtos/resource';
-import { IUserTokenPayload } from '@core';
 import { CurrentUser } from '@backend/decorators';
 import { JwtGuard } from '@backend/guards';
 import { DeleteResponse } from '@backend/dtos/shared';
@@ -59,14 +59,11 @@ export class ResourceResolver {
     @Args('id') id: string,
   ) {
     const resource = await this.resourceService.findOneByOrFail({ id });
-    if (resource.authorId !== user.id)
-      throw new ForbiddenException('You are not the author of this resource');
-
-    await this.resourceService.removeOne(resource);
-    return {
-      message: 'Resource deleted successfully',
-      success: true,
-    };
+    if (resource.authorId === user.id || user.role === UserRole.ADMIN) {
+      await this.resourceService.removeOne(resource);
+      return new DeleteResponse('Resource deleted successfully.');
+    }
+    throw new ForbiddenException('You are not the author of this resource');
   }
 
   @ResolveField(() => UserReferenceDTO)

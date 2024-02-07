@@ -2,13 +2,13 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { IUser, IUserTokenPayload } from '@core';
 import { JwtGuard, RefreshJwtGuard } from '@backend/guards';
-import { UserDto } from '@backend/dtos/user';
+import { UserDto } from '../users/dto';
 import {
   LoginResponseDto,
   LoginUserDto,
   RegisterResponse,
   RegisterUserDto,
-} from '@backend/dtos/auth';
+} from './dto';
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from '@backend/decorators';
 

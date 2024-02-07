@@ -42,9 +42,4 @@ export class CreateRoom
   @IsNotEmpty()
   @IsUUID('4')
   authorId: string;
-
-  @Field(() => [String])
-  @IsNotEmpty()
-  @IsUUID('4', { each: true })
-  ownerIds: string[];
 }

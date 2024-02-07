@@ -17,7 +17,9 @@ export class ResourceService {
   }
 
   async findOneByOrFail(
-    where: FindOptionsWhere<ResourceEntity>,
+    where:
+      | FindOptionsWhere<ResourceEntity>
+      | FindOptionsWhere<ResourceEntity>[],
   ): Promise<ResourceEntity> {
     return await this.resourceRepository.findOneByOrFail(where);
   }

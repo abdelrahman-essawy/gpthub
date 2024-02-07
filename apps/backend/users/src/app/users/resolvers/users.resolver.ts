@@ -1,5 +1,5 @@
 import { Resolver } from '@nestjs/graphql';
-import { UserDto } from '@backend/dtos/user';
+import { UserDto } from '../dto';
 import { UsersService } from '../users.service';
 
 @Resolver(() => UserDto)
