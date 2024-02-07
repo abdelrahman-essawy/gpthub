@@ -1,0 +1,100 @@
+schema
+  @core(feature: "https://specs.apollo.dev/core/v0.2"),
+  @core(feature: "https://specs.apollo.dev/join/v0.1", for: EXECUTION)
+{
+  query: Query
+  mutation: Mutation
+}
+
+directive @core(as: String, feature: String!, for: core__Purpose) repeatable on SCHEMA
+
+directive @join__field(graph: join__Graph, provides: join__FieldSet, requires: join__FieldSet) on FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__owner(graph: join__Graph!) on INTERFACE | OBJECT
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet) repeatable on INTERFACE | OBJECT
+
+"""Login user"""
+input Credentials {
+  email: String
+  password: String!
+  username: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""Login response"""
+type LoginResponseDto {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type Mutation {
+  """Login a user with username or email and password, returns JWT token."""
+  login(credentials: Credentials!): LoginResponseDto! @join__field(graph: USERS)
+  refreshToken: LoginResponseDto! @join__field(graph: USERS)
+  register(userInfo: RegisterUserDto!): RegisterResponse! @join__field(graph: USERS)
+}
+
+type Query {
+  me: User! @join__field(graph: USERS)
+}
+
+"""Register response"""
+type RegisterResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+"""Create new user"""
+input RegisterUserDto {
+  birthday: DateTime
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  username: String!
+}
+
+type User {
+  birthday: DateTime
+  createdAt: DateTime!
+  email: String!
+  firstName: String!
+  id: ID!
+  lastName: String!
+  role: UserRole!
+  updatedAt: DateTime!
+  username: String!
+  verified: Boolean!
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum core__Purpose {
+  """
+  `EXECUTION` features provide metadata necessary to for operation execution.
+  """
+  EXECUTION
+
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+}
+
+scalar join__FieldSet
+
+enum join__Graph {
+  USERS @join__graph(name: "users" url: "http://host.docker.internal:3001/graphql")
+}

@@ -1,0 +1,5 @@
+subgraphs:
+  users:
+    routing_url: http://host.docker.internal:3001/graphql
+    schema:
+      file: apps/backend/users/src/users.schema.graphql
