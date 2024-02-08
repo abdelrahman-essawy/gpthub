@@ -28,6 +28,8 @@
 
 [![JavaScript Style Guide: Good Parts](https://img.shields.io/badge/code%20style-goodparts-brightgreen.svg?style=flat)](https://github.com/dwyl/goodparts "JavaScript The Good Parts")
 [![CI Badge](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/LintTestBuild-CI.yml/badge.svg)](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/LintTestBuild-CI.yml)
+[![CodeQL](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/codeql.yml/badge.svg)](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/codeql.yml)
+[![SonarCloud analysis](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/abdelrahman-essawy/gpthub/actions/workflows/sonarcloud.yml)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 ## Description
