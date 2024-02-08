@@ -38,7 +38,7 @@
     "@nestjs/platform-fastify": "^10.3.0",
     "@nestjs/swagger": "^7.1.17",
     "@nestjs/typeorm": "^10.0.1",
-    "@nrwl/nx-cloud": "^16.5.2",
+    "@nrwl/nx-cloud": "^18.0.0",
     "@prisma/client": "5.8.1",
     "@ptc-org/nestjs-query-core": "5.0.0",
     "@ptc-org/nestjs-query-graphql": "5.0.0",
