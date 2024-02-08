@@ -1,0 +1,81 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserDto {
+  id: ID!
+  resources: [Resource!]!
+}
+
+"""Resources uploaded by users"""
+type Resource {
+  id: ID!
+  title: String!
+  description: String!
+  type: ResourceType!
+  format: ResourceFormat!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  author: UserDto!
+  indexed: String
+  raw: String
+}
+
+enum ResourceType {
+  BOOK
+  VIDEO
+  AUDIO
+  IMAGE
+  DOCUMENT
+  ARTICLE
+  CODE
+  OTHER
+}
+
+enum ResourceFormat {
+  PDF
+  DOC
+  DOCX
+  XLS
+  XLSX
+  PPT
+  PPTX
+  MP3
+  MP4
+  WAV
+  AVI
+  MKV
+  JPG
+  JPEG
+  PNG
+  GIF
+  OTHER
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DeleteResponse {
+  message: String!
+  success: Boolean!
+}
+
+type Query {
+  getOneResource(id: String!): Resource!
+  getAllResources: [Resource!]!
+}
+
+type Mutation {
+  createResource(resource: CreateResourceInput!): Resource!
+  deleteResource(id: String!): DeleteResponse!
+}
+
+"""Create new resource"""
+input CreateResourceInput {
+  description: String!
+  format: String!
+  title: String!
+  type: String!
+}

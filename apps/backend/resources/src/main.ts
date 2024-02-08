@@ -13,11 +13,11 @@ import {
 
 import { TypeORMExceptionFilter } from '@backend/filters';
 
-import { ResourcesModule } from './app/resources.module';
+import { AppModule } from './app/resources.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
-    ResourcesModule,
+    AppModule,
     new FastifyAdapter({}),
   );
 
