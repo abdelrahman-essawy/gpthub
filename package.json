@@ -5,9 +5,6 @@
   "scripts": {
     "base:build": "docker build . -t base-image",
     "proto:generate": "node scripts/v2protoc-generate.js",
-    "prisma:generate": "scripts/prisma/prisma-generate.sh",
-    "prisma:migrate": "scripts/prisma/prisma-migrate.sh",
-    "prisma:migrate:dev": "scripts/prisma/prisma-migrate.sh dev",
     "docker:bootstrap": "scripts/docker/bootstrap.dev.sh",
     "prepare": "husky",
     "prepush": "nx affected:lint --fix && nx affected -t format:write,test,build --parallel",
@@ -41,7 +38,6 @@
     "@nestjs/swagger": "^7.1.17",
     "@nestjs/typeorm": "^10.0.1",
     "@nrwl/nx-cloud": "^18.0.0",
-    "@prisma/client": "5.8.1",
     "@ptc-org/nestjs-query-core": "5.0.0",
     "@ptc-org/nestjs-query-graphql": "5.0.0",
     "@ptc-org/nestjs-query-typeorm": "5.0.0",
