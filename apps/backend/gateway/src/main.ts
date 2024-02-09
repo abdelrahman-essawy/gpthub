@@ -15,7 +15,7 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 3010;
 
   // Set up routes for GraphQL playground
   app.use(`/${globalPrefix}`, (req, res, next) => {

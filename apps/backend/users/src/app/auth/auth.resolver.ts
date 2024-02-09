@@ -1,4 +1,10 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  ResolveReference,
+} from '@nestjs/graphql';
 
 import { IUser, IUserTokenPayload } from '@core';
 import { JwtGuard, RefreshJwtGuard } from '@backend/guards';
@@ -58,5 +64,11 @@ export class AuthResolver {
   @UseGuards(JwtGuard)
   async me(@CurrentUser() user: IUserTokenPayload) {
     return user;
+  }
+
+  @ResolveReference()
+  async resolveReference(reference: { __typename: string; id: string }) {
+    console.log('reference', reference);
+    return await this.authService.findById(reference.id);
   }
 }

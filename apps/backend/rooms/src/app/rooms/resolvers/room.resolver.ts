@@ -14,8 +14,8 @@ import { CurrentUser } from '@backend/decorators';
 import { DeleteResponse } from '@backend/dtos/shared';
 
 import { RoomService } from '../services/room.service';
-import { RoomEntity } from '../entities/room.entity';
 import { CreateRoomInput, RoomDto, UserDto } from '../dto';
+import { RoomEntity } from '../entities/room.entity';
 
 @UseGuards(JwtGuard)
 @Resolver(() => RoomDto)
@@ -58,13 +58,16 @@ export class RoomResolver {
 
   @ResolveField(() => UserDto)
   async author(@Parent() room: RoomEntity) {
-    return { __typename: 'User', id: room.authorId };
+    return {
+      __typename: UserDto.name,
+      id: room.authorId,
+    };
   }
 
   @ResolveField(() => [UserDto])
-  async participants(@Parent() room: RoomDto) {
-    return room.participants.map((id) => ({
-      __typename: 'User',
+  async participants(@Parent() room: RoomEntity) {
+    return room.participantIds.map((id) => ({
+      __typename: UserDto.name,
       id,
     }));
   }
@@ -72,7 +75,7 @@ export class RoomResolver {
   @ResolveField(() => [UserDto])
   async owners(@Parent() room: RoomEntity) {
     return room.ownerIds.map((id) => ({
-      __typename: 'User',
+      __typename: UserDto.name,
       id,
     }));
   }
@@ -80,16 +83,15 @@ export class RoomResolver {
   @ResolveField(() => [UserDto])
   async collaborators(@Parent() room: RoomEntity) {
     return room.collaboratorIds.map((id) => ({
-      __typename: 'User',
+      __typename: UserDto.name,
       id,
     }));
   }
 
   @ResolveField(() => [UserDto])
   async moderators(@Parent() room: RoomEntity) {
-    console.log(room.moderatorIds);
     return room.moderatorIds.map((id) => ({
-      __typename: 'User',
+      __typename: UserDto.name,
       id,
     }));
   }

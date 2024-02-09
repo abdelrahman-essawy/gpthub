@@ -5,6 +5,7 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { GraphQLJSONObject } from 'graphql-type-json';
+import { join } from 'path';
 
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -17,6 +18,10 @@ import { AuthModule } from './auth/auth.module';
       resolvers: { JSON: GraphQLJSONObject },
       autoSchemaFile: {
         federation: 2,
+        path: join(
+          process.cwd(),
+          'apps/backend/users/src/users.schema.graphql',
+        ),
       },
       buildSchemaOptions: {},
     }),

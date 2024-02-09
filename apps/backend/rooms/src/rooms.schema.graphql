@@ -1,0 +1,59 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserDto @key(fields: "id") {
+  id: ID!
+  rooms: [RoomDto!]!
+  moderatedRooms: [RoomDto!]!
+  participatedRooms: [RoomDto!]!
+  collaboratedRooms: [RoomDto!]!
+}
+
+type RoomDto {
+  id: ID!
+  title: String!
+  description: String
+  roomType: RoomType!
+  resourceIds: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  author: UserDto!
+  participants: [UserDto!]!
+  owners: [UserDto!]!
+  moderators: [UserDto!]!
+  collaborators: [UserDto!]!
+}
+
+enum RoomType {
+  PUBLIC
+  PRIVATE
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DeleteResponse {
+  message: String!
+  success: Boolean!
+}
+
+type Query {
+  room(id: String!): RoomDto!
+  rooms: [RoomDto!]!
+}
+
+type Mutation {
+  createRoom(room: CreateRoomInput!): RoomDto!
+  deleteRoom(id: String!): DeleteResponse!
+}
+
+"""Input to create a new room"""
+input CreateRoomInput {
+  description: String
+  title: String!
+  roomType: String
+  resourceIds: [String!]!
+}

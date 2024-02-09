@@ -94,6 +94,16 @@ services:
   #    volumes:
   #      - kong-postgres-data:/var/lib/postgresql/data
 
+  apollo-router:
+    container_name: apollo-router
+    image: ghcr.io/apollographql/router:v1.39.0
+    volumes:
+      - ./supergraph.graphql:/dist/schema/supergraph.graphql
+      - ./router.yaml:/dist/config/router.yaml
+    command: [ "--dev", "-c", "config/router.yaml", "-s", "schema/supergraph.graphql", "--log", "info" ]
+    ports:
+      - "3000:3000"
+
   users-database:
     image: postgres:alpine
     ports:

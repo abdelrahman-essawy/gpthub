@@ -8,6 +8,7 @@ import {
 import { UserDto } from './rooms/dto';
 
 import { RoomModule } from './rooms/rooms.module';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -19,6 +20,10 @@ import { RoomModule } from './rooms/rooms.module';
       },
       autoSchemaFile: {
         federation: 2,
+        path: join(
+          process.cwd(),
+          'apps/backend/rooms/src/rooms.schema.graphql',
+        ),
       },
       buildSchemaOptions: {
         orphanedTypes: [UserDto],
