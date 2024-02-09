@@ -93,7 +93,7 @@ type LoginResponseDto
 {
   accessToken: String!
   refreshToken: String!
-  user: User!
+  user: UserDto!
 }
 
 type Mutation
@@ -103,7 +103,7 @@ type Mutation
 {
   createResource(resource: CreateResourceInput!): Resource! @join__field(graph: RESOURCES)
   deleteResource(id: String!): DeleteResponse! @join__field(graph: RESOURCES)
-  createRoom(room: CreateRoomInput!): Room! @join__field(graph: ROOMS)
+  createRoom(room: CreateRoomInput!): RoomDto! @join__field(graph: ROOMS)
   deleteRoom(id: String!): DeleteResponse! @join__field(graph: ROOMS)
 
   """Login a user with username or email and password, returns JWT token."""
@@ -119,9 +119,9 @@ type Query
 {
   getOneResource(id: String!): Resource! @join__field(graph: RESOURCES)
   getAllResources: [Resource!]! @join__field(graph: RESOURCES)
-  room(id: String!): Room! @join__field(graph: ROOMS)
-  rooms: [Room!]! @join__field(graph: ROOMS)
-  me: User! @join__field(graph: USERS)
+  room(id: String!): RoomDto! @join__field(graph: ROOMS)
+  rooms: [RoomDto!]! @join__field(graph: ROOMS)
+  me: UserDto! @join__field(graph: USERS)
 }
 
 """Register response"""
@@ -130,7 +130,7 @@ type RegisterResponse
 {
   accessToken: String!
   refreshToken: String!
-  user: User!
+  user: UserDto!
 }
 
 """Create new user"""
@@ -196,7 +196,7 @@ enum ResourceType
   OTHER @join__enumValue(graph: RESOURCES)
 }
 
-type Room
+type RoomDto
   @join__type(graph: ROOMS)
 {
   id: ID!
@@ -206,11 +206,11 @@ type Room
   resourceIds: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
-  author: RoomUser!
-  participants: [RoomUser!]!
-  owners: [RoomUser!]!
-  moderators: [RoomUser!]!
-  collaborators: [RoomUser!]!
+  author: UserDto!
+  participants: [UserDto!]!
+  owners: [UserDto!]!
+  moderators: [UserDto!]!
+  collaborators: [UserDto!]!
 }
 
 enum RoomType
@@ -220,36 +220,26 @@ enum RoomType
   PRIVATE @join__enumValue(graph: ROOMS)
 }
 
-type RoomUser
-  @join__type(graph: ROOMS)
-{
-  id: ID!
-  rooms: [Room!]!
-  moderatedRooms: [Room!]!
-  participatedRooms: [Room!]!
-  collaboratedRooms: [Room!]!
-}
-
-type User
-  @join__type(graph: USERS)
-{
-  id: ID!
-  firstName: String!
-  lastName: String!
-  username: String!
-  email: String!
-  verified: Boolean!
-  birthday: DateTime
-  role: UserRole!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
 type UserDto
-  @join__type(graph: RESOURCES)
+  @join__type(graph: RESOURCES, key: "id")
+  @join__type(graph: ROOMS, key: "id")
+  @join__type(graph: USERS, key: "id")
 {
   id: ID!
-  resources: [Resource!]!
+  resources: [Resource!]! @join__field(graph: RESOURCES)
+  rooms: [RoomDto!]! @join__field(graph: ROOMS)
+  moderatedRooms: [RoomDto!]! @join__field(graph: ROOMS)
+  participatedRooms: [RoomDto!]! @join__field(graph: ROOMS)
+  collaboratedRooms: [RoomDto!]! @join__field(graph: ROOMS)
+  firstName: String! @join__field(graph: USERS)
+  lastName: String! @join__field(graph: USERS)
+  username: String! @join__field(graph: USERS)
+  email: String! @join__field(graph: USERS)
+  verified: Boolean! @join__field(graph: USERS)
+  birthday: DateTime @join__field(graph: USERS)
+  role: UserRole! @join__field(graph: USERS)
+  createdAt: DateTime! @join__field(graph: USERS)
+  updatedAt: DateTime! @join__field(graph: USERS)
 }
 
 enum UserRole
