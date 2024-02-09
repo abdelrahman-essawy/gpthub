@@ -10,7 +10,9 @@
     "prisma:migrate:dev": "scripts/prisma/prisma-migrate.sh dev",
     "docker:bootstrap": "scripts/docker/bootstrap.dev.sh",
     "prepare": "husky",
-    "prepush": "nx affected:lint --fix && nx affected -t format:write,test,build --parallel"
+    "prepush": "nx affected:lint --fix && nx affected -t format:write,test,build --parallel",
+    "supergraph:pre-generate": "node scripts/pre-supergraph-generate.js",
+    "supergraph:generate": "npm run supergraph:pre-generate && rover supergraph compose --config ./supergraph.yaml -o supergraph.graphql"
   },
   "private": true,
   "dependencies": {
@@ -133,6 +135,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
+    "js-yaml": "^4.1.0",
     "nx": "17.2.8",
     "prettier": "^3.1.1",
     "protoc-gen-nestjs": "^0.2.0",
