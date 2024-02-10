@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { HashingModule } from '@backend/hashing';
+import { GuardsModule } from '@backend/guards';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { UsersDatabaseModule } from '../config/database.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersResolver } from './resolvers/users.resolver';
-import { GuardsModule } from '@backend/guards';
+import { UsersDatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -31,7 +31,6 @@ import { GuardsModule } from '@backend/guards';
 
     UsersDatabaseModule,
   ],
-  controllers: [],
   providers: [UsersService, UsersResolver],
   exports: [UsersService],
 })

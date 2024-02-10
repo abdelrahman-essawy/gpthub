@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@backend/config';
 import { DataSource } from 'typeorm';
 import { RoomEntity } from '../entities/room.entity';
 

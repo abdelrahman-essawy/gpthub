@@ -11,10 +11,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
 import { TypeORMExceptionFilter } from '@backend/filters';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { AuthModule } from './app/auth/auth.module';
 
 async function bootstrap() {
   const appGRPC = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
+    AuthModule,
     {
       transport: Transport.GRPC,
       options: {
@@ -25,6 +26,7 @@ async function bootstrap() {
   );
 
   await appGRPC.listen();
+  Logger.log('=============================');
   Logger.log(`GRPC USERS MS Application is running`);
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
