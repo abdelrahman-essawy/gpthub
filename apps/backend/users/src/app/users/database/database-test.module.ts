@@ -1,18 +1,14 @@
 import { Module } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@backend/config';
 
+import { ConfigModule, ConfigService } from '@backend/config';
 import { HashingModule } from '@backend/hashing';
 
 import { UserEntity } from '../entities/user.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -24,6 +20,8 @@ import { UserEntity } from '../entities/user.entity';
         synchronize: true,
       }),
     }),
+
+    ConfigModule,
     HashingModule,
   ],
   providers: [
