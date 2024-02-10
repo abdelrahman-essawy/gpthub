@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="backend/libs" pattern="file[gpthub]:libs/core/*||file[gpthub]:libs/core//*||file[gpthub]:libs/backend//*" />
+  <scope name="backend/libs" pattern="(file[gpthub]:libs/core/*||file[gpthub]:libs/core//*||file[gpthub]:libs/backend//*)&amp;&amp;!file[gpthub]:dist//*&amp;&amp;!file[gpthub]:.idea//*&amp;&amp;!file[gpthub]:.vscode//*" />
 </component>

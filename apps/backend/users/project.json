@@ -58,14 +58,7 @@
       ],
       "options": {
         "jestConfig": "apps/backend/users/jest.config.ts"
-      },
-      "dependsOn": [
-        {
-          "projects": [
-            "proto"
-          ]
-        }
-      ]
+      }
     }
   },
   "tags": []

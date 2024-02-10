@@ -14,16 +14,16 @@ const PROTOC_GEN_TS_PATH = join(
 const SRC_DIR = join(ROOT_DIR, 'apps');
 const OUT_DIR = join(ROOT_DIR, 'libs', 'backend', 'proto', 'gen');
 
-// Clean all existing generated files
-const cleanCommand =
-  os.platform() === 'win32'
-    ? `rmdir /s /q "${OUT_DIR}"`
-    : `rm -rf "${OUT_DIR}"`;
-try {
-  execSync(cleanCommand);
-} catch (error) {
-  // Ignore error if the directory doesn't exist
-}
+// // Clean all existing generated files
+// const cleanCommand =
+//   os.platform() === 'win32'
+//     ? `rmdir /s /q "${OUT_DIR}"`
+//     : `rm -rf "${OUT_DIR}"`;
+// try {
+//   execSync(cleanCommand);
+// } catch (error) {
+//   // Ignore error if the directory doesn't exist
+// }
 
 // Create output directory if it doesn't exist
 if (!existsSync(OUT_DIR)) {
