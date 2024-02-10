@@ -1,11 +1,11 @@
 import { validateSync } from 'class-validator';
-import { RegisterUserDto } from '../dto';
+import { RegisterUserDto } from '../../dto';
 import {
   emptyUserDataObjects,
   goodUserData,
   invalidUserDataObjects,
   overLimitUserDataObjects,
-} from './user-mocks.spec';
+} from '../mocks/register-mocks';
 
 describe('Register DTO Validations', () => {
   it('should create a new instance of RegisterUserDto with valid input', () => {

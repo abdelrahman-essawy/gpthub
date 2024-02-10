@@ -1,6 +1,6 @@
-import { RegisterUserDto } from '../dto';
+import { RegisterUserDto } from '../../dto';
 import { faker } from '@faker-js/faker';
-import { generatePassword } from './utils.spec';
+import { generatePassword } from '../utils';
 
 export const goodUserData: RegisterUserDto = {
   firstName: faker.person.firstName(),
