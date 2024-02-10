@@ -1,0 +1,32 @@
+{
+  "name": "users-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/users-e2e/src",
+  "implicitDependencies": [
+    "users"
+  ],
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{e2eProjectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/backend/users-e2e/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "dependsOn": [
+        {
+          "target": "pre-e2e"
+        }
+      ]
+    },
+    "pre-e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run docker:e2e"
+      }
+    }
+  }
+}

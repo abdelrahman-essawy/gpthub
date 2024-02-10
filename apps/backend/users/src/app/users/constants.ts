@@ -1,1 +1,0 @@
-export const USERS_POSTGRES_URL = 'USERS_POSTGRES_URL';

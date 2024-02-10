@@ -1,6 +1,10 @@
 import { validateSync } from 'class-validator';
-import { LoginUserDto } from '../../dto';
-import { emptyLoginDataObjects, goodLoginData, invalidLoginDataObjects } from '../mocks/login-mocks';
+import { LoginUserDto } from '../../../src/app/auth/dto';
+import {
+  emptyLoginDataObjects,
+  goodLoginData,
+  invalidLoginDataObjects,
+} from '../mocks/login-mocks';
 
 describe('Login DTO Validations', () => {
   it('should create a new instance of LoginUserDto with valid input', () => {

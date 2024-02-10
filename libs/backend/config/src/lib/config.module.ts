@@ -1,7 +1,6 @@
 import { Global, Logger, Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import * as process from 'process';
-import { suitableEnvFilePath } from '@backend/utilities';
 
 import { ConfigService } from './config.service';
 
@@ -11,7 +10,7 @@ import { ConfigService } from './config.service';
     NestConfigModule.forRoot({
       isGlobal: true,
 
-      envFilePath: suitableEnvFilePath,
+      envFilePath: '.env.prod',
     }),
   ],
   providers: [ConfigService, Logger],

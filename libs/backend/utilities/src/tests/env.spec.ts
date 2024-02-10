@@ -17,7 +17,7 @@ describe('NODE_ENV configuration', () => {
           expect(suitableEnvFilePath).toBe('.env.prod');
           break;
         case Env.Test:
-          expect(suitableEnvFilePath).toBe('.env.test');
+          expect(suitableEnvFilePath).toBe('.env.e2e');
           break;
         default:
           throw new Error('Unexpected NODE_ENV value');

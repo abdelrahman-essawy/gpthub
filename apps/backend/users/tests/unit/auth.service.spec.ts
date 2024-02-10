@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { HashingService, IUser, UserRole } from '@core';
-import { LoginUserDto, RegisterUserDto } from '../dto';
-import { AuthService } from '../auth.service';
+import { HashingService, IUser, UserRole } from '../../../../../libs/core';
+import { LoginUserDto, RegisterUserDto } from '../../src/app/auth/dto';
+import { AuthService } from '../../src/app/auth/auth.service';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../../src/app/users/users.service';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { UserEntity } from '../../users/entities/user.entity';
+import { UserEntity } from '../../src/app/users/entities/user.entity';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -49,7 +49,7 @@ describe('AuthService', () => {
   describe('validate user with email or username and password', () => {
     it('should validate user credentials', async () => {
       const credentialsWithEmail: LoginUserDto = {
-        email: 'test@example.com',
+        email: 'tests@example.com',
         password: 'password123',
       };
       const credentialsWithUsername: LoginUserDto = {
@@ -60,7 +60,7 @@ describe('AuthService', () => {
       const user: IUser = {
         id: '1',
         username: 'testuser',
-        email: 'test@example.com',
+        email: 'tests@example.com',
         password: 'hashedpassword',
         verified: true,
         createdAt: new Date(),
@@ -91,14 +91,14 @@ describe('AuthService', () => {
     it('should throw UnauthorizedException for invalid credentials', async () => {
       const credentials: LoginUserDto = {
         username: 'testuser',
-        email: 'test@example.com',
+        email: 'tests@example.com',
         password: 'invalidpassword',
       };
 
       const user = {
         id: '1',
         username: 'testuser',
-        email: 'test@example.com',
+        email: 'tests@example.com',
         password: 'hashedpassword',
         verified: true,
         createdAt: new Date(),
@@ -127,7 +127,7 @@ describe('AuthService', () => {
       const user: IUser = {
         id: '1',
         username: 'testuser',
-        email: 'test@example.com',
+        email: 'tests@example.com',
         password: 'hashedpassword',
         verified: true,
         createdAt: new Date(),
@@ -160,7 +160,7 @@ describe('AuthService', () => {
       const user: IUser = {
         id: '1',
         username: 'testuser',
-        email: 'test@example.com',
+        email: 'tests@example.com',
         password: 'hashedpassword',
         verified: true,
         createdAt: new Date(),
@@ -192,7 +192,7 @@ describe('AuthService', () => {
       const user: IUser = {
         id: '1',
         username: 'testuser',
-        email: 'test@example.com',
+        email: 'tests@example.com',
         password: 'hashedpassword',
         verified: true,
         createdAt: new Date(),

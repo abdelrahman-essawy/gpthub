@@ -1,4 +1,4 @@
-import { LoginResponseDto } from '../../dto';
+import { LoginResponseDto } from '../../../src/app/auth/dto';
 import { userInDatabase } from '../mocks/login-responce-mocks';
 
 describe('LoginResponseDto', () => {

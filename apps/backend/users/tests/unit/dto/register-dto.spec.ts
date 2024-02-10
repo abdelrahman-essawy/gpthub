@@ -1,5 +1,5 @@
 import { validateSync } from 'class-validator';
-import { RegisterUserDto } from '../../dto';
+import { RegisterUserDto } from '../../../src/app/auth/dto';
 import {
   emptyUserDataObjects,
   goodUserData,

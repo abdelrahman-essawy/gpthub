@@ -25,7 +25,7 @@ export const suitableEnvFilePath = ((): string => {
     case Env.Production:
       return '.env.prod';
     case Env.Test:
-      return '.env.test';
+      return '.env.e2e';
     default:
       throw new Error('NODE_ENV is not set = ' + NODE_ENV);
   }

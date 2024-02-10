@@ -1,4 +1,4 @@
-import { LoginUserDto } from '../../dto';
+import { LoginUserDto } from '../../../src/app/auth/dto';
 import { faker } from '@faker-js/faker';
 import { generatePassword } from '../utils';
 

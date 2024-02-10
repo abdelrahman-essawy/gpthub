@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HashingModule } from '@backend/hashing';
+
 import { ConfigModule, ConfigService } from '@backend/config';
 
 import { UserEntity } from '../entities/user.entity';
+import { Env, NODE_ENV } from '@backend/utilities';
 
 @Module({
   imports: [
@@ -16,8 +18,8 @@ import { UserEntity } from '../entities/user.entity';
         type: 'postgres',
         entities: [UserEntity],
         url: configService.get<string>('USERS_POSTGRES_URL'),
+        synchronize: NODE_ENV !== Env.Production,
         keepConnectionAlive: true,
-        synchronize: true,
       }),
     }),
     HashingModule,
