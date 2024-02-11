@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser';
 import { TypeORMExceptionFilter } from '@backend/filters';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AuthModule } from './app/auth/auth.module';
+import { join } from 'path';
 
 async function bootstrap() {
   const appGRPC = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -20,7 +21,7 @@ async function bootstrap() {
       transport: Transport.GRPC,
       options: {
         package: 'auth',
-        protoPath: 'apps/backend/users/src/proto/auth.proto',
+        protoPath: join(__dirname, 'proto/auth.proto'),
       },
     },
   );

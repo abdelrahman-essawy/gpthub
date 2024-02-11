@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { AuthModule } from '../../src/app/auth/auth.module';
 import request from 'supertest';
+import { AppModule } from '../../../users/src/app/app.module';
 
 const gql = '/graphql';
 describe('Auth E2E', () => {
@@ -9,7 +9,7 @@ describe('Auth E2E', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [AuthModule],
+      imports: [AppModule],
     }).compile();
     app = module.createNestApplication();
     await app.init();

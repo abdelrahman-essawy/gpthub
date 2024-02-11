@@ -20,7 +20,8 @@
         "main": "apps/backend/users/src/main.ts",
         "tsConfig": "apps/backend/users/tsconfig.app.json",
         "assets": [
-          "apps/backend/users/src/assets"
+          "apps/backend/users/src/assets",
+          "apps/backend/users/src/proto"
         ],
         "isolatedConfig": true,
         "webpackConfig": "apps/backend/users/webpack.config.js"
