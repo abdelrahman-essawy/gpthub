@@ -4,15 +4,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../../users/src/app/app.module';
 import request from 'supertest';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { RegisterUserDto } from '../../../users/src/app/auth/dto';
+import { LoginUserDto, RegisterUserDto } from '../../../users/src/app/auth/dto';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { goodUserData } from '../../../users/tests/unit/mocks/register-mocks';
 
 const GRAPHQL_ENDPOINT = '/graphql';
 
-describe('Authentication End-to-End Tests', () => {
+describe('Starts App', () => {
   let app: INestApplication;
-
   beforeAll(async () => {
     await setup();
   });
@@ -23,15 +22,6 @@ describe('Authentication End-to-End Tests', () => {
 
   it('should have the application instance defined', () => {
     expect(app).toBeDefined();
-  });
-
-  it('should successfully register a new user', async () => {
-    const registrationResponse = await registerUser(goodUserData);
-
-    expect(registrationResponse.status).toBe(200);
-    expect(registrationResponse.body.data.register.accessToken).toBeTruthy();
-    expect(registrationResponse.body.data.register.refreshToken).toBeTruthy();
-    expect(registrationResponse.body.data.register.user.id).toBeTruthy();
   });
 
   async function setup() {
@@ -47,8 +37,26 @@ describe('Authentication End-to-End Tests', () => {
     await app.close();
   }
 
-  async function registerUser(userData: RegisterUserDto) {
-    const query = `
+  describe('Register End-to-End Tests', () => {
+    it('should successfully register a new user', async () => {
+      const registrationResponse = await registerUser(goodUserData);
+
+      expect(registrationResponse.body.data.register.accessToken).toBeTruthy();
+      expect(registrationResponse.body.data.register.refreshToken).toBeTruthy();
+      expect(registrationResponse.body.data.register.user.id).toBeTruthy();
+    });
+
+    it('should fail to register a user with an existing email', async () => {
+      const registrationResponse = await registerUser(goodUserData);
+
+      expect(registrationResponse.body.errors).toBeTruthy();
+      expect(registrationResponse.body.errors[0].message).toEqual(
+        'duplicate key value violates unique constraint "UQ_fe0bb3f6520ee0469504521e710"',
+      );
+    });
+
+    async function registerUser(userData: RegisterUserDto) {
+      const query = `
       mutation {
         register(userInfo: {
           email: "${userData.email}"
@@ -66,6 +74,84 @@ describe('Authentication End-to-End Tests', () => {
       }
     `;
 
-    return request(app.getHttpServer()).post(GRAPHQL_ENDPOINT).send({ query });
-  }
+      return request(app.getHttpServer())
+        .post(GRAPHQL_ENDPOINT)
+        .send({ query });
+    }
+  });
+
+  describe('Login End-to-End Tests', () => {
+    const expectedLoginResponse = {
+      accessToken: expect.any(String),
+      refreshToken: expect.any(String),
+      user: {
+        id: expect.any(String),
+      },
+    };
+    it('should login a user with email', async () => {
+      const loginResponse = await loginUser({
+        email: goodUserData.email,
+        password: goodUserData.password,
+      });
+      console.log(loginResponse.text);
+
+      expect(loginResponse.body.data.login).toEqual(expectedLoginResponse);
+    });
+
+    it('should login a user with username', async () => {
+      const loginResponse = await loginUser({
+        username: goodUserData.username,
+        password: goodUserData.password,
+      });
+      console.log(loginResponse.text);
+
+      expect(loginResponse.body.data.login).toEqual(expectedLoginResponse);
+    });
+
+    it('should fail to login a user with an invalid password', async () => {
+      const loginResponse = await loginUser({
+        ...goodUserData,
+        password: 'invalidpassword',
+      });
+
+      expect(loginResponse.body.errors).toBeTruthy();
+    });
+
+    async function loginUser(userData: LoginUserDto) {
+      const queryWithUsername = `
+      mutation {
+        login(credentials: {
+          username: "${userData.username}"
+          password: "${userData.password}"
+        }) {
+          accessToken
+          refreshToken
+          user {
+            id
+          }
+        }
+      }
+    `;
+
+      const queryWithEmail = `
+      mutation {
+        login(credentials: {
+          email: "${userData.email}"
+          password: "${userData.password}"
+        }) {
+          accessToken
+          refreshToken
+          user {
+            id
+          }
+        }
+      }
+    `;
+      return request(app.getHttpServer())
+        .post(GRAPHQL_ENDPOINT)
+        .send({
+          query: userData.username ? queryWithUsername : queryWithEmail,
+        });
+    }
+  });
 });
