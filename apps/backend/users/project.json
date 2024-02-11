@@ -43,6 +43,9 @@
         },
         "production": {
           "buildTarget": "users:build:production"
+        },
+        "e2e": {
+          "buildTarget": "users:build:production"
         }
       }
     },

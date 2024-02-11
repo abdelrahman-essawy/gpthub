@@ -1,4 +1,4 @@
-import { Global, Logger, Module, OnModuleInit } from '@nestjs/common';
+import { Global, Logger, Module } from '@nestjs/common';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import * as process from 'process';
 
@@ -9,17 +9,13 @@ import { ConfigService } from './config.service';
   imports: [
     NestConfigModule.forRoot({
       isGlobal: true,
-
-      envFilePath: '.env.prod',
     }),
   ],
   providers: [ConfigService, Logger],
   exports: [ConfigService],
 })
-export class ConfigModule implements OnModuleInit {
-  constructor(private readonly logger: Logger) {}
-
-  onModuleInit() {
+export class ConfigModule {
+  constructor(private readonly logger: Logger) {
     this.logger.warn(
       'ConfigModule has been initialized in NODE_ENV = ' +
         process.env['NODE_ENV'],

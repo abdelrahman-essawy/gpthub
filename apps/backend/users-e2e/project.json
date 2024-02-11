@@ -25,7 +25,7 @@
     "pre-e2e": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npm run docker:e2e"
+        "command": "env-cmd -f .env.e2e npm run docker:e2e"
       }
     }
   }

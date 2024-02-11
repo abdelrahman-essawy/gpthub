@@ -16,7 +16,7 @@ describe('NODE_ENV configuration', () => {
         case Env.Production:
           expect(suitableEnvFilePath).toBe('.env.prod');
           break;
-        case Env.Test:
+        case Env.E2E:
           expect(suitableEnvFilePath).toBe('.env.e2e');
           break;
         default:

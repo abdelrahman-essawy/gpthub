@@ -25,13 +25,16 @@
       "cache": true,
       "inputs": [
         "default",
-        "^production"
+        "^production",
+        "{workspaceRoot}/.env.test",
+        "{workspaceRoot}/.env.e2e"
       ]
     },
     "test": {
+      "cache": true,
       "inputs": [
-        "test",
-        "^test"
+        "{workspaceRoot}/.env.test",
+        "{workspaceRoot}/.env.e2e"
       ]
     },
     "@nx/jest:jest": {
@@ -39,7 +42,8 @@
       "inputs": [
         "default",
         "^production",
-        "{workspaceRoot}/jest.preset.js"
+        "{workspaceRoot}/jest.preset.js",
+        "{workspaceRoot}/.env.e2e"
       ],
       "options": {
         "passWithNoTests": true

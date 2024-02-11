@@ -1,4 +1,5 @@
 /* eslint-disable */
+
 export default {
   displayName: 'users-e2e',
   preset: '../../../jest.preset.js',
@@ -16,4 +17,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/test-e2e',
+  setupFilesAfterEnv: ['./jest.setup.ts'],
 };

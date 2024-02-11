@@ -319,6 +319,9 @@ devDependencies:
   cypress:
     specifier: ^13.6.2
     version: 13.6.2
+  dotenv:
+    specifier: ^16.4.2
+    version: 16.4.2
   env-cmd:
     specifier: ^10.1.0
     version: 10.1.0
@@ -9768,6 +9771,10 @@ packages:
     resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
 
+  /dotenv@16.4.2:
+    resolution: {integrity: sha512-rZSSFxke7d9nYQ5NeMIwp5PP+f8wXgKNljpOb7KtH6SKW1cEqcXAz9VSJYVLKe7Jhup/gUYOkaeSVyK8GJ+nBg==}
+    engines: {node: '>=12'}
+
   /dprint-node@1.0.8:
     resolution: {integrity: sha512-iVKnUtYfGrYcW1ZAlfR/F59cUVL8QIhWoBJoSjkkdua/dkWIgjZfiLMeTjiB06X0ZLkQ0M2C1VbUj/CxkIf1zg==}
     dependencies:
@@ -13165,7 +13172,7 @@ packages:
     engines: {node: '>=14.0.0'}
     dependencies:
       app-root-dir: 1.0.2
-      dotenv: 16.3.1
+      dotenv: 16.4.2
       dotenv-expand: 10.0.0
     dev: true
 
@@ -17752,7 +17759,7 @@ packages:
       cli-highlight: 2.1.11
       dayjs: 1.11.10
       debug: 4.3.4(supports-color@8.1.1)
-      dotenv: 16.3.1
+      dotenv: 16.4.2
       glob: 10.3.10
       mkdirp: 2.1.6
       mongodb: 6.3.0

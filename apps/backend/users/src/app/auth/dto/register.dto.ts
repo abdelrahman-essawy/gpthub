@@ -9,9 +9,9 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 import { IUser, IUserDatabaseEntity } from '@core';
-import { Transform } from 'class-transformer';
 
 @InputType({ description: 'Create new user' })
 export class RegisterUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
