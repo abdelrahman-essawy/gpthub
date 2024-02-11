@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { IUser, UserRole } from '../../../../../../libs/core';
+import { IUser, UserRole } from '@core';
 
 export const userInDatabase: IUser = {
   id: faker.string.uuid(),
