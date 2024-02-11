@@ -3,7 +3,7 @@ import { Env, NODE_ENV, suitableEnvFilePath } from '../lib/env';
 describe('NODE_ENV configuration', () => {
   describe('NODE_ENV', () => {
     it('should be one of the enum values', () => {
-      expect(NODE_ENV).toMatch(/development|production|test/);
+      expect(NODE_ENV).toMatch(/development|production|test|e2e/);
     });
   });
 
@@ -17,6 +17,7 @@ describe('NODE_ENV configuration', () => {
           expect(suitableEnvFilePath).toBe('.env.prod');
           break;
         case Env.E2E:
+        case Env.Test:
           expect(suitableEnvFilePath).toBe('.env.e2e');
           break;
         default:
