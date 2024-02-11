@@ -15,17 +15,6 @@
       "options": {
         "jestConfig": "apps/backend/users-e2e/jest.config.ts",
         "passWithNoTests": true
-      },
-      "dependsOn": [
-        {
-          "target": "pre-e2e"
-        }
-      ]
-    },
-    "pre-e2e": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "env-cmd -f .env.e2e npm run docker:e2e"
       }
     }
   }

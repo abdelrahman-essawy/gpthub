@@ -24,10 +24,9 @@
     "e2e": {
       "cache": true,
       "inputs": [
-        "default",
-        "^production",
         "{workspaceRoot}/.env.test",
-        "{workspaceRoot}/.env.e2e"
+        "{workspaceRoot}/.env.e2e",
+        "{workspaceRoot}/docker-compose.e2e.yml"
       ]
     },
     "test": {
@@ -43,7 +42,8 @@
         "default",
         "^production",
         "{workspaceRoot}/jest.preset.js",
-        "{workspaceRoot}/.env.e2e"
+        "{workspaceRoot}/.env.e2e",
+        "{workspaceRoot}/docker-compose.e2e.yml"
       ],
       "options": {
         "passWithNoTests": true

@@ -379,6 +379,9 @@ devDependencies:
   react-refresh:
     specifier: ^0.14.0
     version: 0.14.0
+  subspawn:
+    specifier: ^1.0.2
+    version: 1.0.2
   supertest:
     specifier: ^6.3.4
     version: 6.3.4
@@ -16929,6 +16932,10 @@ packages:
       - bufferutil
       - utf-8-validate
     dev: false
+
+  /subspawn@1.0.2:
+    resolution: {integrity: sha512-aA4+BMusVX4fhIwjaTBGDTPCd8YBPm0Rsn71FlJQsmKBxjjpn19XTSiiIgGDH1rx7/WTloGNqkPQEkCW4k1k7w==}
+    dev: true
 
   /superagent@8.1.2:
     resolution: {integrity: sha512-6WTxW1EB6yCxV5VFOIPQruWGHqc3yI7hEmZK6h+pyk69Lk/Ut7rLUY6W/ONF2MjBuGjvmMiIpsrVJ2vjrHlslA==}
