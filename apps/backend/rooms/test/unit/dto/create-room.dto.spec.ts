@@ -4,7 +4,7 @@ import {
   goodCreateRoomData,
   overLimitObjects,
   underLimitObjects,
-} from '../mock/create-room-mock';
+} from '../mock/create-room.mock';
 import { validateSync } from 'class-validator';
 import { describe } from 'node:test';
 

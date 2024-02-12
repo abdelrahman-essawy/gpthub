@@ -9,7 +9,6 @@ export const goodCreateRoomData: CreateRoomInput = {
   title: faker.string.alphanumeric({ length: { min: 3, max: 20 } }),
   roomType: RoomType.PUBLIC,
 };
-//ok
 
 export const emptyCreateDataObjects = {
   resourceIds: {
