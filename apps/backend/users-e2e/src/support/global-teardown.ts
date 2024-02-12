@@ -7,9 +7,9 @@ module.exports = async function () {
   // Hint: `globalThis` is shared between setup and teardown.
 
   subProcessSync(
-    'docker-compose --env-file .env.e2e -f docker-compose.e2e.yml down users-database-e2e -v',
+    'docker compose --env-file .env.e2e -f docker-compose.e2e.yml down users-database-e2e -v',
     true,
   );
-  
+
   console.log(globalThis.__TEARDOWN_MESSAGE__);
 };

@@ -7,7 +7,7 @@ module.exports = async function () {
   console.log('\nSetting up...\n');
 
   subProcessSync(
-    'docker-compose --env-file .env.e2e -f docker-compose.e2e.yml up users-database-e2e  --detach  --wait -V',
+    'docker compose --env-file .env.e2e -f docker-compose.e2e.yml up users-database-e2e  --detach  --wait -V',
     true,
   );
 
