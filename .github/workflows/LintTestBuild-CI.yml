@@ -1,5 +1,5 @@
 # Run Only Tasks Affected by a PR
-name: LintTestBuild-CI
+name: LintTestBuildE2E-CI
 on:
   push:
     branches:
@@ -15,6 +15,13 @@ permissions:
 jobs:
   main:
     runs-on: ubuntu-latest
+    services:
+      # Define Docker Compose service
+      e2e-environment:
+        image: docker/compose:1.29.2
+        options: --privileged
+        ports:
+          - 3000:3000  # Port mapping if needed for your e2e tests
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,4 +50,4 @@ jobs:
 
       - run: pnpm i nx -g
       - run: nx affected:lint --fix --parallel
-      - run: nx affected -t format:write,tests,build --parallel
+      - run: nx affected -t format:write,test,build,e2e --parallel
