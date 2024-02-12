@@ -37,7 +37,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run format:write
-        run: nx affected -t format:write --parallel
+        run: ./node_modules/.bin/nx affected -t format:write --parallel
 
   test:
     runs-on: ubuntu-latest
