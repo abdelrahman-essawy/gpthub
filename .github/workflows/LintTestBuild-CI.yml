@@ -18,9 +18,10 @@ jobs:
     services:
       # Define Docker Compose service
       e2e-environment:
-        image: docker/compose:2.24.5
+        image: docker/compose:1.29.2
         options: --privileged
-
+        ports:
+          - 3000:3000  # Port mapping if needed for your e2e tests
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,6 +48,7 @@ jobs:
             echo "Branch 'main' already exists. Skipping branch creation."
           fi
 
+      - run: docker-compose -f docker-compose.e2e.yml up -d || docker compose -f docker-compose.e2e.yml up -d
       - run: pnpm i nx -g
       - run: nx affected:lint --fix --parallel
       - run: nx affected -t format:write,test,build,e2e --parallel
