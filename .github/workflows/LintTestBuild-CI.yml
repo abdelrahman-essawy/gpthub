@@ -18,10 +18,9 @@ jobs:
     services:
       # Define Docker Compose service
       e2e-environment:
-        image: docker/compose:1.29.2
+        image: docker/compose:2.24.5
         options: --privileged
-        ports:
-          - 3000:3000  # Port mapping if needed for your e2e tests
+
     steps:
       - uses: actions/checkout@v4
         with:
