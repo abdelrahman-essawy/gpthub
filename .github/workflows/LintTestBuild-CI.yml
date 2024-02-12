@@ -24,6 +24,12 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Install Nx
         run: pnpm install -g nx
+      - name: Pass node_modules to next jobs
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('pnpm-lock.yaml') }}
+
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
@@ -36,6 +42,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get node_modules from cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Run format:write
         run: ./node_modules/.bin/nx affected -t format:write --parallel
 
@@ -45,6 +56,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get node_modules from cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('pnpm-lock.yaml') }}
+
       - name: Run tests
         run: nx affected -t test --parallel
 
@@ -54,6 +71,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get node_modules from cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('pnpm-lock.yaml') }}
+
       - name: Run build
         run: nx affected -t build --parallel
 
@@ -69,6 +92,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get node_modules from cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('pnpm-lock.yaml') }}
+
       - name: Run e2e tests
         run: nx affected -t e2e --parallel
 
