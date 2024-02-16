@@ -32,6 +32,10 @@ export class CreateRoomInput {
   @IsNotEmpty()
   @IsUUID('4', { each: true })
   resourceIds: string[];
+
+  constructor(roomInfo:CreateRoomInput) {
+  Object.assign(this,roomInfo )
+  }
 }
 
 export class CreateRoom
