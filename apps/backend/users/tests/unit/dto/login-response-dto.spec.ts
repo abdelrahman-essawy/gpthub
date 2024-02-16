@@ -1,9 +1,10 @@
+import { faker } from '@faker-js/faker';
 import { LoginResponseDto } from '../../../src/app/auth/dto';
 import { userInDatabase } from '../mocks/login-responce-mocks';
 
 describe('LoginResponseDto', () => {
-  const accessToken = 'testAccessToken';
-  const refreshToken = 'testRefreshToken';
+  const accessToken = faker.string.alphanumeric(20);
+  const refreshToken = faker.string.alphanumeric(20);
 
   it('should create a new instance of LoginResponseDto with valid input', () => {
     const loginResponseDto: LoginResponseDto = new LoginResponseDto(
