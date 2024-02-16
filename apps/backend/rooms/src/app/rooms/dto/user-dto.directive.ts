@@ -9,4 +9,8 @@ export class UserDto {
 
   @Field(() => [RoomDto])
   rooms!: RoomDto[];
+
+  constructor(userInfo:UserDto){
+    Object.assign(this, userInfo);
+  }
 }
