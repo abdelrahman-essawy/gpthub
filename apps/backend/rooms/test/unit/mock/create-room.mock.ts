@@ -1,7 +1,8 @@
-import { CreateRoomInput } from '../../../src/app/rooms/dto';
 import { faker } from '@faker-js/faker';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { RoomType } from '../../../../../../libs/core';
+
+import { RoomType } from '@core';
+
+import { CreateRoomInput } from '../../../src/app/rooms/dto';
 
 export const goodCreateRoomData: CreateRoomInput = {
   resourceIds: [faker.string.uuid()],

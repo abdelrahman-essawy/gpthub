@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { IRoom, RoomType } from '../../../../../../libs/core';
+
+import { IRoom, RoomType } from '@core';
+
 import { RoomDto, UserDto } from '../../../src/app/rooms/dto';
 
 export const roomInDatabase: IRoom = {
@@ -31,10 +32,10 @@ export const roomDto: RoomDto = {
   collaborators: [{ id: faker.string.uuid(), rooms: [] }],
 };
 
-export const user : UserDto = new UserDto({
-  id:faker.string.uuid(),
-  rooms:[roomDto]
-})
+export const user: UserDto = new UserDto({
+  id: faker.string.uuid(),
+  rooms: [roomDto],
+});
 
 export const goodRoomData = new RoomDto({
   id: roomInDatabase.id,
@@ -45,18 +46,16 @@ export const goodRoomData = new RoomDto({
   createdAt: roomInDatabase.createdAt,
   updatedAt: roomInDatabase.updatedAt,
   author: user,
-  participants:[user],
+  participants: [user],
   owners: [user],
   moderators: [user],
-  collaborators: [user]
+  collaborators: [user],
 });
-
-
 
 export const emptyRoomDataObjects = {
   id: {
     ...goodRoomData,
-    id: null,
+    id: '',
   },
   title: {
     ...goodRoomData,
@@ -68,7 +67,7 @@ export const emptyRoomDataObjects = {
   },
   roomType: {
     ...goodRoomData,
-    roomType: null,
+    roomType: '',
   },
   resourceIds: {
     ...goodRoomData,

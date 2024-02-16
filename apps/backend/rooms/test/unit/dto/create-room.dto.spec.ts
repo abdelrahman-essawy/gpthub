@@ -6,12 +6,12 @@ import {
   underLimitObjects,
 } from '../mock/create-room.mock';
 import { validateSync } from 'class-validator';
-import { describe } from 'node:test';
 
 describe('Create Room DTO Validations', () => {
   it('should create room new instance of CreateRoomInput using valid Inputs', () => {
     const room: CreateRoomInput = new CreateRoomInput(goodCreateRoomData);
     expect(room).toBeDefined();
+    expect(room).toEqual(goodCreateRoomData);
   });
   describe('Empty', () => {
     for (const key in emptyCreateDataObjects) {

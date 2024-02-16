@@ -1,12 +1,13 @@
+import { validateSync } from 'class-validator';
+
+import { emptyRoomDataObjects, goodRoomData } from '../mock/room.mock';
 import { RoomDto } from '../../../src/app/rooms/dto';
-import { emptyRoomDataObjects,goodRoomData} from '../mock/room.mock'; // Import test data objects
-import { validateSync } from 'class-validator'; // Import validateSync function
+
 describe('Room DTO Validations', () => {
   it('should create a new instance of RoomDto using valid inputs', () => {
-
-    
     const room = new RoomDto(goodRoomData);
     expect(room).toBeDefined();
+    expect(room).toEqual(goodRoomData);
   });
 
   describe('Empty field validation', () => {
@@ -25,8 +26,7 @@ describe('Room DTO Validations', () => {
           ].includes(key)
         )
           expect(errors.length).toEqual(0);
-        // No validation error expected for empty fields allowed
-        else expect(errors.length).toBeGreaterThan(0); // Validation error expected for other fields
+        else expect(errors.length).toBeGreaterThan(0);
       });
     }
   });
