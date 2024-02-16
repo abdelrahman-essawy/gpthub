@@ -83,7 +83,11 @@ export class AuthService {
     const refreshToken = await this.generateToken(tokenPayload, {
       expiresIn: '7d',
     });
-    return { accessToken, refreshToken };
+
+    return {
+      accessToken,
+      refreshToken: await this.hashingService.hash(refreshToken),
+    };
   }
 
   private async generateToken(payload: object, options?: JwtSignOptions) {
