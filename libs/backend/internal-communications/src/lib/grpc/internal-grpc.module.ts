@@ -1,16 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
+
+import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME } from '@backend/proto';
+
 import { InternalGrpcService } from './internal-grpc.service';
+import { AUTH_SERVICE_PROTO_PATH } from './constants';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: 'AUTH_PACKAGE',
+        name: AUTH_PACKAGE_NAME,
         transport: Transport.GRPC,
         options: {
-          package: 'auth',
-          protoPath: 'apps/backend/users/src/proto/auth.proto',
+          package: AUTH_PACKAGE_NAME,
+          protoPath: AUTH_SERVICE_PROTO_PATH,
         },
       },
     ]),
@@ -18,12 +22,12 @@ import { InternalGrpcService } from './internal-grpc.service';
   providers: [
     InternalGrpcService,
     {
-      provide: 'AUTH_SERVICE',
+      provide: AUTH_SERVICE_NAME,
       useFactory: async (client: ClientGrpc) =>
-        await client.getService('AuthService'),
-      inject: ['AUTH_PACKAGE'],
+        await client.getService(AUTH_SERVICE_NAME),
+      inject: [AUTH_PACKAGE_NAME],
     },
   ],
-  exports: ['AUTH_SERVICE'],
+  exports: [AUTH_SERVICE_NAME],
 })
 export class InternalGrpcModule {}
