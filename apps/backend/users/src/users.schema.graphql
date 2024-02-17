@@ -59,10 +59,10 @@ input Credentials {
 
 """Create new user"""
 input RegisterUserDto {
-  email: String!
   firstName: String!
-  password: String!
   lastName: String!
   username: String!
+  email: String!
+  password: String!
   birthday: DateTime
 }

@@ -46,15 +46,15 @@
       },
       "configurations": {
         "development": {
-          "buildTarget": "users:build:development"
+          "buildTarget": "users:build:development",
+          "dependsOn": [
+            "pre-serve"
+          ]
         },
         "production": {
           "buildTarget": "users:build:production"
         }
-      },
-      "dependsOn": [
-        "pre-serve"
-      ]
+      }
     },
     "lint": {
       "executor": "@nx/eslint:lint",

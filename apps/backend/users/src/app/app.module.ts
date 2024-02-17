@@ -23,6 +23,8 @@ import { AuthModule } from './auth/auth.module';
           'apps/backend/users/src/users.schema.graphql',
         ),
       },
+      playground: true,
+      csrfPrevention: false,
       buildSchemaOptions: {},
     }),
 
