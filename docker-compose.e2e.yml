@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   apollo-router-e2e:
-    container_name: apollo-router
+    container_name: router
     image: ghcr.io/apollographql/router:v1.39.0
     command: [ "--dev", "-c", "config/router.yaml", "-s", "schema/supergraph.graphql", "--log", "info" ]
     ports:

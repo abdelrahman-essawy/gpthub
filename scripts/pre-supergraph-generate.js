@@ -14,7 +14,7 @@ function updateFileContent(filePath, searchString, replaceString) {
 }
 
 // Load the YAML file
-const yamlFilePath = 'supergraph.yaml'; // Update with the actual path
+const yamlFilePath = 'apps/backend/router/supergraph.prod.yaml';
 try {
   const yamlData = fs.readFileSync(yamlFilePath, 'utf8');
   // Parse the YAML data

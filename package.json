@@ -10,7 +10,7 @@
     "prepare": "husky",
     "prepush": "nx affected:lint --fix && nx affected -t format:write,test,build --parallel",
     "supergraph:pre-generate": "node scripts/pre-supergraph-generate.js",
-    "supergraph:generate": "npm run supergraph:pre-generate && rover supergraph compose --config ./supergraph.yaml -o supergraph.graphql"
+    "supergraph:generate": "npm run supergraph:pre-generate && rover supergraph compose --config ./supergraph.yaml -o apps/backend/router/supergraph.graphql"
   },
   "private": true,
   "dependencies": {
