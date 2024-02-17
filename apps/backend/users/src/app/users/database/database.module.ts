@@ -6,7 +6,6 @@ import { HashingModule } from '@backend/hashing';
 import { ConfigModule, ConfigService } from '@backend/config';
 
 import { UserEntity } from '../entities/user.entity';
-import { Env, NODE_ENV } from '@backend/utilities';
 
 @Module({
   imports: [
@@ -26,7 +25,8 @@ import { Env, NODE_ENV } from '@backend/utilities';
           type: 'postgres',
           entities: [UserEntity],
           url: `postgres://${DATABASE_CONFIG.USER}:${DATABASE_CONFIG.PASSWORD}@${DATABASE_CONFIG.HOST}:${DATABASE_CONFIG.PORT}/${DATABASE_CONFIG.DB}`,
-          synchronize: NODE_ENV !== Env.Production,
+          // synchronize: NODE_ENV !== Env.Production,
+          synchronize: true, // TODO: remove this in production
           keepConnectionAlive: true,
         };
       },
