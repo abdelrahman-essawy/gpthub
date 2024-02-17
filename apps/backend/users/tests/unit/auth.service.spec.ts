@@ -14,6 +14,7 @@ import {
 import { faker } from '@faker-js/faker';
 import { goodLoginData } from './mocks/login-mocks';
 import { goodUserData } from './mocks/register-mocks';
+import { invalidRefreshToken } from './mocks/invalid.mocks';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -125,9 +126,7 @@ describe('AuthService', () => {
     });
 
     it('should throw UnauthorizedException for invalid refresh token', async () => {
-      console.log(userInDatabase);
-      const invalidRefreshToken = faker.string.alphanumeric(20);
-
+      jest.spyOn(hashingService, 'compare').mockResolvedValue(false);
       await expect(
         authService.refreshToken(userInDatabase, invalidRefreshToken),
       ).rejects.toThrow(UnauthorizedException);
