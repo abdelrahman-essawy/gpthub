@@ -34,8 +34,6 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.useGlobalPipes(new ValidationPipe());
-  const globalPrefix = 'graphql';
-  app.setGlobalPrefix(globalPrefix);
   app.useGlobalFilters(new TypeORMExceptionFilter());
 
   const port = process.env.PORT || 3001;
@@ -48,19 +46,17 @@ async function bootstrap() {
     }),
   );
 
-  // Set up routes for GraphQL playground
-  app.use(`/${globalPrefix}`, (req, res, next) => {
-    if (req.url.startsWith('/graphql')) {
-      // Allow CSRF token header for Apollo Playground
-      res.setHeader('Access-Control-Allow-Headers', 'csrf-token');
-    }
-    next();
-  });
+  // // Set up routes for GraphQL playground
+  // app.use(`/graphql`, (req, res, next) => {
+  //   if (req.url.startsWith('/graphql')) {
+  //     // Allow CSRF token header for Apollo Playground
+  //     res.setHeader('Access-Control-Allow-Headers', 'csrf-token');
+  //   }
+  //   next();
+  // });
 
   await app.listen(port);
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
-  );
+  Logger.log(`🚀 Application is running on: http://localhost:${port}/graphql`);
 }
 
 bootstrap();
