@@ -5,14 +5,17 @@
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import cors from 'cors';
-import { AppModule } from './app/app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
+
 import { TypeORMExceptionFilter } from '@backend/filters';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { AUTH_PACKAGE_NAME } from '@backend/proto';
+import { AUTH_SERVICE_PROTO_PATH } from '@backend/internal-communications';
+
 import { AuthModule } from './app/auth/auth.module';
-import { join } from 'path';
+import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const appGRPC = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -20,8 +23,8 @@ async function bootstrap() {
     {
       transport: Transport.GRPC,
       options: {
-        package: 'auth',
-        protoPath: join(__dirname, 'proto/auth.proto'),
+        package: AUTH_PACKAGE_NAME,
+        protoPath: AUTH_SERVICE_PROTO_PATH,
       },
     },
   );
