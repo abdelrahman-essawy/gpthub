@@ -7,6 +7,7 @@ import request from 'supertest';
 import { LoginUserDto, RegisterUserDto } from '../../../users/src/app/auth/dto';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { goodRegisterData } from '../../../users/tests/unit/mocks/register.mocks';
+import { invalidPassword } from '../../../users/tests/unit/mocks/invalid.mocks';
 
 const GRAPHQL_ENDPOINT = '/graphql';
 
@@ -111,7 +112,7 @@ describe('Starts App', () => {
     it('should fail to login a user with an invalid password', async () => {
       const loginResponse = await loginUser({
         ...goodRegisterData,
-        password: 'invalidpassword',
+        password: invalidPassword,
       });
 
       expect(loginResponse.body.errors).toBeTruthy();
