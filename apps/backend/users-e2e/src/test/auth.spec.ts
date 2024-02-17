@@ -6,7 +6,7 @@ import request from 'supertest';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { LoginUserDto, RegisterUserDto } from '../../../users/src/app/auth/dto';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { goodUserData } from '../../../users/tests/unit/mocks/register-mocks';
+import { goodRegisterData } from '../../../users/tests/unit/mocks/register.mocks';
 
 const GRAPHQL_ENDPOINT = '/graphql';
 
@@ -39,7 +39,7 @@ describe('Starts App', () => {
 
   describe('Register End-to-End Tests', () => {
     it('should successfully register a new user', async () => {
-      const registrationResponse = await registerUser(goodUserData);
+      const registrationResponse = await registerUser(goodRegisterData);
 
       expect(registrationResponse.body.data.register.accessToken).toBeTruthy();
       expect(registrationResponse.body.data.register.refreshToken).toBeTruthy();
@@ -47,7 +47,7 @@ describe('Starts App', () => {
     });
 
     it('should fail to register a user with an existing email', async () => {
-      const registrationResponse = await registerUser(goodUserData);
+      const registrationResponse = await registerUser(goodRegisterData);
 
       expect(registrationResponse.body.errors).toBeTruthy();
       expect(registrationResponse.body.errors[0].message).toEqual(
@@ -90,8 +90,8 @@ describe('Starts App', () => {
     };
     it('should login a user with email', async () => {
       const loginResponse = await loginUser({
-        email: goodUserData.email,
-        password: goodUserData.password,
+        email: goodRegisterData.email,
+        password: goodRegisterData.password,
       });
       console.log(loginResponse.text);
 
@@ -100,8 +100,8 @@ describe('Starts App', () => {
 
     it('should login a user with username', async () => {
       const loginResponse = await loginUser({
-        username: goodUserData.username,
-        password: goodUserData.password,
+        username: goodRegisterData.username,
+        password: goodRegisterData.password,
       });
       console.log(loginResponse.text);
 
@@ -110,7 +110,7 @@ describe('Starts App', () => {
 
     it('should fail to login a user with an invalid password', async () => {
       const loginResponse = await loginUser({
-        ...goodUserData,
+        ...goodRegisterData,
         password: 'invalidpassword',
       });
 

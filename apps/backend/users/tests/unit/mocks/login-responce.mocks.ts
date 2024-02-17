@@ -1,11 +1,16 @@
 import { faker } from '@faker-js/faker';
-import { IUser, UserRole } from '@core';
+import { IUser, POLICY, UserRole } from '@core';
+import { generatePassword } from '../utils';
 
 export const userInDatabase: IUser = {
   id: faker.string.uuid(),
   email: faker.internet.email(),
   username: faker.internet.userName(),
-  password: faker.internet.password(),
+  password: generatePassword({
+    minLength: POLICY.AUTH.PASSWORD.MIN_LENGTH,
+    minLowercase: POLICY.AUTH.PASSWORD.MIN_LOWERCASE,
+    minUppercase: POLICY.AUTH.PASSWORD.MIN_UPPERCASE,
+  }),
   verified: true,
   createdAt: new Date(),
   updatedAt: new Date(),

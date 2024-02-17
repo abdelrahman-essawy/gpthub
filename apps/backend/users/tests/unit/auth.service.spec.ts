@@ -10,10 +10,12 @@ import {
   accessToken,
   refreshToken,
   userInDatabase,
-} from './mocks/login-responce-mocks';
+} from './mocks/login-responce.mocks';
 import { faker } from '@faker-js/faker';
-import { goodLoginData } from './mocks/login-mocks';
-import { goodUserData } from './mocks/register-mocks';
+import { goodLoginData } from './mocks/login.mocks';
+import { goodRegisterData } from './mocks/register.mocks';
+import { invalidRefreshToken } from './mocks/invalid.mocks';
+import { LoginUserDto } from '../../src/app/auth/dto';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -54,32 +56,29 @@ describe('AuthService', () => {
   });
 
   describe('validate user with email or username and password', () => {
-    // it('should validate user credentials', async () => {
-    //   const credentialsWithEmail: LoginUserDto = {
-    //     email: userInDatabase.email,
-    //     password: userInDatabase.password,
-    //   };
-    //   const credentialsWithUsername: LoginUserDto = {
-    //     username: userInDatabase.username,
-    //     password: userInDatabase.password,
-    //   };
-    //   console.log(credentialsWithEmail);
-    //
-    //   jest
-    //     .spyOn(usersService, 'findByUsernameOrEmailOrFail')
-    //     .mockResolvedValue(userInDatabase as UserEntity);
-    //
-    //   jest.spyOn(hashingService, 'compare').mockResolvedValue(true);
-    //
-    //   const resultFromEmail =
-    //     await authService.validateUser(credentialsWithEmail);
-    //   const resultFromUsername = await authService.validateUser(
-    //     credentialsWithUsername,
-    //   );
-    //
-    //   expect(resultFromEmail).toEqual(userInDatabase);
-    //   expect(resultFromUsername).toEqual(userInDatabase);
-    // });
+    it('should validate user credentials', async () => {
+      const credentialsWithEmail: LoginUserDto = {
+        email: userInDatabase.email,
+        password: userInDatabase.password,
+      };
+      const credentialsWithUsername: LoginUserDto = {
+        username: userInDatabase.username,
+        password: userInDatabase.password,
+      };
+
+      jest
+        .spyOn(usersService, 'findByUsernameOrEmailOrFail')
+        .mockResolvedValue(userInDatabase as UserEntity);
+
+      const resultFromEmail =
+        await authService.validateUserCredentials(credentialsWithEmail);
+      const resultFromUsername = await authService.validateUserCredentials(
+        credentialsWithUsername,
+      );
+
+      expect(resultFromEmail).toEqual(userInDatabase);
+      expect(resultFromUsername).toEqual(userInDatabase);
+    });
 
     it('should throw UnauthorizedException for invalid credentials', async () => {
       jest
@@ -125,9 +124,7 @@ describe('AuthService', () => {
     });
 
     it('should throw UnauthorizedException for invalid refresh token', async () => {
-      console.log(userInDatabase);
-      const invalidRefreshToken = faker.string.alphanumeric(20);
-
+      jest.spyOn(hashingService, 'compare').mockResolvedValue(false);
       await expect(
         authService.refreshToken(userInDatabase, invalidRefreshToken),
       ).rejects.toThrow(UnauthorizedException);
@@ -140,7 +137,7 @@ describe('AuthService', () => {
         .spyOn(usersService, 'createOne')
         .mockResolvedValue(userInDatabase as UserEntity);
 
-      const result = await authService.register(goodUserData);
+      const result = await authService.register(goodRegisterData);
 
       expect(result).toEqual(userInDatabase);
     });

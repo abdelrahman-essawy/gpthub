@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { LoginResponseDto } from '../../../src/app/auth/dto';
-import { userInDatabase } from '../mocks/login-responce-mocks';
+import { userInDatabase } from '../mocks/login-responce.mocks';
 
 describe('LoginResponseDto', () => {
   const accessToken = faker.string.alphanumeric(20);

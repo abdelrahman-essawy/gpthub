@@ -1,31 +1,29 @@
 import { validateSync } from 'class-validator';
 import { RegisterUserDto } from '../../../src/app/auth/dto';
-import {
-  emptyUserDataObjects,
-  goodUserData,
-  invalidUserDataObjects,
-  overLimitUserDataObjects,
-} from '../mocks/register-mocks';
+import { goodRegisterData } from '../mocks/register.mocks';
+import { emptyUserDataObjects } from '../mocks/empty.mocks';
+import { invalidUserDataObjects } from '../mocks/invalid.mocks';
+import { overLimitUserDataObjects } from '../mocks/overlimit.mocks';
 
 describe('Register DTO Validations', () => {
   it('should create a new instance of RegisterUserDto with valid input', () => {
     const registerUserInput: RegisterUserDto = new RegisterUserDto(
-      goodUserData,
+      goodRegisterData,
     );
     expect(registerUserInput).toBeDefined();
   });
 
   it('should populate all fields correctly with valid input', () => {
     const registerUserInput: RegisterUserDto = new RegisterUserDto(
-      goodUserData,
+      goodRegisterData,
     );
-    expect(registerUserInput).toEqual(goodUserData);
+    expect(registerUserInput).toEqual(goodRegisterData);
   });
 
   describe('Register Good User', () => {
     it('should pass all validation checks with valid input', () => {
       const registerUserInput: RegisterUserDto = new RegisterUserDto(
-        goodUserData,
+        goodRegisterData,
       );
       const errors = validateSync(registerUserInput);
       expect(errors.length).toEqual(0);
