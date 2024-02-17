@@ -47,15 +47,15 @@ export const emptyUserDataObjects = {
 export const invalidUserDataObjects = {
   email: {
     ...goodUserData,
-    email: 'invalidemail',
+    email: faker.string.alphanumeric(10),
   },
   password: {
     ...goodUserData,
-    password: 'invalid',
+    password: faker.string.alphanumeric(4),
   },
   birthday: {
     ...goodUserData,
-    birthday: 'invalid',
+    birthday: faker.string.alphanumeric(10),
   },
 };
 

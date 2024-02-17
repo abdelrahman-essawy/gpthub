@@ -16,45 +16,15 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  /**
-   * Authenticates a user.
-   * @returns A Promise resolving to the authenticated user.
-   * @throws NotAcceptableException if the email or username already exists.
-   * @param credentials
-   */
-  async validateUser(credentials: LoginUserDto) {
-    const user = await this.usersService.findByUsernameOrEmailOrFail(
-      credentials.username,
-      credentials.email,
-    );
-
-    const isCredentialsCorrect = await this.hashingService.compare(
-      credentials.password,
-      user.password,
-    );
-
-    if (!isCredentialsCorrect)
-      throw new UnauthorizedException({ message: 'Invalid credentials' });
-
-    return user;
-  }
-
   async login(user: IUser) {
     const tokens = await this.generateTokens(user);
     await this.usersService.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
 
-  async refreshToken(user: IUser, refreshToken: string) {
-    const isRefreshTokenValid = await this.hashingService.compare(
-      refreshToken,
-      user.hashedRefreshToken,
-    );
-
-    if (!isRefreshTokenValid)
-      throw new UnauthorizedException({ message: 'Invalid refresh token' });
-
-    return this.login(user);
+  async refreshToken(user: IUser, hashedRefreshToken: string) {
+    await this.validateRefreshToken(user, hashedRefreshToken);
+    return await this.login(user);
   }
 
   /**
@@ -73,6 +43,41 @@ export class AuthService {
 
   async findById(id: string) {
     return await this.usersService.findById(id);
+  }
+
+  /**
+   * Authenticates a user.
+   * @returns A Promise resolving to the authenticated user.
+   * @throws NotAcceptableException if the email or username already exists.
+   * @param credentials
+   */
+  async validateUserCredentials(credentials: LoginUserDto) {
+    const user = await this.usersService.findByUsernameOrEmailOrFail(
+      credentials.username,
+      credentials.email,
+    );
+
+    const isCredentialsCorrect = await this.hashingService.compare(
+      credentials.password,
+      user.password,
+    );
+
+    if (!isCredentialsCorrect)
+      throw new UnauthorizedException({ message: 'Invalid credentials' });
+
+    return user;
+  }
+
+  private async validateRefreshToken(user: IUser, hashedRefreshToken: string) {
+    const isRefreshTokenValid = await this.hashingService.compare(
+      hashedRefreshToken,
+      user.hashedRefreshToken,
+    );
+
+    if (!isRefreshTokenValid)
+      throw new UnauthorizedException({ message: 'Invalid refresh token' });
+
+    return isRefreshTokenValid;
   }
 
   private async generateTokens(user: IUser) {

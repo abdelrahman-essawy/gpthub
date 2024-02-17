@@ -15,3 +15,6 @@ export const userInDatabase: IUser = {
   birthday: faker.date.past(),
   lastName: faker.person.lastName(),
 };
+
+export const refreshToken = faker.string.alphanumeric(20);
+export const accessToken = faker.string.alphanumeric(20);

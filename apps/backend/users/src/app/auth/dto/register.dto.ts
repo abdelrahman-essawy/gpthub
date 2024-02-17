@@ -11,10 +11,32 @@ import {
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-import { IUser, IUserDatabaseEntity } from '@core';
+import { IUser, IUserDatabaseEntity, POLICY } from '@core';
 
 @InputType({ description: 'Create new user' })
 export class RegisterUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(POLICY.AUTH.FIRST_NAME.MIN_LENGTH)
+  @MaxLength(POLICY.AUTH.FIRST_NAME.MAX_LENGTH)
+  @Field(() => String)
+  firstName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(POLICY.AUTH.LAST_NAME.MIN_LENGTH)
+  @MaxLength(POLICY.AUTH.LAST_NAME.MAX_LENGTH)
+  @Field(() => String)
+  lastName: string;
+
+  @IsNotEmpty()
+  @Transform(({ value }) => value?.trim())
+  @IsString()
+  @MinLength(POLICY.AUTH.USERNAME.MIN_LENGTH)
+  @MaxLength(POLICY.AUTH.USERNAME.MAX_LENGTH)
+  @Field(() => String)
+  username: string;
+
   @IsNotEmpty()
   @Transform(({ value }) => value?.trim())
   @IsEmail()
@@ -23,38 +45,16 @@ export class RegisterUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
 
   @IsNotEmpty()
   @IsString()
-  @MinLength(3)
-  @MaxLength(20)
-  @Field(() => String)
-  firstName: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @MaxLength(20)
+  @MaxLength(POLICY.AUTH.PASSWORD.MAX_LENGTH)
   @IsStrongPassword({
-    minLength: 8,
-    minLowercase: 1,
-    minUppercase: 1,
-    minNumbers: 0,
-    minSymbols: 0,
+    minLength: POLICY.AUTH.PASSWORD.MIN_LENGTH,
+    minLowercase: POLICY.AUTH.PASSWORD.MIN_LOWERCASE,
+    minUppercase: POLICY.AUTH.PASSWORD.MIN_UPPERCASE,
+    minNumbers: POLICY.AUTH.PASSWORD.MIN_NUMBERS,
+    minSymbols: POLICY.AUTH.PASSWORD.MIN_SYMBOLS,
   })
   @Field(() => String)
   password: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @MinLength(3)
-  @MaxLength(20)
-  @Field(() => String)
-  lastName: string;
-
-  @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
-  @IsString()
-  @MinLength(4)
-  @MaxLength(20)
-  @Field(() => String)
-  username: string;
 
   @IsDate()
   @IsOptional()

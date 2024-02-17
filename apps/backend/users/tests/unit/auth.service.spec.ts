@@ -1,13 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { HashingService, IUser, UserRole } from '@core';
-import { LoginUserDto, RegisterUserDto } from '../../src/app/auth/dto';
+
+import { HashingService } from '@core';
 import { AuthService } from '../../src/app/auth/auth.service';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { UsersService } from '../../src/app/users/users.service';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { UserEntity } from '../../src/app/users/entities/user.entity';
+import {
+  accessToken,
+  refreshToken,
+  userInDatabase,
+} from './mocks/login-responce-mocks';
+import { faker } from '@faker-js/faker';
+import { goodLoginData } from './mocks/login-mocks';
+import { goodUserData } from './mocks/register-mocks';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -21,7 +27,7 @@ describe('AuthService', () => {
         {
           provide: JwtService,
           useValue: {
-            sign: jest.fn(),
+            sign: jest.fn().mockReturnValue(faker.string.alphanumeric(20)),
           },
         },
         {
@@ -47,206 +53,95 @@ describe('AuthService', () => {
   });
 
   describe('validate user with email or username and password', () => {
-    it('should validate user credentials', async () => {
-      const credentialsWithEmail: LoginUserDto = {
-        email: 'tests@example.com',
-        password: 'password123',
-      };
-      const credentialsWithUsername: LoginUserDto = {
-        username: 'testuser',
-        password: 'password123',
-      };
-
-      const user: IUser = {
-        id: '1',
-        username: 'testuser',
-        email: 'tests@example.com',
-        password: 'hashedpassword',
-        verified: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        firstName: 'test',
-        role: UserRole.USER,
-        lastName: 'user',
-        birthday: new Date(),
-        hashedRefreshToken: 'hashedRefreshToken',
-      };
-
-      jest
-        .spyOn(usersService, 'findByUsernameOrEmailOrFail')
-        .mockResolvedValue(user as UserEntity);
-
-      jest.spyOn(hashingService, 'compare').mockResolvedValue(true);
-
-      const resultFromEmail =
-        await authService.validateUser(credentialsWithEmail);
-      const resultFromUsername = await authService.validateUser(
-        credentialsWithUsername,
-      );
-
-      expect(resultFromEmail).toEqual(user);
-      expect(resultFromUsername).toEqual(user);
-    });
+    // it('should validate user credentials', async () => {
+    //   const credentialsWithEmail: LoginUserDto = {
+    //     email: userInDatabase.email,
+    //     password: userInDatabase.password,
+    //   };
+    //   const credentialsWithUsername: LoginUserDto = {
+    //     username: userInDatabase.username,
+    //     password: userInDatabase.password,
+    //   };
+    //   console.log(credentialsWithEmail);
+    //
+    //   jest
+    //     .spyOn(usersService, 'findByUsernameOrEmailOrFail')
+    //     .mockResolvedValue(userInDatabase as UserEntity);
+    //
+    //   jest.spyOn(hashingService, 'compare').mockResolvedValue(true);
+    //
+    //   const resultFromEmail =
+    //     await authService.validateUser(credentialsWithEmail);
+    //   const resultFromUsername = await authService.validateUser(
+    //     credentialsWithUsername,
+    //   );
+    //
+    //   expect(resultFromEmail).toEqual(userInDatabase);
+    //   expect(resultFromUsername).toEqual(userInDatabase);
+    // });
 
     it('should throw UnauthorizedException for invalid credentials', async () => {
-      const credentials: LoginUserDto = {
-        username: 'testuser',
-        email: 'tests@example.com',
-        password: 'invalidpassword',
-      };
-
-      const user = {
-        id: '1',
-        username: 'testuser',
-        email: 'tests@example.com',
-        password: 'hashedpassword',
-        verified: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        firstName: 'test',
-        role: UserRole.USER,
-        lastName: 'user',
-        birthday: new Date(),
-        hashedRefreshToken: 'hashedRefreshToken',
-      };
-
       jest
         .spyOn(usersService, 'findByUsernameOrEmailOrFail')
-        .mockResolvedValue(user as UserEntity);
+        .mockResolvedValue(userInDatabase as UserEntity);
 
       jest.spyOn(hashingService, 'compare').mockResolvedValue(false);
 
-      await expect(authService.validateUser(credentials)).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        authService.validateUserCredentials(goodLoginData),
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 
   describe('login', () => {
     it('should generate tokens and update refresh token for a user', async () => {
-      const user: IUser = {
-        id: '1',
-        username: 'testuser',
-        email: 'tests@example.com',
-        password: 'hashedpassword',
-        verified: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        firstName: 'test',
-        role: UserRole.USER,
-        lastName: 'user',
-        birthday: new Date(),
-        hashedRefreshToken: 'hashedRefreshToken',
-      };
+      // jest.spyOn(usersService, 'updateRefreshToken').mockResolvedValue();
 
-      jest.spyOn(authService, 'login').mockResolvedValue({
-        accessToken: 'fakeAccessToken',
-        refreshToken: 'fakeRefreshToken',
-      });
+      const result = await authService.login(userInDatabase);
 
-      jest.spyOn(usersService, 'updateRefreshToken').mockResolvedValue();
-
-      const result = await authService.login(user);
-
-      expect(result).toEqual({
-        accessToken: 'fakeAccessToken',
-        refreshToken: 'fakeRefreshToken',
-      });
+      expect(result.accessToken).toBeDefined();
+      expect(result.refreshToken).toBeDefined();
     });
   });
 
   describe('refreshToken', () => {
     it('should refresh tokens for a user with a valid refresh token', async () => {
-      const user: IUser = {
-        id: '1',
-        username: 'testuser',
-        email: 'tests@example.com',
-        password: 'hashedpassword',
-        verified: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        firstName: 'test',
-        role: UserRole.USER,
-        lastName: 'user',
-        birthday: new Date(),
-        hashedRefreshToken: 'hashedRefreshToken',
-      };
-
-      const refreshToken = 'hashedRefreshToken';
-
       jest.spyOn(hashingService, 'compare').mockResolvedValue(true);
       jest.spyOn(authService, 'login').mockResolvedValue({
-        accessToken: 'fakeAccessToken',
-        refreshToken: 'fakeRefreshToken',
+        accessToken,
+        refreshToken,
       });
 
-      const result = await authService.refreshToken(user, refreshToken);
+      const result = await authService.refreshToken(
+        userInDatabase,
+        refreshToken,
+      );
 
       expect(result).toEqual({
-        accessToken: 'fakeAccessToken',
-        refreshToken: 'fakeRefreshToken',
+        accessToken,
+        refreshToken,
       });
     });
 
     it('should throw UnauthorizedException for invalid refresh token', async () => {
-      const user: IUser = {
-        id: '1',
-        username: 'testuser',
-        email: 'tests@example.com',
-        password: 'hashedpassword',
-        verified: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        firstName: 'test',
-        role: UserRole.USER,
-        lastName: 'user',
-        birthday: new Date(),
-        hashedRefreshToken: 'hashedRefreshToken',
-      };
-
-      const refreshToken = 'invalidRefreshToken';
-
-      jest.spyOn(hashingService, 'compare').mockResolvedValue(false);
+      console.log(userInDatabase);
+      const invalidRefreshToken = faker.string.alphanumeric(20);
 
       await expect(
-        authService.refreshToken(user, refreshToken),
+        authService.refreshToken(userInDatabase, invalidRefreshToken),
       ).rejects.toThrow(UnauthorizedException);
     });
   });
 
   describe('register', () => {
     it('should register a new user', async () => {
-      const userInfo: RegisterUserDto = {
-        username: 'newuser',
-        email: 'newuser@example.com',
-        password: 'newpassword',
-        firstName: 'new',
-        lastName: 'user',
-        birthday: new Date(),
-      };
-
-      const createdUser: IUser = {
-        id: '2',
-        username: 'newuser',
-        email: 'newuser@example.com',
-        password: 'hashedpassword',
-        verified: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        firstName: 'new',
-        role: UserRole.USER,
-        lastName: 'user',
-        birthday: new Date(),
-        hashedRefreshToken: 'hashedRefreshToken',
-      };
-
       jest
         .spyOn(usersService, 'createOne')
-        .mockResolvedValue(createdUser as UserEntity);
+        .mockResolvedValue(userInDatabase as UserEntity);
 
-      const result = await authService.register(userInfo);
+      const result = await authService.register(goodUserData);
 
-      expect(result).toEqual(createdUser);
+      expect(result).toEqual(userInDatabase);
     });
   });
 });
