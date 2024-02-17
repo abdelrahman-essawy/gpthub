@@ -24,6 +24,7 @@ import { AuthModule } from './auth/auth.module';
         ),
       },
       playground: true,
+      introspection: true,
       csrfPrevention: false,
       buildSchemaOptions: {},
     }),
