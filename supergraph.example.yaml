@@ -1,0 +1,14 @@
+federation_version: =2.3.2
+subgraphs:
+  users:
+    routing_url: http://host.docker.internal:3001/graphql
+    schema:
+      file: apps/backend/users/src/users.schema.graphql
+  resources:
+    routing_url: http://host.docker.internal:3002/graphql
+    schema:
+      file: apps/backend/resources/src/resources.schema.graphql
+  rooms:
+    routing_url: http://host.docker.internal:3003/graphql
+    schema:
+      file: apps/backend/rooms/src/rooms.schema.graphql
