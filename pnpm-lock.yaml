@@ -6945,7 +6945,7 @@ packages:
     dependencies:
       '@types/cookiejar': 2.1.5
       '@types/methods': 1.1.4
-      '@types/node': 20.11.10
+      '@types/node': 20.11.19
     dev: true
 
   /@types/supertest@6.0.2:
