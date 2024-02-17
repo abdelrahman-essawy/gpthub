@@ -9,8 +9,7 @@ export class LocalGuard extends AuthGuard('local') {
     const {
       credentials: { email, password, username },
     } = ctx.getArgs();
-    gqlReq.body.email = email;
-    gqlReq.body.username = username;
+    gqlReq.body.identifier = email || username;
     gqlReq.body.password = password;
     return gqlReq;
   }

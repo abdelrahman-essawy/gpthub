@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+
+  apollo-router-e2e:
+    container_name: apollo-router
+    image: ghcr.io/apollographql/router:v1.39.0
+    command: [ "--dev", "-c", "config/router.yaml", "-s", "schema/supergraph.graphql", "--log", "info" ]
+    ports:
+      - "3000:3000"
+
+  users-database-e2e:
+    image: postgres:alpine
+    ports:
+      - ${USERS_POSTGRES_PORT}:${DEFAULT_POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${USERS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${USERS_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${USERS_POSTGRES_DB}
+
+  resources-postgres-database-e2e:
+    image: postgres:alpine
+    ports:
+      - ${RESOURCES_POSTGRES_PORT}:${DEFAULT_POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${RESOURCES_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${RESOURCES_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${RESOURCES_POSTGRES_DB}
+
+  resources-mongo-database-e2e:
+    image: mongo:jammy
+    ports:
+      - ${RESOURCES_MONGO_PORT}:${DEFAULT_MONGO_PORT}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${RESOURCES_MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${RESOURCES_MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${RESOURCES_MONGO_DB}
+
+  rooms-postgres-database-e2e:
+    image: postgres:alpine
+    ports:
+      - ${ROOMS_POSTGRES_PORT}:${DEFAULT_POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${ROOMS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${ROOMS_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${ROOMS_POSTGRES_DB}
+
+
+networks:
+  default:
+    name: gpthub_e2e

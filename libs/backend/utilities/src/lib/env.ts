@@ -1,6 +1,7 @@
 export enum Env {
   Development = 'development',
   Production = 'production',
+  E2E = 'e2e',
   Test = 'test',
 }
 
@@ -11,10 +12,11 @@ export const NODE_ENV = ((): Env => {
       return Env.Development;
     case Env.Production:
       return Env.Production;
+    case Env.E2E:
     case Env.Test:
-      return Env.Test;
+      return Env.E2E;
     default:
-      throw new Error('NODE_ENV is not set = ' + _env);
+      throw new Error('NODE_ENV is not familiar, received: ' + _env);
   }
 })();
 
@@ -24,9 +26,10 @@ export const suitableEnvFilePath = ((): string => {
       return '.env.dev';
     case Env.Production:
       return '.env.prod';
+    case Env.E2E:
     case Env.Test:
-      return '.env.test';
+      return '.env.e2e';
     default:
-      throw new Error('NODE_ENV is not set = ' + NODE_ENV);
+      throw new Error('NODE_ENV is not familiar, received: ' + NODE_ENV);
   }
 })();

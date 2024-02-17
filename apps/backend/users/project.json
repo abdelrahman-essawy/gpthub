@@ -20,7 +20,8 @@
         "main": "apps/backend/users/src/main.ts",
         "tsConfig": "apps/backend/users/tsconfig.app.json",
         "assets": [
-          "apps/backend/users/src/assets"
+          "apps/backend/users/src/assets",
+          "apps/backend/users/src/proto"
         ],
         "isolatedConfig": true,
         "webpackConfig": "apps/backend/users/webpack.config.js"
@@ -28,6 +29,13 @@
       "configurations": {
         "development": {},
         "production": {}
+      }
+    },
+    "pre-serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose up users-database --detach --wait",
+        "color": true
       }
     },
     "serve": {
@@ -43,7 +51,10 @@
         "production": {
           "buildTarget": "users:build:production"
         }
-      }
+      },
+      "dependsOn": [
+        "pre-serve"
+      ]
     },
     "lint": {
       "executor": "@nx/eslint:lint",
