@@ -33,7 +33,8 @@ describe('AuthService', () => {
         {
           provide: HashingService,
           useValue: {
-            compare: jest.fn(),
+            compare: jest.fn().mockReturnValue(true),
+            hash: jest.fn().mockReturnValue(faker.string.alphanumeric(20)),
           },
         },
         {
