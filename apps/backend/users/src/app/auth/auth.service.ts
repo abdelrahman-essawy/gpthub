@@ -20,12 +20,13 @@ export class AuthService {
   async login(user: IUser) {
     const { accessToken, refreshToken } = await this.generateTokens(user);
     const hashedRefreshToken = await this.hashingService.hash(refreshToken);
-    await this.usersService.update(user.id, {
-      hashedRefreshToken,
-      lastLogin: new Date(),
-      // @ts-expect-error - Update the user's last login date.
-      updatedAt: () => '"updatedAt"',
-    });
+    await this.usersService.softUpdate(
+      { id: user.id },
+      {
+        hashedRefreshToken,
+        lastLogin: new Date(),
+      },
+    );
     return {
       accessToken,
       hashedRefreshToken,
@@ -80,6 +81,20 @@ export class AuthService {
 
   async findOneBy(where: FindOptionsWhere<UserEntity>) {
     return await this.usersService.findOneBy(where);
+  }
+
+  async addGithubAccount(user: IUser, githubId: string) {
+    return await this.usersService.softUpdate(
+      { email: user.email },
+      { githubId },
+    );
+  }
+
+  async addGoogleAccount(user: IUser, googleId: string) {
+    return await this.usersService.softUpdate(
+      { email: user.email },
+      { googleId },
+    );
   }
 
   private async validateRefreshToken(user: IUser, hashedRefreshToken: string) {

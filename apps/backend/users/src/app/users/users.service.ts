@@ -32,6 +32,16 @@ export class UsersService
     await this.userRepository.update(id, data);
   }
 
+  async softUpdate(
+    where: FindOptionsWhere<UserEntity>,
+    data: Partial<UserEntity>,
+  ) {
+    return await this.userRepository.update(where, {
+      ...data,
+      updatedAt: () => '"updatedAt"',
+    });
+  }
+
   async findOneBy(where: FindOptionsWhere<UserEntity>) {
     return await this.userRepository.findOneBy(where);
   }

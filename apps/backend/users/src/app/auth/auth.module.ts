@@ -1,5 +1,4 @@
 import { Global, Module } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt/dist/jwt.module';
 
 import { StrategiesModule } from '@backend/strategies';
@@ -16,7 +15,6 @@ import { LocalStrategy } from './strategies/local.strategy';
 @Global()
 @Module({
   imports: [
-    PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

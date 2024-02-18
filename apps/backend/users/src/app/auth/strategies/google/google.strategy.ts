@@ -1,22 +1,24 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Profile, Strategy } from 'passport-github2';
+import { Profile, Strategy } from 'passport-google-oauth20';
 
 import { ConfigService } from '@backend/config';
+
 import { AuthService } from '../../auth.service';
 
 @Injectable()
-export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
-  private readonly logger = new Logger(GithubStrategy.name);
+export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+  private readonly logger = new Logger(GoogleStrategy.name);
 
   constructor(
     readonly configService: ConfigService,
     private readonly authService: AuthService,
   ) {
     super({
-      clientID: configService.get<string>('GITHUB_CLIENT_ID'),
-      clientSecret: configService.get<string>('GITHUB_CLIENT_SECRET'),
-      callbackURL: 'http://localhost:3001/auth/github/callback',
+      clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
+      clientSecret: configService.get<string>('GOOGLE_CLIENT_SECRET'),
+      callbackURL: 'http://localhost:3001/auth/google/callback',
+      scope: ['email', 'profile'],
     });
   }
 
@@ -31,7 +33,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
     });
     if (oldUser) {
       this.logger.log(`Updating user: ${oldUser.email}`);
-      await this.authService.addGithubAccount(oldUser, profile.id);
+      await this.authService.addGoogleAccount(oldUser, profile.id);
       return await this.authService.login(oldUser);
     }
     const newUser = await this.register(profile);
@@ -49,16 +51,21 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
   }
 
   private extractUser(profile: Profile) {
-    const { id: providerId, emails, displayName, username, photos } = profile;
-    const [firstName, lastName] = displayName.split(' ');
+    const { id: providerId, emails, name, photos } = profile;
+    const { givenName, familyName } = name;
 
     return {
       avatar: photos[0].value,
       email: emails[0].value,
-      firstName,
-      lastName,
-      username,
-      githubId: providerId,
+      firstName: givenName,
+      lastName: familyName,
+      username: this.generateUsername(emails[0].value),
+      googleId: providerId,
     };
+  }
+
+  private generateUsername(email: string) {
+    const [username] = email.split('@');
+    return username;
   }
 }
