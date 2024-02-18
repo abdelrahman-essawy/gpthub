@@ -22,10 +22,12 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
 
   async validate(accessToken: string, _refreshToken: string, profile: Profile) {
     const user = await this.authService.findOneBy({ githubId: profile.id });
-    if (!user) return await this.registerUser(profile);
-
-    this.logger.log(`User found: ${user.email}`);
-    return this.authService.login(user);
+    if (user) {
+      this.logger.log(`User found: ${user.email}`);
+      return this.authService.login(user);
+    }
+    const newUser = await this.registerUser(profile);
+    return this.authService.login(newUser);
   }
 
   private async registerUser(profile: Profile) {

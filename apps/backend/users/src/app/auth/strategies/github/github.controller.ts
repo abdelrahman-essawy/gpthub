@@ -1,5 +1,6 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { IUser } from '@core';
 
 @Controller()
 export class GithubStrategyController {
@@ -11,7 +12,12 @@ export class GithubStrategyController {
 
   @Get('auth/github/callback')
   @UseGuards(AuthGuard('github'))
-  async authCallback(@Req() req) {
+  async authCallback(
+    @Req()
+    req: Request & {
+      user: IUser;
+    },
+  ) {
     return req.user;
   }
 }
