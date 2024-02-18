@@ -21,5 +21,5 @@ export const userInDatabase: IUser = {
   lastName: faker.person.lastName(),
 };
 
-export const refreshToken = faker.string.alphanumeric(20);
+export const hashedRefreshToken = faker.string.alphanumeric(20);
 export const accessToken = faker.string.alphanumeric(20);

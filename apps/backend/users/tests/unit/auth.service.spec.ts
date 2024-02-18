@@ -8,7 +8,7 @@ import { UsersService } from '../../src/app/users/users.service';
 import { UserEntity } from '../../src/app/users/entities/user.entity';
 import {
   accessToken,
-  refreshToken,
+  hashedRefreshToken,
   userInDatabase,
 } from './mocks/login-responce.mocks';
 import { faker } from '@faker-js/faker';
@@ -45,6 +45,7 @@ describe('AuthService', () => {
             findByUsernameOrEmailOrFail: jest.fn(),
             updateRefreshToken: jest.fn(),
             createOne: jest.fn(),
+            softUpdate: jest.fn(),
           },
         },
       ],
@@ -100,7 +101,7 @@ describe('AuthService', () => {
       const result = await authService.login(userInDatabase);
 
       expect(result.accessToken).toBeDefined();
-      expect(result.refreshToken).toBeDefined();
+      expect(result.hashedRefreshToken).toBeDefined();
     });
   });
 
@@ -109,17 +110,17 @@ describe('AuthService', () => {
       jest.spyOn(hashingService, 'compare').mockResolvedValue(true);
       jest.spyOn(authService, 'login').mockResolvedValue({
         accessToken,
-        refreshToken,
+        hashedRefreshToken,
       });
 
       const result = await authService.refreshToken(
         userInDatabase,
-        refreshToken,
+        hashedRefreshToken,
       );
 
       expect(result).toEqual({
         accessToken,
-        refreshToken,
+        hashedRefreshToken,
       });
     });
 
