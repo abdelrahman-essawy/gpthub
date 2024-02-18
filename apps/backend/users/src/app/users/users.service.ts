@@ -35,4 +35,8 @@ export class UsersService
   async findOneBy(where: FindOptionsWhere<UserEntity>) {
     return await this.userRepository.findOneBy(where);
   }
+
+  async findByOrFail(where: FindOptionsWhere<UserEntity>) {
+    return await this.userRepository.findOneOrFail({ where });
+  }
 }

@@ -71,7 +71,14 @@ export class UserEntity extends BaseEntity implements IUser {
 
   @BeforeInsert()
   async hashPassword() {
-    if (!this.password) return;
+    if (!this.password) return; // Register with social
     this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  @BeforeInsert()
+  async verifyEmail() {
+    if (!this.password) {
+      this.verified = true;
+    }
   }
 }

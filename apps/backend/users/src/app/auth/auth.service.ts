@@ -48,7 +48,7 @@ export class AuthService {
   async me(
     userPayload: UserTokenPayload | PassableUserTokenPayload,
   ): Promise<UserEntity | PassableUserEntity> {
-    return await this.usersService.findById(userPayload.id);
+    return await this.usersService.findByOrFail({ id: userPayload.id });
   }
 
   async findById(id: string) {
