@@ -7,6 +7,7 @@ import { PassableUserEntity, PassableUserTokenPayload } from '@backend/proto';
 import { LoginUserDto, RegisterUserDto, UserTokenPayload } from './dto';
 import { UsersService } from '../users/users.service';
 import { UserEntity } from '../users/entities/user.entity';
+import { FindOptionsWhere } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -17,9 +18,18 @@ export class AuthService {
   ) {}
 
   async login(user: IUser) {
-    const tokens = await this.generateTokens(user);
-    await this.usersService.updateRefreshToken(user.id, tokens.refreshToken);
-    return tokens;
+    const { accessToken, refreshToken } = await this.generateTokens(user);
+    const hashedRefreshToken = await this.hashingService.hash(refreshToken);
+    await this.usersService.update(user.id, {
+      hashedRefreshToken,
+      lastLogin: new Date(),
+      // @ts-expect-error - Update the user's last login date.
+      updatedAt: () => '"updatedAt"',
+    });
+    return {
+      accessToken,
+      hashedRefreshToken,
+    };
   }
 
   async refreshToken(user: IUser, hashedRefreshToken: string) {
@@ -68,6 +78,10 @@ export class AuthService {
     return user;
   }
 
+  async findOneBy(where: FindOptionsWhere<UserEntity>) {
+    return await this.usersService.findOneBy(where);
+  }
+
   private async validateRefreshToken(user: IUser, hashedRefreshToken: string) {
     const isRefreshTokenValid = await this.hashingService.compare(
       hashedRefreshToken,
@@ -91,7 +105,7 @@ export class AuthService {
 
     return {
       accessToken,
-      refreshToken: await this.hashingService.hash(refreshToken),
+      refreshToken,
     };
   }
 

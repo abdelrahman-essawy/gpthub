@@ -21,6 +21,9 @@ export class UserEntity extends BaseEntity implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ nullable: true, default: null })
+  avatar?: string;
+
   @Column()
   firstName: string;
 
@@ -30,7 +33,7 @@ export class UserEntity extends BaseEntity implements IUser {
   @Column({ unique: true })
   username: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column({ unique: true })
@@ -54,8 +57,21 @@ export class UserEntity extends BaseEntity implements IUser {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column({ default: null, nullable: true })
+  lastLogin?: Date;
+
+  @Column({ default: null, nullable: true })
+  githubId?: string;
+
+  @Column({ default: null, nullable: true })
+  googleId?: string;
+
+  @Column({ default: null, nullable: true })
+  bio?: string;
+
   @BeforeInsert()
   async hashPassword() {
+    if (!this.password) return;
     this.password = await bcrypt.hash(this.password, 10);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmQueryService } from '@ptc-org/nestjs-query-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { IUserRepository } from '@core';
 
 import { UserEntity } from './entities/user.entity';
@@ -28,9 +28,11 @@ export class UsersService
     });
   }
 
-  async updateRefreshToken(id: string, refreshToken: string) {
-    await this.userRepository.update(id, {
-      hashedRefreshToken: refreshToken,
-    });
+  async update(id: string, data: Partial<UserEntity>) {
+    await this.userRepository.update(id, data);
+  }
+
+  async findOneBy(where: FindOptionsWhere<UserEntity>) {
+    return await this.userRepository.findOneBy(where);
   }
 }

@@ -37,16 +37,18 @@ export class AuthResolver {
     @CurrentUser() user: IUser,
     // @Res({ passthrough: true }) res: Request,
   ): Promise<LoginResponseDto> {
-    const { accessToken, refreshToken } = await this.authService.login(user);
+    const { accessToken, hashedRefreshToken } =
+      await this.authService.login(user);
 
-    return new LoginResponseDto(user, accessToken, refreshToken);
+    return new LoginResponseDto(user, accessToken, hashedRefreshToken);
   }
 
   @Mutation(() => RegisterResponse)
   async register(@Args('userInfo') userInfo: RegisterUserDto) {
     const user = await this.authService.register(userInfo);
-    const { accessToken, refreshToken } = await this.authService.login(user);
-    return new RegisterResponse(user, accessToken, refreshToken);
+    const { accessToken, hashedRefreshToken } =
+      await this.authService.login(user);
+    return new RegisterResponse(user, accessToken, hashedRefreshToken);
   }
 
   @Mutation(() => LoginResponseDto)
@@ -68,7 +70,6 @@ export class AuthResolver {
 
   @ResolveReference()
   async resolveReference(reference: { __typename: string; id: string }) {
-    console.log('reference', reference);
     return await this.authService.findById(reference.id);
   }
 }

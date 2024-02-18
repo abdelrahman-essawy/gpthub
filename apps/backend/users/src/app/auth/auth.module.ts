@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt/dist/jwt.module';
 
@@ -7,11 +7,13 @@ import { HashingModule } from '@backend/hashing';
 import { ConfigModule, ConfigService } from '@backend/config';
 
 import { AuthService } from './auth.service';
-import { LocalStrategy } from './strategies/local.strategy';
 import { AuthController } from './auth.controller';
 import { AuthResolver } from './auth.resolver';
 import { UsersModule } from '../users/users.module';
+import { SocialStrategiesModule } from './strategies/social-strategies.module';
+import { LocalStrategy } from './strategies/local.strategy';
 
+@Global()
 @Module({
   imports: [
     PassportModule,
@@ -29,8 +31,10 @@ import { UsersModule } from '../users/users.module';
     ConfigModule,
     HashingModule,
     StrategiesModule,
+    SocialStrategiesModule,
   ],
-  providers: [AuthService, LocalStrategy, AuthResolver],
+  providers: [AuthResolver, AuthService, LocalStrategy],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}

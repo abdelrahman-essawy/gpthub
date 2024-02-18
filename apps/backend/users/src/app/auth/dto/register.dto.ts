@@ -59,7 +59,7 @@ export class RegisterUserDto implements Omit<IUser, keyof IUserDatabaseEntity> {
   @IsDate()
   @IsOptional()
   @Field(() => Date, { nullable: true })
-  birthday: Date;
+  birthday?: Date;
 
   constructor(createUserInput: RegisterUserDto) {
     Object.assign(this, createUserInput);
