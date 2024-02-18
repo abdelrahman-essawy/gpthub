@@ -3,23 +3,8 @@
   "targetDefaults": {
     "build": {
       "cache": true,
-      "dependsOn": [
-        "^build",
-        "^pre-build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
-    },
-    "lint": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.js"
-      ]
+      "dependsOn": ["^build", "^pre-build"],
+      "inputs": ["production", "^production"]
     },
     "e2e": {
       "cache": true,
@@ -27,13 +12,6 @@
         "{workspaceRoot}/.env.test",
         "{workspaceRoot}/.env.e2e",
         "{workspaceRoot}/docker-compose.e2e.yml"
-      ]
-    },
-    "test": {
-      "cache": true,
-      "inputs": [
-        "{workspaceRoot}/.env.test",
-        "{workspaceRoot}/.env.e2e"
       ]
     },
     "@nx/jest:jest": {
@@ -63,13 +41,19 @@
         "{projectRoot}/.storybook/**/*",
         "{projectRoot}/tsconfig.storybook.json"
       ]
+    },
+    "@nx/eslint:lint": {
+      "cache": true,
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/.eslintignore",
+        "{workspaceRoot}/eslint.config.js"
+      ]
     }
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
@@ -106,9 +90,7 @@
     "default": {
       "runner": "nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build-storybook"
-        ],
+        "cacheableOperations": ["build-storybook"],
         "accessToken": "OTA2NmRlYjItMjE4YS00YWU3LThmMjUtZTM5ODRjNGM0OTEzfHJlYWQtd3JpdGU="
       }
     }
