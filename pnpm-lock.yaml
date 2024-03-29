@@ -81,8 +81,8 @@ dependencies:
     specifier: 18.0.0
     version: 18.0.0
   '@ptc-org/nestjs-query-core':
-    specifier: 5.0.0
-    version: 5.0.0(@nestjs/common@10.3.0)(class-transformer@0.5.1)
+    specifier: 5.0.1
+    version: 5.0.1(@nestjs/common@10.3.0)(class-transformer@0.5.1)
   '@ptc-org/nestjs-query-graphql':
     specifier: 5.0.0
     version: 5.0.0(@apollo/gateway@2.6.2)(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(@nestjs/graphql@12.0.11)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql-subscriptions@2.0.0)(graphql@16.8.1)(ts-morph@19.0.0)
@@ -4655,6 +4655,19 @@ packages:
 
   /@ptc-org/nestjs-query-core@5.0.0(@nestjs/common@10.3.0)(class-transformer@0.5.1):
     resolution: {integrity: sha512-yscg9VanZKc47MT984qALjWXFNDpaS9Y3d6FLRyIIGc767ulQEKpWbLs1z4Lg733A2hWv9bxYExe2FiBUDbodw==}
+    peerDependencies:
+      '@nestjs/common': ^9.0.0 || ^10.0.0
+      class-transformer: ^0.5
+    dependencies:
+      '@nestjs/common': 10.3.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
+      class-transformer: 0.5.1
+      lodash.merge: 4.6.2
+      reflect-metadata: 0.2.1
+      tslib: 2.6.2
+    dev: false
+
+  /@ptc-org/nestjs-query-core@5.0.1(@nestjs/common@10.3.0)(class-transformer@0.5.1):
+    resolution: {integrity: sha512-Pp0+jo0ZKEYX+55IQyVI69FU9f+ozNEKModzez+H0mTm7TpzRvjZhcHYYOvpxJTm8RtiabVffJfElSp9iVjJYA==}
     peerDependencies:
       '@nestjs/common': ^9.0.0 || ^10.0.0
       class-transformer: ^0.5
