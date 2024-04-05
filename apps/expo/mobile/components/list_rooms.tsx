@@ -10,14 +10,14 @@ const ListRooms = ({ roomList, text }: { roomList: Room[], text: string }) => {
       <Text className="text-2xl font-bold text-white pb-4">{text}</Text>
       <ScrollView
         contentContainerStyle={{
-          marginTop: 16,
+          marginVertical: 16,
           flexDirection: 'row',
           flexWrap: 'wrap',
         }}
       >
         {roomList.map((room, index) => {
           return (
-            <View className="w-1/2" key={index}>
+            <View className="w-1/2 p-2" key={index}>
               <Card room={room} />
             </View>
           );

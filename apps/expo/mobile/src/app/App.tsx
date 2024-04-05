@@ -5,11 +5,13 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from '../../screens/Home';
 import Splash from '../../screens/splash';
 import Profile from '../../screens/profile';
+import Chat from '../../screens/chat';
 
 export type RootStackParams = {
   Splash: undefined;
   Root: undefined;
   Profile: undefined;
+  Chat: { title: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParams>();
@@ -24,6 +26,15 @@ const App = () => {
       >
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Root" component={HomeStack} />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={({ navigation, route }) => ({
+            headerTitle: route.params?.title,
+            navigation: navigation,
+            route: route,
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
