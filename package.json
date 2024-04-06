@@ -123,7 +123,7 @@
     "cypress": "^13.6.2",
     "dotenv": "^16.4.2",
     "env-cmd": "^10.1.0",
-    "eslint": "8.56.0",
+    "eslint": "8.57.0",
     "eslint-config-next": "14.1.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-cypress": "^2.15.1",
