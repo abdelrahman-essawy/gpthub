@@ -1,0 +1,9 @@
+{
+  "name": "mobile",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/expo/mobile/src",
+  "projectType": "application",
+  "targets": {
+  },
+  "tags": []
+}
