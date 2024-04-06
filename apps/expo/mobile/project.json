@@ -4,13 +4,6 @@
   "sourceRoot": "apps/expo/mobile/src",
   "projectType": "application",
   "targets": {
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "apps/expo/mobile/jest.config.ts"
-      }
-    }
   },
   "tags": []
 }
