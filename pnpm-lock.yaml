@@ -272,8 +272,8 @@ devDependencies:
     specifier: ~1.4.0
     version: 1.4.0
   '@testing-library/react':
-    specifier: 14.2.1
-    version: 14.2.1(react-dom@18.2.0)(react@18.2.0)
+    specifier: 14.3.1
+    version: 14.3.1(react-dom@18.2.0)(react@18.2.0)
   '@types/bcrypt':
     specifier: ^5.0.2
     version: 5.0.2
@@ -6541,8 +6541,8 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react@14.2.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-sGdjws32ai5TLerhvzThYFbpnF9XtL65Cjf+gB0Dhr29BGqK+mAeN7SURSdu+eqgET4ANcWoC7FQpkaiGvBr+A==}
+  /@testing-library/react@14.3.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-H99XjUhWQw0lTgyMN05W3xQG1Nh4lq574D8keFf1dDoNTJgp66VbJozRaczoF+wsiaPJNt/TcnfpLGufGxSrZQ==}
     engines: {node: '>=14'}
     peerDependencies:
       react: ^18.0.0
