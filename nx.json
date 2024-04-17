@@ -94,5 +94,21 @@
         "accessToken": "OTA2NmRlYjItMjE4YS00YWU3LThmMjUtZTM5ODRjNGM0OTEzfHJlYWQtd3JpdGU="
       }
     }
-  }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/next/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "devTargetName": "dev",
+        "startTargetName": "start"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ]
 }
