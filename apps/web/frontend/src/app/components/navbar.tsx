@@ -7,7 +7,7 @@ export const NavBar = () => {
   return (
     <div className="flex items-center bg-backgroundColor h-20 w-full z-10">
       {/* left */}
-      <div className="p-4  w-1/5">
+      <div className="p-4  w-2/12">
         <div className="flex justify-start bg-black w-64 py-2 pl-4 rounded-4xl">
           <Image
             src="/profile.jfif"
@@ -23,7 +23,7 @@ export const NavBar = () => {
         </div>
       </div>
       {/* mid  */}
-      <div className="flex justify-between items-center w-3/5 ml-8">
+      <div className="flex justify-between items-center w-7/12 ml-8">
         <p className="text-3xl font-bold text-white flex-grow-1">
           Room Overview
         </p>
@@ -41,8 +41,8 @@ export const NavBar = () => {
         </div>
       </div>
       {/* end */}
-      <div className="ml-8 w-1/5">
-        <p className="text-xl text-white font-bold">Current Room</p>
+      <div className="ml-8 w-3/12">
+        <p className="text-xl text-white font-bold pl-4">Current Room</p>
       </div>
     </div>
   );

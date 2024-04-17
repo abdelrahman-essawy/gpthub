@@ -13,28 +13,28 @@ export const Menu = () => {
       <div className="flex flex-col gap-1 grow-1 h-full">
         <Link
           href={''}
-          className="flex items-center gap-2 w-full hover:bg-black p-2 rounded-2xl"
+          className="flex items-center gap-2 w-full hover:bg-black p-2 py-4 rounded-2xl"
         >
           <IoIosChatbubbles />
           <p>Rooms</p>
         </Link>
         <Link
           href={''}
-          className="flex items-center gap-2 w-full hover:bg-black p-2 rounded-2xl"
+          className="flex items-center gap-2 w-full hover:bg-black p-2 py-4 rounded-2xl"
         >
           <IoIosPeople />
           <p>Participants</p>
         </Link>
         <Link
           href={''}
-          className="flex items-center gap-2 w-full hover:bg-black p-2 rounded-2xl"
+          className="flex items-center gap-2 w-full hover:bg-black p-2 py-4 rounded-2xl"
         >
           <BsFillCheckCircleFill />
           <p>Resources</p>
         </Link>
         <Link
           href={''}
-          className="flex items-center gap-2 w-full hover:bg-black p-2 rounded-2xl"
+          className="flex items-center gap-2 w-full hover:bg-black p-2 py-4 rounded-2xl"
         >
           <FaFolder />
           <p>Available Resources</p>
