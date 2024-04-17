@@ -7,6 +7,7 @@ import request from 'supertest';
 import { LoginUserDto, RegisterUserDto } from '../../../users/src/app/auth/dto';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { goodRegisterData } from '../../../users/tests/unit/mocks/register.mocks';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { invalidPassword } from '../../../users/tests/unit/mocks/invalid.mocks';
 
 const GRAPHQL_ENDPOINT = '/graphql';
