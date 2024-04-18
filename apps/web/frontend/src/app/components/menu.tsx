@@ -6,6 +6,10 @@ import { FaFolder } from 'react-icons/fa6';
 import { LuSettings } from 'react-icons/lu';
 import { TbLogout2 } from 'react-icons/tb';
 
+// const handleSelect = (index:number)=>{
+
+// }
+
 export const Menu = () => {
   return (
     <div className="flex flex-col  text-white h-full p-4 pt-10">

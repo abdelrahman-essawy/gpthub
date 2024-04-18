@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { GrSearch } from 'react-icons/gr';
 import { BsBellFill, BsFillChatLeftTextFill } from 'react-icons/bs';
 import { IoMdMail } from 'react-icons/io';
+
 export const NavBar = () => {
   return (
     <div className="flex items-center bg-backgroundColor h-20 w-full z-10">
@@ -33,7 +34,7 @@ export const NavBar = () => {
             <GrSearch className="text-white" />
             <p className="pl-2 text-sm text-gray-200 mr-28">Search for rooms</p>
           </div>
-          <div className="flex pl-2 gap-2 text-white">
+          <div className="flex pl-2 gap-2 text-white items-center">
             <BsBellFill />
             <IoMdMail/>
             <BsFillChatLeftTextFill/>
