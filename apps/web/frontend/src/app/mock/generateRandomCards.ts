@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker';
 import { CardData } from "../core/types";
 
 export const generateRandomCards = (length:number):CardData[]=>{
-    console.log("mango");
     const roomCards:CardData[]=[];
     for(let i=0;i<length;i++){
         const cardData:CardData = {

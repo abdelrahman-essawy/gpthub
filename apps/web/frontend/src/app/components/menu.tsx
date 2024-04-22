@@ -12,9 +12,9 @@ import { TbLogout2 } from 'react-icons/tb';
 
 export const Menu = () => {
   return (
-    <div className="flex flex-col  text-white h-full p-4 pt-10">
+    <div className="flex flex-col text-white h-full p-4 pt-10">
       {/* top menu */}
-      <div className="flex flex-col gap-1 grow-1 h-full">
+      <div className="grow flex flex-col gap-1 ">
         <Link
           href={''}
           className="flex items-center gap-2 w-full hover:bg-black p-2 py-4 rounded-2xl"
@@ -46,7 +46,7 @@ export const Menu = () => {
       </div>
       {/* end menu */}
       <div className="border-t border-gray-500 my-8"></div>
-      <div className="flex flex-col gap-8 ">
+      <div className="flex flex-col gap-8 pb-14">
         {/* I want to add a divider here horizontal one */}
         <Link href={''} className="flex items-center gap-2">
           <LuSettings />

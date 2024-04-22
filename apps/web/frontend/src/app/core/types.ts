@@ -6,4 +6,5 @@ export type CardData = {
     category: string;
     noResources: number;
     noMessages: number;
+    index?:number;
 };
