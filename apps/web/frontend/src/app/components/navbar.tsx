@@ -6,7 +6,7 @@ import { IoMdMail } from 'react-icons/io';
 
 export const NavBar = () => {
   return (
-    <div className="flex items-center bg-backgroundColor h-32 w-full z-10">
+    <div className="flex items-center bg-backgroundColor h-32 w-full z-10 p-2 mt-4">
       {/* left */}
       <div className="p-4  w-2/12 h-full">
         <div className="flex justify-start items-center bg-black w-64 py-2 pl-4 rounded-4xl h-full">

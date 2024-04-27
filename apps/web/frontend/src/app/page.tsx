@@ -14,13 +14,13 @@ export default async function Index() {
       <div className='pt-20 w-full'>
         <NavBar />
       </div>
-      <div className="flex w-full h-screen justify-center">
+      <div className="flex w-full h-full justify-center">
         {/* right */}
         <div className="w-2/12 h-full">
           <Menu />
         </div>
         {/* mid */}
-        <div className="bg-black w-7/12 h-screen">
+        <div className="bg-black w-7/12 h-full">
           <Rooms />
         </div>
         {/* left */}

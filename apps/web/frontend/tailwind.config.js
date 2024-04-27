@@ -19,9 +19,10 @@ module.exports = {
         '7xl':'5rem',
       },
       colors:{
-        'backgroundColor':'#323232'
+        'backgroundColor':'#323232',
+        'backgroundChat':'#18181a'
       }
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };
