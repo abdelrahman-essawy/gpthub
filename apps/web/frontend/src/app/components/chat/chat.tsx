@@ -135,7 +135,7 @@ const Chat = () => {
           ))}
         </div>
       ) : (
-        <Default_Layout />
+        <Default_Layout setMessage={setNewMessage} />
       )}
 
       <div
@@ -146,7 +146,7 @@ const Chat = () => {
             <Lottie animationData={loadingAnimation} loop={true} />
           </div>
         )}
-        <div className="flex justify-center items-end w-full ">
+        <div className="flex justify-center items-end w-full rounded-xl">
           <TextareaAutosize
             maxRows={15}
             // minRows={1}

@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 // Access your API key (see "Set up your API key" above)
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY!);
 async function run(prompt:string) {
     // For text-only input, use the gemini-pro model
