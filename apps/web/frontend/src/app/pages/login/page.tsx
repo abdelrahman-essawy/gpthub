@@ -19,7 +19,7 @@ const SignUp = () => {
         {/* right side */}
         <div className="relative flex flex-col w-1/2 h-full justify-center items-center text-white">
           <p className="text-4xl font-bold text-center mb-8">Login</p>
-          <div className="flex flex-col gap-2 text-gray-400">
+          <div className="flex flex-col gap-2 text-gray-400 w-4/5">
             <div>
               <label htmlFor="email">Email</label>
               <input

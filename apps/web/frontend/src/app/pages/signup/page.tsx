@@ -5,7 +5,9 @@ import LogoWName from '../../../../public/logo/logowname.png';
 import Link from 'next/link';
 
 const SignUp = () => {
-  const [name, setName] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [userName, setUserName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -18,15 +20,41 @@ const SignUp = () => {
         </div>
         {/* right side */}
         <div className="relative flex flex-col w-1/2 h-full justify-center items-center text-white">
-          <p className="text-4xl font-bold text-center mb-8">SignUp</p>
-          <div className="flex flex-col gap-2 text-gray-400">
+          <p className="text-4xl font-bold text-center mb-8 ">SignUp</p>
+          <div className="flex flex-col gap-2 text-gray-400 w-4/5">
+            <div className="flex gap-2">
+              <div className="w-1/2">
+                <label htmlFor="name">First Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black"
+                  required
+                />
+              </div>
+              <div className="relative w-1/2">
+                <label htmlFor="name" className="absolute right-2 text-right">
+                  Last Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black absolute bottom-0"
+                  required
+                />
+              </div>
+            </div>
             <div>
-              <label htmlFor="name">Name</label>
+              <label htmlFor="email">User Name</label>
               <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                id="email"
+                type="email"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
                 className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black"
                 required
               />
@@ -59,8 +87,10 @@ const SignUp = () => {
             </button>
           </div>
           <div className=" flex gap-2 mt-8">
-            <p className='text-gray-400'>already have a account?</p>
-            <Link href={'/pages/login'} className='text-gray-200'>login </Link>
+            <p className="text-gray-400">already have a account?</p>
+            <Link href={'/pages/login'} className="text-gray-200">
+              login{' '}
+            </Link>
           </div>
         </div>
       </div>
