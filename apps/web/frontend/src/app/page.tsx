@@ -16,7 +16,7 @@ export default async function Index() {
       </div>
       <div className="flex w-full h-full justify-center">
         {/* right */}
-        <div className="w-2/12 h-full">
+        <div className="w-2/12 h-screen bg-backgroundColor">
           <Menu />
         </div>
         {/* mid */}
@@ -24,7 +24,7 @@ export default async function Index() {
           <Rooms />
         </div>
         {/* left */}
-        <div className="w-3/12 h-full">
+        <div className="w-3/12 h-screen bg-backgroundColor">
           <CurrentRoom />
         </div>
       </div>

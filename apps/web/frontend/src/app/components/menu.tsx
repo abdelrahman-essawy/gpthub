@@ -12,7 +12,7 @@ import { TbLogout2 } from 'react-icons/tb';
 
 export const Menu = () => {
   return (
-    <div className="flex flex-col text-white h-full p-4 pt-10">
+    <div className="flex flex-col text-white h-full p-4 pt-10 ">
       {/* top menu */}
       <div className="grow flex flex-col gap-1 ">
         <Link
