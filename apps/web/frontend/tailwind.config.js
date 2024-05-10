@@ -16,13 +16,14 @@ module.exports = {
         '4xl': '2rem',
         '5xl': '2.5rem',
         '6xl': '4rem',
-        '7xl':'5rem',
+        '7xl': '5rem',
       },
-      colors:{
-        'backgroundColor':'#323232',
-        'backgroundChat':'#18181a'
-      }
+      colors: {
+        backgroundColor: '#323232',
+        backgroundChat: '#18181a',
+        backgroundGray: '#202123',
+      },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require('daisyui')],
 };
