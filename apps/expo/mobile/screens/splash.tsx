@@ -13,7 +13,7 @@ const Splash = () => {
 
   useEffect(() => {
     const navigateToHome = () => {
-      navigation.replace('Root');
+      navigation.replace('Login');
     };
 
     const delay = setTimeout(navigateToHome, 2000);

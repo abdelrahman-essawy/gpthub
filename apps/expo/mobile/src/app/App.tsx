@@ -5,11 +5,17 @@ import Home from '../../screens/Home';
 import Splash from '../../screens/splash';
 import Profile from '../../screens/profile';
 import Chat from '../../screens/chat';
+import Login from '../../screens/login';
+import SignUp from '../../screens/signUp';
+import Choose from '../../screens/choose';
 
 export type RootStackParams = {
   Splash: undefined;
   Root: undefined;
   Profile: undefined;
+  Login: undefined;
+  SignUp: undefined;
+  choose: undefined;
   Chat: { title: string };
 };
 
@@ -24,6 +30,9 @@ const App = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Splash" component={Splash} />
+        <Stack.Screen name="choose" component={Choose} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Root" component={HomeStack} />
         <Stack.Screen
           name="Chat"

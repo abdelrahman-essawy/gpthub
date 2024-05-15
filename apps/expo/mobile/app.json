@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Mobile",
-    "slug": "mobile",
+    "slug": "raghub-build",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,7 +13,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -27,6 +29,12 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": []
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "106042fe-419f-4079-abf3-e36c58b3d4d4"
+      }
+    },
+    "owner": "faragz"
   }
 }

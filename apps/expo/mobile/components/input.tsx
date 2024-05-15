@@ -1,4 +1,4 @@
-import { View, Button, TextInput, Text } from 'react-native';
+import { View, Button, TextInput } from 'react-native';
 import React, { useState } from 'react';
 
 type Props = {
