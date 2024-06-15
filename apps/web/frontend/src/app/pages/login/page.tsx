@@ -2,13 +2,19 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import LogoWName from '../../../../public/logo/logowname.png';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const SignUp = () => {
-  const [name, setName] = useState<string>('');
+const Login = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const router = useRouter();
 
+  const handelSubmit = () => {
+    console.log('email', email);
+    console.log('password', password);
+    router.push('/pages/signup');
+  };
   return (
     <div className="flex justify-center items-center bg-backgroundGray h-screen">
       <div className="bg-backgroundGray z-10 shadow-2xl w-4/5 h-4/5 rounded-3xl shadow-amber-50/10 border-gray-800/40 border-2 overflow-hidden flex">
@@ -43,13 +49,16 @@ const SignUp = () => {
                 required
               />
             </div>
-            <button className="bg-gray-600 p-3 rounded-xl mt-2 text-white font-medium">
-              Login 
+            <button
+              onClick={handelSubmit}
+              className="bg-gray-600 p-3 rounded-xl mt-2 text-white font-medium"
+            >
+              Login
             </button>
           </div>
           <div className=" flex gap-2 mt-8">
-            <p className='text-gray-400'>create an account?</p>
-            <Link href={'/pages/login'} className='text-gray-200'>Sign Up </Link>
+            <p className="text-gray-400">create an account?</p>
+            <Link href={'/pages/signup'}>Sign Up</Link>
           </div>
         </div>
       </div>
@@ -57,4 +66,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Login;

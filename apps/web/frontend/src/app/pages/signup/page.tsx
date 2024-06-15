@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import LogoWName from '../../../../public/logo/logowname.png';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const SignUp = () => {
@@ -10,6 +11,16 @@ const SignUp = () => {
   const [userName, setUserName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const router = useRouter();
+
+  const handelSubmit = () => {
+    console.log('firstName', firstName);
+    console.log('lastName', lastName);
+    console.log('userName', userName);
+    console.log('email', email);
+    console.log('password', password);
+    router.push('/');
+  };
 
   return (
     <div className="flex justify-center items-center bg-backgroundGray h-screen">
@@ -82,7 +93,10 @@ const SignUp = () => {
                 required
               />
             </div>
-            <button className="bg-gray-600 p-3 rounded-xl mt-2 text-white font-medium">
+            <button
+              onClick={handelSubmit}
+              className="bg-gray-600 p-3 rounded-xl mt-2 text-white font-medium"
+            >
               Sign Up
             </button>
           </div>
