@@ -1,27 +1,30 @@
-import { View, Button, TextInput } from 'react-native';
+import { View, TouchableOpacity, TextInput } from 'react-native';
 import React, { useState } from 'react';
+import { AntDesign } from '@expo/vector-icons';
 
 type Props = {
   className?: string;
-  onTextChange:(text:string)=>void;
+  onTextChange: (text: string) => void;
 };
 
-const Input = ({className,onTextChange}:Props) => {
-
-  const [text, setText] = useState<string>("");
+const Input = ({ className, onTextChange }: Props) => {
+  const [text, setText] = useState<string>('');
 
   return (
-    <View className={`flex flex-row justify-between w-full bg-gray-500 p-4 rounded-xl ${className}`}>
+    <View
+      className={`flex flex-row justify-between w-full border-white/25 border-2 py-2 px-2 rounded-xl bg-opacity-10 ${className}`}
+    >
       <TextInput
         value={text}
         onChangeText={setText}
-        className='flex-1 text-white mr-4'
+        className="flex-1 text-white mr-4"
       />
-      <Button
-        onPress={()=>onTextChange(text)}
-        title="Send"
-        color='#007AFF'
-      />
+      <TouchableOpacity
+        onPress={() => onTextChange(text)}
+        className="p-2 bg-gray-400 rounded-xl"
+      >
+        <AntDesign name="arrowup" size={24} color="black" />
+      </TouchableOpacity>
     </View>
   );
 };

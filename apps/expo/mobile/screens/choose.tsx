@@ -9,7 +9,7 @@ const Choose = () => {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <LottieView
+      {/* <LottieView
         ref={(animation) => {
           animationRef.current = animation;
         }}
@@ -17,7 +17,7 @@ const Choose = () => {
         autoPlay={true}
         loop={true}
         // style={{width:500,height:500}}
-      />
+      /> */}
     </SafeAreaView>
   );
 };

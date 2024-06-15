@@ -23,7 +23,11 @@
     "react-native-svg": "15.2.0",
     "react-native-web": "*",
     "@expo/vector-icons": "^14.0.0",
-    "lottie-react-native": "6.7.0"
+    "lottie-react-native": "6.7.0",
+    "expo-router": "~3.5.14",
+    "expo-linking": "~6.3.1",
+    "expo-constants": "~16.0.1",
+    "expo-status-bar": "~1.12.1"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../../ && node tools/scripts/eas-build-pre-install.mjs . apps/expo/mobile && cp pnpm-lock.yaml apps/expo/mobile",

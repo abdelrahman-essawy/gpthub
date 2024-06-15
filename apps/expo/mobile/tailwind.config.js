@@ -32,6 +32,7 @@ module.exports = {
         inputFormBg: '#1e1d25',
         inputFormBorderColor: '#25242c',
         iconColor: '#67666e',
+        chatBackground: '#212121',
       },
     },
   },
