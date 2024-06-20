@@ -4,22 +4,44 @@ import Image from 'next/image';
 import LogoWName from '../../../../public/logo/logowname.png';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useMutation } from '@apollo/client';
+import client from '../../lib/apolloClient';
+import REGISTER_USER from '../../lib/mutation/registerUser';
+import { userRegistration } from '../../core/types';
 
 const SignUp = () => {
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [userName, setUserName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [userInfo, setUserInfo] = useState<userRegistration>({
+    firstName: '',
+    lastName: '',
+    username: '',
+    email: '',
+    password: '',
+    birthday: '1990-01-01T00:00:00',
+  });
   const router = useRouter();
 
-  const handelSubmit = () => {
-    console.log('firstName', firstName);
-    console.log('lastName', lastName);
-    console.log('userName', userName);
-    console.log('email', email);
-    console.log('password', password);
-    router.push('/');
+  const [registerUser, { loading, error }] = useMutation(REGISTER_USER, {
+    client,
+    onError: (error) => {
+      console.error('Error registering user:', error);
+    },
+  });
+
+  const handleSubmit = async () => {
+    try {
+      const { data } = await registerUser({
+        variables: {
+          userInfo: {
+            ...userInfo,
+            birthday: new Date(userInfo.birthday).toISOString(), // Ensure birthday is formatted correctly
+          },
+        },
+      });
+      console.log('User registered successfully:', data);
+      // Handle success - redirect or show success message
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
   };
 
   return (
@@ -39,8 +61,10 @@ const SignUp = () => {
                 <input
                   id="name"
                   type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={userInfo.firstName}
+                  onChange={(e) =>
+                    setUserInfo({ ...userInfo, firstName: e.target.value })
+                  }
                   className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black"
                   required
                 />
@@ -52,20 +76,24 @@ const SignUp = () => {
                 <input
                   id="name"
                   type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={userInfo.lastName}
+                  onChange={(e) =>
+                    setUserInfo({ ...userInfo, lastName: e.target.value })
+                  }
                   className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black absolute bottom-0"
                   required
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="email">User Name</label>
+              <label htmlFor="text">User Name</label>
               <input
-                id="email"
-                type="email"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
+                id="text"
+                type="text"
+                value={userInfo.username}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, username: e.target.value })
+                }
                 className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black"
                 required
               />
@@ -75,8 +103,10 @@ const SignUp = () => {
               <input
                 id="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={userInfo.email}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, email: e.target.value })
+                }
                 className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black"
                 required
               />
@@ -87,14 +117,16 @@ const SignUp = () => {
                 id="password"
                 type="password"
                 placeholder=""
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={userInfo.password}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, password: e.target.value })
+                }
                 className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black"
                 required
               />
             </div>
             <button
-              onClick={handelSubmit}
+              onClick={handleSubmit}
               className="bg-gray-600 p-3 rounded-xl mt-2 text-white font-medium"
             >
               Sign Up

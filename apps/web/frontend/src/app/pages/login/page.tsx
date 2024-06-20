@@ -5,6 +5,7 @@ import LogoWName from '../../../../public/logo/logowname.png';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+
 const Login = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -15,6 +16,7 @@ const Login = () => {
     console.log('password', password);
     router.push('/pages/signup');
   };
+
   return (
     <div className="flex justify-center items-center bg-backgroundGray h-screen">
       <div className="bg-backgroundGray z-10 shadow-2xl w-4/5 h-4/5 rounded-3xl shadow-amber-50/10 border-gray-800/40 border-2 overflow-hidden flex">
