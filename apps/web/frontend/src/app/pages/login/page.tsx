@@ -4,17 +4,44 @@ import Image from 'next/image';
 import LogoWName from '../../../../public/logo/logowname.png';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
+import { useMutation } from '@apollo/client';
+import LOGIN_USER from '../../lib/mutation/loginUser';
+import client from '../../lib/apolloClient';
 
 const Login = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const router = useRouter();
+  // const router = useRouter();
 
-  const handelSubmit = () => {
-    console.log('email', email);
-    console.log('password', password);
-    router.push('/pages/signup');
+  const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
+    client,
+    onCompleted: (data) => {
+      console.log('User logged in successfully:', data);
+      // Handle successful login, such as storing tokens and redirecting
+      const { accessToken, refreshToken } = data.login;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      // router.push('/dashboard'); // Redirect to dashboard or another page
+    },
+    onError: (error) => {
+      console.error('Error logging in user:', error);
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await loginUser({
+        variables: {
+          credentials: {
+            email,
+            password,
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
   };
 
   return (
@@ -52,7 +79,7 @@ const Login = () => {
               />
             </div>
             <button
-              onClick={handelSubmit}
+              onClick={handleSubmit}
               className="bg-gray-600 p-3 rounded-xl mt-2 text-white font-medium"
             >
               Login
