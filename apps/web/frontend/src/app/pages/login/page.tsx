@@ -7,29 +7,58 @@ import Link from 'next/link';
 import { useMutation } from '@apollo/client';
 import LOGIN_USER from '../../lib/mutation/loginUser';
 import client from '../../lib/apolloClient';
+import NotificationMessage, {
+  NotificationProps,
+} from '../../components/notification';
+
+type Errors = {
+  email?: string;
+  password?: string;
+};
 
 const Login = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  // const router = useRouter();
+  const [errors, setErrors] = useState<Errors>({});
+  const [notification, setNotification] = useState<NotificationProps | null>(
+    null,
+  );
+  const router = useRouter();
 
   const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
     client,
     onCompleted: (data) => {
       console.log('User logged in successfully:', data);
-      // Handle successful login, such as storing tokens and redirecting
       const { accessToken, refreshToken } = data.login;
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      // router.push('/dashboard'); // Redirect to dashboard or another page
+      // router.push('/dashboard');
     },
     onError: (error) => {
       console.error('Error logging in user:', error);
+      setNotification({ status: 'fail', content: error.message });
     },
   });
 
+  const validate = () => {
+    const newErrors: Errors = {};
+    if (!email) newErrors.email = 'Email is required';
+    if (!password) newErrors.password = 'Password is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validate()) {
+      setNotification({
+        status: 'fail',
+        content: 'Please fill in all fields correctly.',
+      });
+      return;
+    }
+
     try {
       await loginUser({
         variables: {
@@ -46,6 +75,14 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center bg-backgroundGray h-screen">
+      {notification && (
+        <div className="absolute bottom-2 right-2 w-96">
+          <NotificationMessage
+            status={notification.status}
+            content={notification.content}
+          />
+        </div>
+      )}
       <div className="bg-backgroundGray z-10 shadow-2xl w-4/5 h-4/5 rounded-3xl shadow-amber-50/10 border-gray-800/40 border-2 overflow-hidden flex">
         {/* left side */}
         <div className="flex items-center justify-center w-1/2 h-full bg-gray-600">
@@ -62,9 +99,14 @@ const Login = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black"
+                className={`input input-bordered w-full bg-gray-100 border-2 py-2 text-black ${
+                  errors.email && 'border-red-500'
+                }`}
                 required
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
             </div>
             <div>
               <label htmlFor="password">Password</label>
@@ -74,20 +116,27 @@ const Login = () => {
                 placeholder=""
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="input input-bordered w-full bg-gray-100 border-2 py-2 text-black"
+                className={`input input-bordered w-full bg-gray-100 border-2 py-2 text-black ${
+                  errors.password && 'border-red-500'
+                }`}
                 required
               />
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password}</p>
+              )}
             </div>
             <button
               onClick={handleSubmit}
               className="bg-gray-600 p-3 rounded-xl mt-2 text-white font-medium"
             >
-              Login
+              {loading ? 'Logging in...' : 'Login'}
             </button>
           </div>
-          <div className=" flex gap-2 mt-8">
-            <p className="text-gray-400">create an account?</p>
-            <Link href={'/pages/signup'}>Sign Up</Link>
+          <div className="flex gap-2 mt-8">
+            <p className="text-gray-400">Don't have an account?</p>
+            <Link href="/pages/signup" className="text-gray-200">
+              Sign Up
+            </Link>
           </div>
         </div>
       </div>
