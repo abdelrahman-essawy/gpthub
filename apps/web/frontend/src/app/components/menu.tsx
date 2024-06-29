@@ -1,16 +1,16 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { IoIosChatbubbles, IoIosPeople } from 'react-icons/io';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 import { FaFolder } from 'react-icons/fa6';
 import { LuSettings } from 'react-icons/lu';
 import { TbLogout2 } from 'react-icons/tb';
-
-// const handleSelect = (index:number)=>{
-
-// }
+import { useRouter } from 'next/navigation';
 
 export const Menu = () => {
+  const [value, setValue] = useState<string>('');
+  const router = useRouter();
   return (
     <div className="flex flex-col text-white h-full p-4 pt-10 ">
       {/* top menu */}
@@ -42,6 +42,29 @@ export const Menu = () => {
         >
           <FaFolder />
           <p>Available Resources</p>
+        </Link>
+        <Link
+          href={''}
+          className="flex items-center gap-2 w-full hover:bg-black p-2 py-4 rounded-2xl"
+        >
+          <input
+            value={value}
+            type="text"
+            placeholder="Create Room"
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+            className="input input-bordered w-full max-w-xs"
+          />
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              router.push(`/pages/chat/${value}`);
+              // setValue('');
+            }}
+          >
+            create
+          </button>
         </Link>
       </div>
       {/* end menu */}

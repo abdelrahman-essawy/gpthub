@@ -7,7 +7,7 @@ const Card = (data: CardData) => {
   return (
     <div className="flex items-center p-2 text-white w-full bg-black rounded-2xl border-amber-50/20 border-2 h-full">
       <div className="">
-        <Link href={`pages/chat/${data.title}`}>
+        <Link href={`/pages/chat/${data.title}`}>
           {/* Adjusted width class */}
           <Image
             src={data.img}

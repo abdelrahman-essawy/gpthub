@@ -8,6 +8,7 @@ import { motion, useMotionValue } from 'framer-motion';
 import 'react-multi-carousel/lib/styles.css';
 
 export const Carousel = ({ title }: { title: string }) => {
+  
   const length = 20;
   const scrollBy = 70;
   const dragLimit = 50;
@@ -16,6 +17,7 @@ export const Carousel = ({ title }: { title: string }) => {
     () => generateRandomCards(length),
     [length],
   );
+  
   const ref = useRef(null);
   const [scrollIndex, setScrollIndex] = useState<number>(0);
   const [dragged, setDragged] = useState<boolean>(false);
@@ -30,7 +32,7 @@ export const Carousel = ({ title }: { title: string }) => {
         console.log('go left');
         setScrollIndex(scrollIndex + scrollBy);
         setCurrentDivIndex(currentDivIndex - 4);
-      } else if(dragX.get() < 0 && currentDivIndex < roomsData.length - 4) {
+      } else if (dragX.get() < 0 && currentDivIndex < roomsData.length - 4) {
         // if (currentDivIndex >= roomsData.length - 4) return;
         // right
         console.log('go right');

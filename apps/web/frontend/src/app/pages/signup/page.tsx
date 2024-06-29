@@ -202,7 +202,7 @@ const SignUp = () => {
           </div>
           <div className="flex gap-2 mt-8">
             <p className="text-gray-400">Already have an account?</p>
-            <Link href={'/pages/login'} className="text-gray-200">
+            <Link href={'/'} className="text-gray-200">
               Login{' '}
             </Link>
           </div>
