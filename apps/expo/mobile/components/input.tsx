@@ -20,7 +20,10 @@ const Input = ({ className, onTextChange }: Props) => {
         className="flex-1 text-white mr-4"
       />
       <TouchableOpacity
-        onPress={() => onTextChange(text)}
+        onPress={() => {
+          onTextChange(text);
+          setText('');
+        }}
         className="p-2 bg-gray-400 rounded-xl"
       >
         <AntDesign name="arrowup" size={24} color="black" />
