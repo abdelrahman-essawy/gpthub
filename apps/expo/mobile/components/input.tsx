@@ -1,6 +1,8 @@
 import { View, TouchableOpacity, TextInput } from 'react-native';
 import React, { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import * as DocumentPicker from 'expo-document-picker';
 
 type Props = {
   className?: string;
@@ -19,6 +21,15 @@ const Input = ({ className, onTextChange }: Props) => {
         onChangeText={setText}
         className="flex-1 text-white mr-4"
       />
+      <TouchableOpacity
+        onPress={async () => {
+          const result = await DocumentPicker.getDocumentAsync({});
+          console.log("result = ",result);
+        }}
+        className="bg-gray-400 rounded-xl mr-1 p-2"
+      >
+        <MaterialIcons name="attach-file" size={24} color="black" />
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
           onTextChange(text);
