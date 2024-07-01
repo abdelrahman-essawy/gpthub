@@ -1,7 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
-import { fetchRoomId } from '../../lib/fetchRoomId/fetch';
+import { uploadResource } from '../../lib/fetchRoomId/fetch';
 
 interface NavBarProps {
   handleNavbarClick: (roomName: string) => void;
@@ -10,27 +10,33 @@ interface NavBarProps {
 
 const NavBar = ({ title }: { title: string }) => {
   const [resources, setResources] = useState<string[]>([]);
-  const [newResource, setNewResource] = useState<string>('');
   const [roomId, setRoomId] = useState<string>('');
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const formData = event.target.files[0];
-      setNewResource(event.target.files[0].name);
-      if (roomId === '') {
-        setRoomId( fetchRoomId(formData));
-        localStorage.setItem(title, roomId);
-      }
-      // upload(roomId)
-    }
-  };
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    const formData = new FormData();
+    formData.append('file', file as Blob);
 
-  const handleAddResource = () => {
-    if (newResource) {
-      setResources([...resources, newResource]);
-      setNewResource(''); // Clear the new resource after adding
+    console.log('formData', formData);
+
+    const {MESSAGE} = await uploadResource(formData)
+
+    setResources([...resources, MESSAGE]);
+
+  }
+
+  useEffect(() => {
+    const roomId = window.location.pathname.split('/').pop();
+    setRoomId(roomId || '');
+
+    const roomDetails = {
+      roomId: roomId,
+      resources: resources
     }
-  };
+
+    localStorage.setItem('roomDetails', JSON.stringify(roomDetails));
+
+  }, [roomId, resources]);
 
   title = title.replace(/%20/g, ' ');
 
@@ -88,16 +94,16 @@ const NavBar = ({ title }: { title: string }) => {
                   onChange={handleFileChange}
                 />
               </li>
-              {newResource && (
-                <li>
-                  <button
-                    onClick={handleAddResource}
-                    className="btn btn-secondary"
-                  >
-                    Add {newResource}
-                  </button>
-                </li>
-              )}
+              {/*{newResource && (*/}
+              {/*  <li>*/}
+              {/*    <button*/}
+              {/*      onClick={handleAddResource}*/}
+              {/*      className="btn btn-secondary"*/}
+              {/*    >*/}
+              {/*      Add {newResource}*/}
+              {/*    </button>*/}
+              {/*  </li>*/}
+              {/*)}*/}
             </ul>
           </div>
         </div>
