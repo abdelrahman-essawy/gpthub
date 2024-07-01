@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const Card = (data: CardData) => {
+  console.log('image = ', data.img);
   return (
     <div className="flex items-center p-2 text-white w-full bg-black rounded-2xl border-amber-50/20 border-2 h-full">
       <div className="">

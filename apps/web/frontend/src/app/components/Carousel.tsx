@@ -7,16 +7,16 @@ import Card from './card';
 import { motion, useMotionValue } from 'framer-motion';
 import 'react-multi-carousel/lib/styles.css';
 
-export const Carousel = ({ title }: { title: string }) => {
+export const Carousel = ({ title,rooms }: { title: string,rooms:CardData[] }) => {
   
   const length = 20;
   const scrollBy = 70;
   const dragLimit = 50;
 
-  const roomsData: CardData[] = useMemo(
-    () => generateRandomCards(length),
-    [length],
-  );
+  // const roomsData: CardData[] = useMemo(
+  //   () => generateRandomCards(length),
+  //   [length],
+  // );
   
   const ref = useRef(null);
   const [scrollIndex, setScrollIndex] = useState<number>(0);
@@ -32,7 +32,7 @@ export const Carousel = ({ title }: { title: string }) => {
         console.log('go left');
         setScrollIndex(scrollIndex + scrollBy);
         setCurrentDivIndex(currentDivIndex - 4);
-      } else if (dragX.get() < 0 && currentDivIndex < roomsData.length - 4) {
+      } else if (dragX.get() < 0 && currentDivIndex < rooms.length - 4) {
         
         // right
         console.log('go right');
@@ -71,7 +71,7 @@ export const Carousel = ({ title }: { title: string }) => {
         animate={{ translateX: `${scrollIndex}%` }}
         className="grid grid-rows-2 grid-flow-col gap-2 h-96 cursor-grab active:cursor-grabbing w-full "
       >
-        {roomsData.map((data, index) => (
+        {rooms.map((data, index) => (
           <div id={index.toString()} key={index} className="w-[400px]">
             <Card
               // index={index}

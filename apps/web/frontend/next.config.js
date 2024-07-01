@@ -13,8 +13,16 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  // images: {
+  //   domains: ['picsum.photos', 'loremflickr.com'],
+  // },
   images: {
-    domains: ['picsum.photos', 'loremflickr.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 };
 

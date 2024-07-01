@@ -1,12 +1,24 @@
 'use client';
+import React, { useEffect, useState } from 'react';
 import Chat from '../../../components/chat/chat';
 import NavBarU from '../../../components/chat/NavBarU';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+interface Room {
+  roomId: string;
+  subTitle: string;
+  img: File | null;
+  resources: string[];
+}
 
 const ChatPage = ({ params }: { params: { room: string } }) => {
   const title = params.room;
-  const [room, setRoom] = useState({
+  const router = useRouter();
+
+  const [room, setRoom] = useState<Room>({
     roomId: '',
+    subTitle: '',
+    img: null,
     resources: [],
   });
 
@@ -14,8 +26,11 @@ const ChatPage = ({ params }: { params: { room: string } }) => {
     const roomId = window.location.pathname.split('/').pop() || '';
     const roomDetails = {
       roomId: roomId,
+      subTitle: '',
+      img: null,
       resources: [],
     };
+
     const restRooms = localStorage.getItem('rooms');
     if (restRooms) {
       const rooms = JSON.parse(restRooms);
@@ -25,13 +40,30 @@ const ChatPage = ({ params }: { params: { room: string } }) => {
       if (!doesRoomExist) {
         rooms.push(roomDetails);
         localStorage.setItem('rooms', JSON.stringify(rooms));
-        return;
+        setRoom(roomDetails);
+      } else {
+        setRoom(doesRoomExist);
       }
-      setRoom(doesRoomExist);
     } else {
       localStorage.setItem('rooms', JSON.stringify([roomDetails]));
+      setRoom(roomDetails);
     }
   }, [title]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setRoom({ ...room, img: file });
+    }
+  };
+
+  const handleSubmit = () => {
+    // Handle form submission with room details including the image file
+    const rooms = JSON.parse(localStorage.getItem('rooms') || '[]');
+    rooms.push(room);
+    localStorage.setItem('rooms', JSON.stringify(rooms));
+    router.push(`/pages/chat/${room.roomId}`);
+  };
 
   return (
     <div className="h-screen">
@@ -44,4 +76,5 @@ const ChatPage = ({ params }: { params: { room: string } }) => {
     </div>
   );
 };
+
 export default ChatPage;

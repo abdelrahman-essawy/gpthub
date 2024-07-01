@@ -3,22 +3,14 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { uploadResource } from '../../lib/fetchRoomId/fetch';
 import { useRouter } from 'next/navigation';
+import { DataSent } from '../menu';
 
 interface NavBarProps {
   handleNavbarClick: (roomName: string) => void;
   title: string;
 }
 
-const NavBar = ({
-  title,
-  room,
-}: {
-  title: string;
-  room: {
-    roomId: string;
-    resources: string[];
-  };
-}) => {
+const NavBar = ({ title, room }: { title: string; room: DataSent }) => {
   const router = useRouter();
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
