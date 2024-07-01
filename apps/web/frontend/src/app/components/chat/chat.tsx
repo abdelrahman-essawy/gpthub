@@ -10,12 +10,13 @@ import { faStop, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { Message } from '../../core/dto/types';
 import Default_Layout from './Default_Layout';
 
-const Chat = () => {
+const Chat = ({ title }: { title: string }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const [isEmptyPage, setIsEmptyPage] = useState(true);
+  const [roomId, setRoomId] = useState<string>('');
 
   const btnHandler = async (index: number) => {
     const updatedMessages = [...messages];
@@ -93,6 +94,16 @@ const Chat = () => {
 
   const handleSendMessage = async () => {
     if (newMessage.trim() === '') return;
+
+    const storedRoomId = localStorage.getItem(title);
+    if (storedRoomId) {
+      setRoomId(storedRoomId);
+      console.log('roomId = ',roomId);
+    } else {
+      console.log('upload recourse');
+      // return;
+    } 
+    
     setIsEmptyPage(false);
     setMessages((previous) => [
       ...previous,

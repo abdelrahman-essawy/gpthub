@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { fetchRoomId } from '../../lib/fetchRoomId/fetch';
 
 interface NavBarProps {
   handleNavbarClick: (roomName: string) => void;
@@ -10,10 +11,17 @@ interface NavBarProps {
 const NavBar = ({ title }: { title: string }) => {
   const [resources, setResources] = useState<string[]>([]);
   const [newResource, setNewResource] = useState<string>('');
+  const [roomId, setRoomId] = useState<string>('');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
+      const formData = event.target.files[0];
       setNewResource(event.target.files[0].name);
+      if (roomId === '') {
+        setRoomId( fetchRoomId(formData));
+        localStorage.setItem(title, roomId);
+      }
+      // upload(roomId)
     }
   };
 
@@ -62,7 +70,7 @@ const NavBar = ({ title }: { title: string }) => {
               className="drawer-overlay"
             ></label>
             <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content gap-4 ">
-              <a className='font-bold text-xl'>Uploaded resources</a>
+              <a className="font-bold text-xl">Uploaded resources</a>
               {resources.map((resource, index) => (
                 <li key={index}>
                   <a className="p-4">{resource}</a>

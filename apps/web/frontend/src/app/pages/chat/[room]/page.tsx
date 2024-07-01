@@ -9,7 +9,7 @@ const ChatPage = ({ params }: { params: { room: string } }) => {
         <NavBarU title={title}/>
       </div>
       <div className="flex py-14 h-screen bg-gray-700">
-        <Chat/>
+        <Chat title={title}/>
       </div>
     </div>
   );

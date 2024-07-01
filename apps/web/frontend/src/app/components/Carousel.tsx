@@ -12,7 +12,7 @@ export const Carousel = ({ title }: { title: string }) => {
   const length = 20;
   const scrollBy = 70;
   const dragLimit = 50;
-  // Memoize the roomsData to avoid recalculation on each render
+
   const roomsData: CardData[] = useMemo(
     () => generateRandomCards(length),
     [length],
@@ -33,7 +33,7 @@ export const Carousel = ({ title }: { title: string }) => {
         setScrollIndex(scrollIndex + scrollBy);
         setCurrentDivIndex(currentDivIndex - 4);
       } else if (dragX.get() < 0 && currentDivIndex < roomsData.length - 4) {
-        // if (currentDivIndex >= roomsData.length - 4) return;
+        
         // right
         console.log('go right');
         setScrollIndex(scrollIndex - scrollBy);

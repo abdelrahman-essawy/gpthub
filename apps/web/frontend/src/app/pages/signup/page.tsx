@@ -33,6 +33,7 @@ const SignUp = () => {
   const [notification, setNotification] = useState<NotificationProps | null>(
     null,
   );
+  
   const router = useRouter();
 
   const [registerUser, { loading, error }] = useMutation(REGISTER_USER, {
@@ -85,7 +86,7 @@ const SignUp = () => {
         status: 'success',
         content: 'User registered successfully!',
       });
-      // Handle success - redirect or show success message
+      router.push('/');
     } catch (error) {
       console.error('Error registering user:', error);
     }

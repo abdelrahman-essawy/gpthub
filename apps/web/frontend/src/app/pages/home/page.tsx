@@ -3,11 +3,6 @@ import { Menu } from '../../components/menu';
 import { CurrentRoom } from '../../components/currentRoom';
 import { Rooms } from '../../components/rooms';
 export default function Home() {
-  /*
-   * Replace the elements below with your own.
-   *
-   * Note: The corresponding styles are in the ./index.css file.
-   */
   return (
     <div className="flex flex-col justify-center items-center bg-backgroundColor w-full min-h-screen max-h-screen mx-auto">
       <div className="pt-20 w-full">

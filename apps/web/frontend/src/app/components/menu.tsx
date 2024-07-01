@@ -43,10 +43,7 @@ export const Menu = () => {
           <FaFolder />
           <p>Available Resources</p>
         </Link>
-        <Link
-          href={''}
-          className="flex items-center gap-2 w-full hover:bg-black p-2 py-4 rounded-2xl"
-        >
+        <div className="flex justify-between">
           <input
             value={value}
             type="text"
@@ -54,7 +51,7 @@ export const Menu = () => {
             onChange={(e) => {
               setValue(e.target.value);
             }}
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered max-w-xs mr-2"
           />
           <button
             className="btn btn-primary"
@@ -65,7 +62,7 @@ export const Menu = () => {
           >
             create
           </button>
-        </Link>
+        </div>
       </div>
       {/* end menu */}
       <div className="border-t border-gray-500 my-8"></div>
