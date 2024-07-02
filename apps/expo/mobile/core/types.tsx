@@ -4,7 +4,6 @@ import { RootStackParams } from '../src/app/App';
 export type Room = {
   name: string;
   subTitle: string;
-  roomId: string;
   img: string;
   messages: number;
   resources: { name: string; text: string }[];
