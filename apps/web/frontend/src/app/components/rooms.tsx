@@ -11,9 +11,9 @@ export const Rooms = () => {
     const cachedRooms = localStorage.getItem('rooms');
     if (cachedRooms) {
       const parsedRooms = JSON.parse(cachedRooms).map((room: any) => ({
-        title: room.roomId,
+        title: room.name,
         subTitle: room.subTitle || 'No Subtitle',
-        img: room.imgData ? `data:image/png;base64,${room.imgData}` : '/default-image.png', // Handling imgData
+        img: room.imgData ? room.imgData : '/default-image.png', // Handling imgData
         noActive: room.noActive || 0,
         noResources: room.resources ? room.resources.length : 0,
         noMessages: room.noMessages || 0,
@@ -32,20 +32,6 @@ export const Rooms = () => {
         </div>
       ) : (
         <Carousel title="Joined Rooms" rooms={rooms} />
-        // rooms.map((room, index) => {
-        //   return (
-        //     <div key={index} className="flex flex-col bg-black w-full h-screen">
-        //       <button
-        //         className="text-white text-2xl font-bold w-full p-8 bg-green"
-        //         onClick={() => {
-        //           window.location.href = `/pages/chat/${room.roomId}`;
-        //         }}
-        //       >
-        //         {room.roomId}
-        //       </button>
-        //     </div>
-        //   );
-        // })
       )}
     </div>
   );

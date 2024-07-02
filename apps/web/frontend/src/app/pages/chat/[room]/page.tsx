@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Chat from '../../../components/chat/chat';
 import NavBarU from '../../../components/chat/NavBarU';
 import { useRouter } from 'next/navigation';
-import { DataSent } from '../../../components/menu';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { Room } from '../../../../../../../expo/mobile/core/types';
 
 const ChatPage = ({ params }: { params: { room: string } }) => {
@@ -12,7 +12,7 @@ const ChatPage = ({ params }: { params: { room: string } }) => {
     subTitle: '',
     resources: [],
     img: '',
-    messages: 0,
+    messages: [],
     name: name,
   });
   const rooms = JSON.parse(localStorage.getItem('rooms') || '[]');

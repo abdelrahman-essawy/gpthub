@@ -22,9 +22,9 @@ const NavBar = ({
     const file = event.target.files[0];
     pdfToText(file)
       .then((text) => {
-        console.log('Extracted text from pdf:', text);
-        console.log('File name:', file.name);
-        console.log('Room:', room);
+        // console.log('Extracted text from pdf:', text);
+        // console.log('File name:', file.name);
+        // console.log('Room:', room);
         setRoom({
           ...room,
           resources: [
@@ -44,7 +44,7 @@ const NavBar = ({
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
-        <div className="drawer">
+        <div className="drawer ">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content">
             <label htmlFor="my-drawer" className="drawer-button">

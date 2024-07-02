@@ -17,7 +17,20 @@ const Chat = ({ title, room }: { title: string; room: Room }) => {
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const [isEmptyPage, setIsEmptyPage] = useState(true);
-  const [roomId, setRoomId] = useState<string>('');
+
+  useEffect(() => {
+    // Load messages from localStorage when the component mounts
+    const savedMessages = localStorage.getItem(`messages-${title}`);
+    if (savedMessages) {
+      setMessages(JSON.parse(savedMessages));
+      setIsEmptyPage(false);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    // Save messages to localStorage whenever the messages state changes
+    localStorage.setItem(`messages-${title}`, JSON.stringify(messages));
+  }, [messages, title]);
 
   const btnHandler = async (index: number) => {
     const updatedMessages = [...messages];
@@ -26,7 +39,6 @@ const Chat = ({ title, room }: { title: string; room: Room }) => {
       stop();
       updatedMessages[index].btn = 'play';
       setMessages(updatedMessages);
-      console.log('pause');
     } else {
       updatedMessages[index].btn = 'stop';
       setMessages(updatedMessages);
@@ -40,7 +52,6 @@ const Chat = ({ title, room }: { title: string; room: Room }) => {
       utterance.volume = 0.5;
 
       speechSynthesis.speak(utterance);
-      console.log('ok');
 
       await new Promise<void>((resolve) => {
         utterance.onend = () => {
@@ -64,7 +75,7 @@ const Chat = ({ title, room }: { title: string; room: Room }) => {
     userQuery: string;
     resources: { name: string; text: string }[];
   }) => {
-    return `In this context only as this room only contains information's about, "${resources.map(
+    return `remove any * from the response as the editor doesn't translate any writing mode  and  In this context only as this room only contains information's about, "${resources.map(
       (resource) => resource.text,
     )}", ${userQuery}`;
   };
@@ -109,15 +120,6 @@ const Chat = ({ title, room }: { title: string; room: Room }) => {
 
   const handleSendMessage = async () => {
     if (newMessage.trim() === '') return;
-
-    const storedRoomId = localStorage.getItem(title);
-    if (storedRoomId) {
-      setRoomId(storedRoomId);
-      console.log('roomId = ', roomId);
-    } else {
-      console.log('upload recourse');
-      // return;
-    }
 
     setIsEmptyPage(false);
     setMessages((previous) => [
@@ -175,7 +177,6 @@ const Chat = ({ title, room }: { title: string; room: Room }) => {
         <div className="flex justify-center items-end w-full rounded-xl">
           <TextareaAutosize
             maxRows={15}
-            // minRows={1}
             value={newMessage}
             onKeyDown={handleKeyDown}
             onChange={(e) => {

@@ -5,7 +5,7 @@ export type Room = {
   name: string;
   subTitle: string;
   img: string;
-  messages: number;
+  messages: string[];
   resources: { name: string; text: string }[];
 };
 export type ChatScreenProps = {

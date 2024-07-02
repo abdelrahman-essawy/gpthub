@@ -7,21 +7,16 @@ import { FaFolder } from 'react-icons/fa';
 import { LuSettings } from 'react-icons/lu';
 import { TbLogout2 } from 'react-icons/tb';
 import { useRouter } from 'next/navigation';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { Room } from 'apps/expo/mobile/core/types';
 
-export type DataSent = {
-  roomId: string;
-  subTitle: string;
-  imgName: string;
-  imgData: string | null; // Updated to store Base64 string
-  resources: { name: string; text: string }[];
-};
 
 export const Menu = () => {
-  const [formData, setFormData] = useState<DataSent>({
-    roomId: '',
+  const [formData, setFormData] = useState<Room>({
+    name: '',
     subTitle: '',
-    imgName: '', // Initialize with empty string
-    imgData: null, // Initialize with null
+    img: '',
+    messages: [],
     resources: [],
   });
   const router = useRouter();
@@ -37,17 +32,10 @@ export const Menu = () => {
       getBase64Image(file, (base64Image: string) => {
         setFormData({
           ...formData,
-          imgName: file.name,
-          imgData: base64Image,
+          img: base64Image,
         });
       });
-    } else {
-      setFormData({
-        ...formData,
-        imgName: '',
-        imgData: null,
-      });
-    }
+    } 
   };
 
   const handleFormSubmit = () => {
@@ -55,10 +43,10 @@ export const Menu = () => {
 
     // Store metadata about the file, not the file object itself
     const roomDataToStore = {
-      roomId: formData.roomId,
+      name: formData.name,
       subTitle: formData.subTitle,
-      imgName: formData.imgName,
-      imgData: formData.imgData,
+      imgData: formData.img,
+      messages:[],
       resources: formData.resources,
     };
 
@@ -66,7 +54,7 @@ export const Menu = () => {
     localStorage.setItem('rooms', JSON.stringify(rooms));
 
     // Redirect or navigate after storing data
-    router.push(`/pages/chat/${formData.roomId}`);
+    router.push(`/pages/chat/${formData.name}`);
   };
 
   const getBase64Image = (
@@ -126,8 +114,8 @@ export const Menu = () => {
             <h3 className="font-bold text-lg">Create Room!</h3>
             <div className="flex flex-col gap-4 w-full justify-center items-center py-8">
               <input
-                name="roomId"
-                value={formData.roomId}
+                name="name"
+                value={formData.name}
                 onChange={handleInputChange}
                 type="text"
                 placeholder="Room ID"
@@ -164,7 +152,7 @@ export const Menu = () => {
           <LuSettings />
           <p>Settings</p>
         </Link>
-        <Link href={''} className="flex items-center gap-2">
+        <Link href={'/'} className="flex items-center gap-2">
           <TbLogout2 />
           <p>Sign Out</p>
         </Link>
