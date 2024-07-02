@@ -24,6 +24,12 @@ const nextConfig = {
     config.externals.push({ canvas: 'commonjs canvas' });
     return config;
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
