@@ -1,25 +1,40 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { DataSent } from '../menu';
 import pdfToText from 'react-pdftotext';
+import { useRouter } from 'next/navigation';
+import { Room } from '../../../../../../expo/mobile/core/types';
 
 interface NavBarProps {
   handleNavbarClick: (roomName: string) => void;
   title: string;
 }
 
-const NavBar = ({ title, room }: { title: string; room: DataSent }) => {
-  const rooms = JSON.parse(localStorage.getItem('rooms') || '[]');
-  const thisRoom = rooms?.find(
-    (room: { roomId: string }) => room.roomId === title,
-  );
-
+const NavBar = ({
+  title,
+  room,
+  setRoom,
+}: {
+  title: string;
+  room: Room;
+  setRoom: React.Dispatch<React.SetStateAction<Room>>;
+}) => {
   function extractText(event) {
     const file = event.target.files[0];
     pdfToText(file)
       .then((text) => {
-        thisRoom.resources.push(text);
-        localStorage.setItem('rooms', JSON.stringify([...rooms, thisRoom]));
+        console.log('Extracted text from pdf:', text);
+        console.log('File name:', file.name);
+        console.log('Room:', room);
+        setRoom({
+          ...room,
+          resources: [
+            ...room.resources,
+            {
+              name: file.name,
+              text: text,
+            },
+          ],
+        });
       })
       .catch((error) => console.error('Failed to extract text from pdf'));
   }
@@ -63,9 +78,9 @@ const NavBar = ({ title, room }: { title: string; room: DataSent }) => {
             ></label>
             <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content gap-4 ">
               <a className="font-bold text-xl">Uploaded resources</a>
-              {room.resources.map((resource, index) => (
+              {room?.resources?.map((resource, index) => (
                 <li key={index}>
-                  <a className="p-4">{'Resource ' + ++index}</a>
+                  <a className="p-4">{resource.name}</a>
                 </li>
               ))}
               <div className="divider"></div>

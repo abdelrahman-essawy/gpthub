@@ -13,7 +13,7 @@ export type DataSent = {
   subTitle: string;
   imgName: string;
   imgData: string | null; // Updated to store Base64 string
-  resources: string[];
+  resources: { name: string; text: string }[];
 };
 
 export const Menu = () => {

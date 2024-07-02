@@ -9,9 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStop, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { Message } from '../../core/dto/types';
 import Default_Layout from './Default_Layout';
-import { DataSent } from '../menu';
+import { Room } from '../../../../../../expo/mobile/core/types';
 
-const Chat = ({ title, room }: { title: string; room: DataSent }) => {
+const Chat = ({ title, room }: { title: string; room: Room }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const messageContainerRef = useRef<HTMLDivElement>(null);
@@ -62,10 +62,10 @@ const Chat = ({ title, room }: { title: string; room: DataSent }) => {
     resources,
   }: {
     userQuery: string;
-    resources: string[];
+    resources: { name: string; text: string }[];
   }) => {
     return `In this context only as this room only contains information's about, "${resources.map(
-      (resource) => resource,
+      (resource) => resource.text,
     )}", ${userQuery}`;
   };
 
