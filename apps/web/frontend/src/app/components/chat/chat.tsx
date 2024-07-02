@@ -29,7 +29,9 @@ const Chat = ({ title, room }: { title: string; room: Room }) => {
 
   useEffect(() => {
     // Save messages to localStorage whenever the messages state changes
-    localStorage.setItem(`messages-${title}`, JSON.stringify(messages));
+    if(messages.length>=1){
+      localStorage.setItem(`messages-${title}`, JSON.stringify(messages));
+    }
   }, [messages, title]);
 
   const btnHandler = async (index: number) => {

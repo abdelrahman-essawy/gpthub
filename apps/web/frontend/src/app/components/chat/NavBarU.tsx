@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import pdfToText from 'react-pdftotext';
 import { useRouter } from 'next/navigation';
 import { Room } from '../../../../../../expo/mobile/core/types';
+import { truncateString } from '../../utils/charaterLimit';
 
 interface NavBarProps {
   handleNavbarClick: (roomName: string) => void;
@@ -76,11 +77,11 @@ const NavBar = ({
               aria-label="close sidebar"
               className="drawer-overlay"
             ></label>
-            <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content gap-4 ">
+            <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content gap-4">
               <a className="font-bold text-xl">Uploaded resources</a>
               {room?.resources?.map((resource, index) => (
                 <li key={index}>
-                  <a className="p-4">{resource.name}</a>
+                  <a className="p-4">{truncateString(resource.name, 25)}</a>
                 </li>
               ))}
               <div className="divider"></div>
