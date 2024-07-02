@@ -1,9 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { uploadResource } from '../../lib/fetchRoomId/fetch';
-import { useRouter } from 'next/navigation';
 import { DataSent } from '../menu';
+import pdfToText from 'react-pdftotext';
 
 interface NavBarProps {
   handleNavbarClick: (roomName: string) => void;
@@ -11,32 +9,20 @@ interface NavBarProps {
 }
 
 const NavBar = ({ title, room }: { title: string; room: DataSent }) => {
-  const router = useRouter();
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    const formData = new FormData();
-    formData.append('file', file as Blob);
+  const rooms = JSON.parse(localStorage.getItem('rooms') || '[]');
+  const thisRoom = rooms?.find(
+    (room: { roomId: string }) => room.roomId === title,
+  );
 
-    const { MESSAGE } = await uploadResource(formData);
-
-    const rooms = localStorage.getItem('rooms');
-
-    if (rooms) {
-      const parsedRooms = JSON.parse(rooms);
-      const updatedRooms = parsedRooms.map(
-        (room: { roomId: string; resources: string[] }) => {
-          if (room.roomId === title) {
-            room.resources.push(MESSAGE);
-          }
-          return room;
-        },
-      );
-      localStorage.setItem('rooms', JSON.stringify(updatedRooms));
-      router.refresh();
-    }
-  };
+  function extractText(event) {
+    const file = event.target.files[0];
+    pdfToText(file)
+      .then((text) => {
+        thisRoom.resources.push(text);
+        localStorage.setItem('rooms', JSON.stringify([...rooms, thisRoom]));
+      })
+      .catch((error) => console.error('Failed to extract text from pdf'));
+  }
 
   title = title.replace(/%20/g, ' ');
 
@@ -79,7 +65,7 @@ const NavBar = ({ title, room }: { title: string; room: DataSent }) => {
               <a className="font-bold text-xl">Uploaded resources</a>
               {room.resources.map((resource, index) => (
                 <li key={index}>
-                  <a className="p-4">{resource}</a>
+                  <a className="p-4">{'Resource ' + ++index}</a>
                 </li>
               ))}
               <div className="divider"></div>
@@ -91,19 +77,9 @@ const NavBar = ({ title, room }: { title: string; room: DataSent }) => {
                   id="file-upload"
                   type="file"
                   className="file-input file-input-bordered w-full max-w-xs hidden"
-                  onChange={handleFileChange}
+                  onChange={extractText}
                 />
               </li>
-              {/*{newResource && (*/}
-              {/*  <li>*/}
-              {/*    <button*/}
-              {/*      onClick={handleAddResource}*/}
-              {/*      className="btn btn-secondary"*/}
-              {/*    >*/}
-              {/*      Add {newResource}*/}
-              {/*    </button>*/}
-              {/*  </li>*/}
-              {/*)}*/}
             </ul>
           </div>
         </div>

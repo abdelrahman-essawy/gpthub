@@ -16,6 +16,14 @@ const nextConfig = {
   // images: {
   //   domains: ['picsum.photos', 'loremflickr.com'],
   // },
+  webpack: (config, options) => {
+    // config.module.rules.push({
+    //   test: /\.svg$/,
+    //   use: ['@svgr/webpack'],
+    // });
+    config.externals.push({ canvas: 'commonjs canvas' });
+    return config;
+  },
   images: {
     remotePatterns: [
       {

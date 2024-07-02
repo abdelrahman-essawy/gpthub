@@ -9,8 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStop, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { Message } from '../../core/dto/types';
 import Default_Layout from './Default_Layout';
+import { DataSent } from '../menu';
 
-const Chat = ({ title }: { title: string }) => {
+const Chat = ({ title, room }: { title: string; room: DataSent }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const messageContainerRef = useRef<HTMLDivElement>(null);
@@ -56,10 +57,24 @@ const Chat = ({ title }: { title: string }) => {
     speechSynthesis.cancel();
   };
 
+  const constructedQuery = ({
+    userQuery,
+    resources,
+  }: {
+    userQuery: string;
+    resources: string[];
+  }) => {
+    return `In this context only as this room only contains information's about, "${resources.map(
+      (resource) => resource,
+    )}", ${userQuery}`;
+  };
+
   const response = async () => {
     try {
       setLoading(true);
-      const responseG = await run(newMessage);
+      const responseG = await run(
+        constructedQuery({ userQuery: newMessage, resources: room.resources }),
+      );
       const data = responseG.toString();
 
       setLoading(false);
@@ -98,12 +113,12 @@ const Chat = ({ title }: { title: string }) => {
     const storedRoomId = localStorage.getItem(title);
     if (storedRoomId) {
       setRoomId(storedRoomId);
-      console.log('roomId = ',roomId);
+      console.log('roomId = ', roomId);
     } else {
       console.log('upload recourse');
       // return;
-    } 
-    
+    }
+
     setIsEmptyPage(false);
     setMessages((previous) => [
       ...previous,

@@ -71,7 +71,7 @@ const ChatPage = ({ params }: { params: { room: string } }) => {
         <NavBarU title={title} room={room} />
       </div>
       <div className="flex py-14 h-screen bg-gray-700">
-        <Chat title={title} />
+        <Chat title={title} room={room} />
       </div>
     </div>
   );
