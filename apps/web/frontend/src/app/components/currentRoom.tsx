@@ -9,7 +9,7 @@ import { PiNotepadFill } from "react-icons/pi";
 export const CurrentRoom = () => {
   return (
     <div className="flex flex-col w-full h-full px-8">
-      <div className="flex flex-col justify-between items-center w-full h-80 bg-black rounded-3xl p-2">
+      {/* <div className="flex flex-col justify-between items-center w-full h-80 bg-black rounded-3xl p-2">
         <div>
           <Image
             src="/csc.jfif"
@@ -72,7 +72,7 @@ export const CurrentRoom = () => {
             <IoMdCloudDone className='text-4xl'/>
           </Link>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

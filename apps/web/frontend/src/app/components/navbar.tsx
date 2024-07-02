@@ -18,8 +18,8 @@ export const NavBar = () => {
             className="rounded-full"
           />
           <div className="ml-4 flex flex-col text-white">
-            <p>Essawy</p>
-            <p>essawy.231</p>
+            <p>Faragz</p>
+            <p>Faragz.231</p>
           </div>
         </div>
       </div>
@@ -42,9 +42,9 @@ export const NavBar = () => {
         </div>
       </div>
       {/* end */}
-      <div className="ml-8 w-3/12">
+      {/* <div className="ml-8 w-3/12">
         <p className="text-xl text-white font-bold pl-4">Current Room</p>
-      </div>
+      </div> */}
     </div>
   );
 };

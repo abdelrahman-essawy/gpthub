@@ -15,13 +15,13 @@ export default function Home() {
           <Menu />
         </div>
         {/* mid */}
-        <div className="bg-black w-7/12 h-full overflow-y-auto">
+        <div className="bg-black w-10/12 h-full overflow-y-auto z-10">
           <Rooms />
         </div>
         {/* left */}
-        <div className="w-3/12 h-full bg-backgroundColor overflow-y-auto">
+        {/* <div className="w-3/12 h-full bg-black overflow-y-auto">
           <CurrentRoom />
-        </div>
+        </div> */}
       </div>
     </div>
   );
