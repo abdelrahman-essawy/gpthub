@@ -3,7 +3,7 @@ services:
 
   apollo-router-e2e:
     container_name: router
-    image: ghcr.io/apollographql/router:v1.39.0
+    image: ghcr.io/apollographql/router:v1.57.0
     command: [ "--dev", "-c", "config/router.yaml", "-s", "schema/supergraph.graphql", "--log", "info" ]
     ports:
       - "3000:3000"
